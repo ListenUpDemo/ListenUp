@@ -41,8 +41,8 @@ export const lessons: Lesson[] = [
     duration: 56,
     color: "peach",
     icon: "coffee",
-    audioUrl: "/assets/audio/beginner/coffee-shop.wav",
-    transcriptUrl: "/assets/transcripts/coffee-shop.json",
+    audioUrl: `${import.meta.env.BASE_URL}assets/audio/beginner/coffee-shop.wav`,
+    transcriptUrl: `${import.meta.env.BASE_URL}assets/transcripts/coffee-shop.json`,
     questions: [
       {
         id: "c1",
@@ -110,8 +110,8 @@ export const lessons: Lesson[] = [
     duration: 52,
     color: "blue",
     icon: "plane",
-    audioUrl: "/assets/audio/beginner/airport.wav",
-    transcriptUrl: "/assets/transcripts/airport.json",
+    audioUrl: "${import.meta.env.BASE_URL}assets/audio/beginner/airport.wav",
+    transcriptUrl: "${import.meta.env.BASE_URL}assets/transcripts/airport.json",
     questions: [
       {
         id: "a1",
@@ -147,8 +147,8 @@ export const lessons: Lesson[] = [
     duration: 44,
     color: "green",
     icon: "sun",
-    audioUrl: "/assets/audio/beginner/weekend.wav",
-    transcriptUrl: "/assets/transcripts/weekend.json",
+    audioUrl: "${import.meta.env.BASE_URL}assets/audio/beginner/weekend.wav",
+    transcriptUrl: "${import.meta.env.BASE_URL}assets/transcripts/weekend.json",
     questions: [
       {
         id: "w1",
@@ -185,8 +185,8 @@ export const lessons: Lesson[] = [
     duration: 55,
     color: "purple",
     icon: "briefcase",
-    audioUrl: "/assets/audio/intermediate/meeting.wav",
-    transcriptUrl: "/assets/transcripts/meeting.json",
+    audioUrl: "${import.meta.env.BASE_URL}assets/audio/intermediate/meeting.wav",
+    transcriptUrl: "${import.meta.env.BASE_URL}assets/transcripts/meeting.json",
     questions: [
       {
         id: "m1",
@@ -233,8 +233,8 @@ export const lessons: Lesson[] = [
     duration: 49,
     color: "rose",
     icon: "book",
-    audioUrl: "/assets/audio/intermediate/bookshop.wav",
-    transcriptUrl: "/assets/transcripts/bookshop.json",
+    audioUrl: "${import.meta.env.BASE_URL}assets/audio/intermediate/bookshop.wav",
+    transcriptUrl: "${import.meta.env.BASE_URL}assets/transcripts/bookshop.json",
     questions: [
       {
         id: "b1",
@@ -281,8 +281,8 @@ export const lessons: Lesson[] = [
     duration: 61,
     color: "sand",
     icon: "laptop",
-    audioUrl: "/assets/audio/advanced/remote-work.wav",
-    transcriptUrl: "/assets/transcripts/remote-work.json",
+    audioUrl: "${import.meta.env.BASE_URL}assets/audio/advanced/remote-work.wav",
+    transcriptUrl: "${import.meta.env.BASE_URL}assets/transcripts/remote-work.json",
     questions: [
       {
         id: "r1",
