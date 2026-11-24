@@ -1,0 +1,68 @@
+﻿[
+    {
+        "speaker":  "Barista",
+        "end":  6.65,
+        "text":  "Good morning! Welcome to the coffee shop. What can I get for you today?",
+        "start":  0
+    },
+    {
+        "speaker":  "Customer",
+        "end":  11.8,
+        "text":  "Good morning. I would like a cappuccino, please.",
+        "start":  6.65
+    },
+    {
+        "speaker":  "Barista",
+        "end":  16.95,
+        "text":  "Of course. Would you like a small, medium, or large?",
+        "start":  11.8
+    },
+    {
+        "speaker":  "Customer",
+        "end":  22.22,
+        "text":  "A medium, please. And could I have it with oat milk?",
+        "start":  16.95
+    },
+    {
+        "speaker":  "Barista",
+        "end":  28.94,
+        "text":  "Absolutely. Would you like anything to eat? We have fresh pastries.",
+        "start":  22.22
+    },
+    {
+        "speaker":  "Customer",
+        "end":  31.99,
+        "text":  "A chocolate croissant would be lovely.",
+        "start":  28.94
+    },
+    {
+        "speaker":  "Barista",
+        "end":  36.24,
+        "text":  "Great choice. Is that for here or to go?",
+        "start":  31.99
+    },
+    {
+        "speaker":  "Customer",
+        "end":  41.46,
+        "text":  "For here, please. I would like to sit by the window.",
+        "start":  36.24
+    },
+    {
+        "speaker":  "Barista",
+        "end":  44.84,
+        "text":  "That will be seven dollars and fifty cents.",
+        "start":  41.46
+    },
+    {
+        "speaker":  "Customer",
+        "end":  48.77,
+        "text":  "Here you are. Thank you very much!",
+        "start":  44.84
+    },
+    {
+        "speaker":  "Barista",
+        "end":  55.54,
+        "text":  "You are welcome. Your order will be ready in a moment. Enjoy your morning!",
+        "start":  48.77
+    }
+]

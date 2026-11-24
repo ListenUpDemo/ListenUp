@@ -1,0 +1,32 @@
+﻿[
+    {
+        "speaker":  "Speaker",
+        "end":  13.89,
+        "text":  "Remote work has fundamentally changed how we think about the workplace. The greatest advantage is flexibility. Employees can organize their schedules around the hours when they are most productive.",
+        "start":  0
+    },
+    {
+        "speaker":  "Speaker",
+        "end":  26.75,
+        "text":  "However, this freedom comes with challenges. Many workers report a sense of isolation, particularly when informal conversations and spontaneous collaboration disappear.",
+        "start":  13.89
+    },
+    {
+        "speaker":  "Speaker",
+        "end":  36.82,
+        "text":  "There is also the question of boundaries. When your home becomes your office, switching off at the end of the day can be surprisingly difficult.",
+        "start":  26.75
+    },
+    {
+        "speaker":  "Speaker",
+        "end":  48.12,
+        "text":  "I would recommend a hybrid approach. Spending a few days in the office allows teams to build relationships, while remote days provide space for focused work.",
+        "start":  36.82
+    },
+    {
+        "speaker":  "Speaker",
+        "end":  60.16,
+        "text":  "Ultimately, the goal should be to measure results rather than hours spent at a desk. Organizations that trust their employees are more likely to create a sustainable working culture.",
+        "start":  48.12
+    }
+]

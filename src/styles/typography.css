@@ -1,0 +1,64 @@
+body {
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  letter-spacing: -0.045em;
+}
+h1 {
+  font-size: clamp(32px, 3.3vw, 42px);
+  font-weight: 750;
+}
+h2 {
+  font-size: 28px;
+  font-weight: 700;
+}
+h3 {
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+p {
+  color: var(--muted);
+}
+button,
+input,
+select {
+  font: inherit;
+}
+.muted {
+  color: var(--muted);
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--primary-text);
+}
+.heading-dot {
+  color: var(--primary);
+}
+.text-green {
+  color: #128043;
+}
+.text-red {
+  color: #b91c1c;
+}
+.text-right {
+  text-align: right;
+}

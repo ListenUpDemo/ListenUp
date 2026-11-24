@@ -1,0 +1,56 @@
+﻿[
+    {
+        "speaker":  "Anna",
+        "end":  4.58,
+        "text":  "Hi Ben! Do you have any plans for Saturday?",
+        "start":  0
+    },
+    {
+        "speaker":  "Ben",
+        "end":  8.33,
+        "text":  "Not yet. What would you like to do?",
+        "start":  4.58
+    },
+    {
+        "speaker":  "Anna",
+        "end":  13.2,
+        "text":  "Let us have a picnic in the park. The weather will be sunny.",
+        "start":  8.33
+    },
+    {
+        "speaker":  "Ben",
+        "end":  17.96,
+        "text":  "That sounds great! I can bring some sandwiches.",
+        "start":  13.2
+    },
+    {
+        "speaker":  "Anna",
+        "end":  24.66,
+        "text":  "Perfect. I will bring fruit and drinks. Shall we meet at eleven?",
+        "start":  17.96
+    },
+    {
+        "speaker":  "Ben",
+        "end":  29.42,
+        "text":  "Yes, eleven is good. Where shall we meet?",
+        "start":  24.66
+    },
+    {
+        "speaker":  "Anna",
+        "end":  32.92,
+        "text":  "At the main entrance, near the big tree.",
+        "start":  29.42
+    },
+    {
+        "speaker":  "Ben",
+        "end":  37.38,
+        "text":  "I know the place. Can I invite my sister?",
+        "start":  32.92
+    },
+    {
+        "speaker":  "Anna",
+        "end":  43.74,
+        "text":  "Of course! The more, the merrier. See you on Saturday!",
+        "start":  37.38
+    }
+]

@@ -1,0 +1,108 @@
+# Công việc và tiến độ ListenUp
+
+Cập nhật: 21/10/2026. Phạm vi bàn giao: bộ khung frontend local, không có backend hoặc triển khai công khai. Đặc tả đầy đủ nằm trong PROJECT_SPEC.md; quy tắc phát triển nằm trong AGENTS.md.
+
+## Tổng quan
+
+Checklist bộ khung trong kế hoạch: **10/10 hạng mục đã triển khai**, đã kiểm tra build, luồng sử dụng chính và responsive cơ bản. Đây không phải tuyên bố đã hoàn tất kiểm định production hoặc WCAG trên mọi trình duyệt.
+
+| Giai đoạn               | Trạng thái                 | Kết quả                                                                                                  |
+| ----------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1. Design Foundation    | Hoàn thành                 | Tokens, Inter cục bộ, typography, màu, spacing, border, UI dùng chung                                    |
+| 2. Routing & Layout     | Hoàn thành                 | 14 URL chính, 4 layout, Header/Footer/Sidebar, navigation mobile, fallback                               |
+| 3. Các trang chính      | Hoàn thành                 | Home, thư viện/filter, chủ đề, chi tiết bài, dashboard, progress, bookmarks, auth demo, profile/settings |
+| 4. Listening Components | Hoàn thành                 | Player thật, transcript theo thời gian, câu hỏi, chấm điểm và lưu lượt làm                               |
+| 5. Kiểm tra bộ khung    | Hoàn thành kiểm tra cơ bản | 8 test tự động đạt, build đạt, luồng trình duyệt và các kích thước đại diện                              |
+
+## Checklist gốc
+
+- [x] Chốt cấu trúc URL và sơ đồ điều hướng.
+- [x] Thiết lập React, TypeScript, Vite và router.
+- [x] Tạo design tokens cho màu sắc, font và spacing.
+- [x] Tổ chức thư mục và asset.
+- [x] Xây dựng Button, Input, Card và Badge.
+- [x] Tạo Header, Footer, Sidebar và bốn layout.
+- [x] Xây dựng Home và danh sách Lessons.
+- [x] Xây dựng trang luyện Listening mẫu.
+- [x] Tích hợp AudioPlayer và transcript hoạt động.
+- [x] Kiểm tra responsive và khả năng truy cập cơ bản.
+
+## Chức năng đã triển khai
+
+- [x] Tìm tên/mô tả không phân biệt dấu và hoa/thường; kết hợp lọc trình độ/chủ đề; query string giữ bộ lọc.
+- [x] 6 bài nghe, 4 chủ đề, 20 câu hỏi có giải thích, nhãn A1–B2.
+- [x] 6 WAV PCM sinh từ giọng tiếng Anh cục bộ; 6 transcript JSON khớp thời gian.
+- [x] Audio Play/Pause, seek, tiến/lùi 10 giây, tốc độ, âm lượng và thời lượng thật.
+- [x] Transcript mặc định đóng, highlight theo audio, nhấn câu để tua, phóng to chữ.
+- [x] Chọn đáp án bằng radio, chuyển/nhảy câu, feedback đúng/sai có icon và chữ.
+- [x] Khóa đáp án đã kiểm tra; yêu cầu trả lời đủ câu trước nộp; modal xác nhận.
+- [x] Kết quả lưu theo attempt ID, xem lại lời giải, luyện lại và lịch sử.
+- [x] LocalStorage: bookmark, profile, preferences, draft và attempts.
+- [x] Dashboard/progress tính từ lượt làm thật; biểu đồ 7 ngày, empty state khi chưa học.
+- [x] Form login/register demo có thông báo rõ phạm vi, không lưu/gửi mật khẩu.
+- [x] Settings tốc độ/âm lượng/chữ transcript/mục tiêu; profile tên/email.
+- [x] Loading/error/retry cho tài nguyên; trang 404 và slug/ID không tìm thấy.
+- [x] Focus-visible, skip link, form label, radio/range bàn phím, dialog có tên và Escape, reduced motion.
+- [x] PROJECT_SPEC.md, AGENTS.md, TASKS.md và README.md.
+- [x] Prettier cho mã nguồn; npm run format để tiếp tục giữ định dạng.
+
+## Bằng chứng kiểm tra
+
+### Tự động
+
+- `npm test`: **8/8 đạt**. Kiểm tra grading có index 0, câu chưa trả lời và tất cả đúng; chuẩn hóa tìm kiếm tiếng Việt; cấu trúc WAV và mốc transcript của từng bài.
+- `npm run build`: **đạt**, TypeScript strict và Vite production bundle.
+- Audio đã được kiểm tra header RIFF/WAVE, thời lượng hợp lệ và timestamp cuối khớp độ dài PCM.
+
+### Trình duyệt trong phiên triển khai
+
+- Hoàn thành At the Coffee Shop, chủ động chọn sai một câu: kết quả **80%, 4/5**, lời giải đúng cho câu sai.
+- Audio phát/tạm dừng được; tốc độ đổi sang 0.75×; seek bằng transcript tới khoảng 16 giây; slider + tua tiến hiển thị 10.1 giây; âm lượng đổi từ 0.80 xuống 0.79 bằng bàn phím.
+- Space và ArrowDown chọn đáp án; Escape đóng dialog làm lại và trả focus về nút mở.
+- Reload giữ bản nháp câu đã chọn; xác nhận làm lại xóa draft.
+- Tìm `hieu sach` cùng trình độ B1 chỉ trả về A Little Bookshop; tìm không khớp hiện empty state và xóa filter được.
+- Lưu A Little Bookshop, reload vẫn có trạng thái đã lưu.
+- Dashboard phản ánh đúng 1 bài đã hoàn thành và 4/5 câu đúng từ lượt thử; không có số liệu seed giả.
+- Kiểm tra các trang chính và các ID/slug/route không tồn tại tại 768px, nội dung hiển thị và không tràn ngang.
+- Kiểm tra Home, Lessons, Detail, Practice, Dashboard, Login, Settings ở 360px: scrollWidth bằng clientWidth.
+- Kiểm tra Home/Practice và menu tại 390px, cùng giao diện desktop khoảng 1265px. Đã sửa phần orbit minh họa gây tràn ngang mobile.
+- Ảnh tham chiếu lưu tại docs/screenshots/home-desktop.png, home-mobile.png, practice-mobile.png.
+
+### Giới hạn kiểm tra
+
+Chưa chạy bộ E2E lặp lại tự động, screen reader, audit WCAG đầy đủ, thử mạng chậm/lỗi trong browser, storage quota, Safari/iOS, Firefox, hoặc kiểm tra bằng thiết bị thật. Error/retry đã có trong code nhưng chưa mô phỏng toàn bộ lỗi mạng trên UI. Các mục này nằm trong công việc tiếp theo, không phải tính năng backend đã triển khai.
+
+## Giai đoạn tiếp theo
+
+### 6. Hoàn thiện trước production
+
+- [ ] Thêm E2E cho luồng chọn bài → audio → submit → result; bookmark/draft qua refresh; URL trực tiếp.
+- [ ] Kiểm tra audio trên Safari/iOS và Android thật; lỗi tải, mạng chậm, file thiếu và range request.
+- [ ] Audit tương phản toàn bộ token/trạng thái; screen reader, keyboard-only và zoom 200%.
+- [ ] Thẩm định nội dung/nhãn CEFR và rà soát câu hỏi bởi người có chuyên môn.
+- [ ] Thay giọng tổng hợp bằng audio được cấp phép; chuẩn hóa MP3, loudness và transcript đã biên tập.
+- [ ] Dùng ảnh WebP 16:9 khi có asset chính thức; tối ưu font subset và bundle theo nhu cầu.
+- [ ] Thêm schema validation/migration cho dữ liệu localStorage trước khi mở rộng cấu trúc.
+- [ ] Chuẩn hóa API client/repository, loading/error theo API; thêm pagination khi thư viện lớn.
+- [ ] Cấu hình SPA fallback, caching và kiểm tra deep link tại môi trường hosting được chọn.
+
+### 7. Backend và tài khoản thật
+
+- [ ] Chọn Node.js hoặc Python, thiết kế API và PostgreSQL.
+- [ ] Xác thực, phiên đăng nhập, đăng ký thật, khôi phục mật khẩu và phân quyền.
+- [ ] Lưu và đồng bộ profile/bookmarks/attempts/progress theo người dùng.
+- [ ] Không dựa vào frontend/localStorage để phân quyền hoặc bảo vệ đáp án.
+- [ ] Object storage/CDN cho audio, ảnh và transcript; quản lý quyền truy cập nếu cần.
+- [ ] Chốt retention dữ liệu, quyền riêng tư, export/xóa tài khoản và backup theo yêu cầu sản phẩm.
+
+### 8. Quản trị và trải nghiệm mở rộng
+
+- [ ] `/admin`, `/admin/lessons`, `/admin/media` có kiểm tra quyền phía máy chủ.
+- [ ] CMS quản lý bài, câu hỏi, audio, hình ảnh và transcript.
+- [ ] Dark mode hoàn chỉnh dựa trên token, kiểm tra tương phản riêng.
+- [ ] Mục tiêu/ngày, streak và nhắc học nếu được yêu cầu; không tạo automation ngoài phạm vi người dùng.
+- [ ] Mở rộng loại câu hỏi, từ vựng, ghi chú và thống kê học tập.
+
+## Quy tắc cập nhật
+
+Đánh dấu hoàn thành chỉ sau khi chức năng tồn tại và kiểm tra thích hợp đạt. Ghi rõ công việc mới, phạm vi thay đổi, giới hạn kiểm tra và blocker thực tế. Không đánh dấu backend, đăng nhập thật hoặc production audit là hoàn thành khi mới có mock UI.

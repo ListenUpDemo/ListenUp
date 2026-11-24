@@ -1,0 +1,32 @@
+﻿[
+    {
+        "speaker":  "Emma",
+        "end":  10.96,
+        "text":  "My name is Emma, and I opened this bookshop ten years ago. The building used to be a bakery, and sometimes I think you can still smell the fresh bread.",
+        "start":  0
+    },
+    {
+        "speaker":  "Emma",
+        "end":  18.57,
+        "text":  "When I first moved here, I wanted to create a place where people could slow down and discover something unexpected.",
+        "start":  10.96
+    },
+    {
+        "speaker":  "Emma",
+        "end":  29.54,
+        "text":  "We do not just sell books. Every Saturday, we host a reading group. People from all over the neighborhood come to share their favorite stories.",
+        "start":  18.57
+    },
+    {
+        "speaker":  "Emma",
+        "end":  36.62,
+        "text":  "My favorite part of the job is recommending a book to someone and seeing them return to tell me how much they loved it.",
+        "start":  29.54
+    },
+    {
+        "speaker":  "Emma",
+        "end":  48.86,
+        "text":  "Running a small business is not always easy, but these little connections make it worthwhile. Next month, we are adding a small corner where visitors can enjoy a cup of tea.",
+        "start":  36.62
+    }
+]

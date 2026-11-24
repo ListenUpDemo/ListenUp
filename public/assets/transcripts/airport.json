@@ -1,0 +1,62 @@
+﻿[
+    {
+        "speaker":  "Agent",
+        "end":  5.5,
+        "text":  "Good morning. May I see your passport and booking confirmation?",
+        "start":  0
+    },
+    {
+        "speaker":  "Passenger",
+        "end":  9.75,
+        "text":  "Here you are. I am flying to London today.",
+        "start":  5.5
+    },
+    {
+        "speaker":  "Agent",
+        "end":  14.13,
+        "text":  "Thank you. How many bags are you checking in?",
+        "start":  9.75
+    },
+    {
+        "speaker":  "Passenger",
+        "end":  20,
+        "text":  "Just one suitcase. I also have a small backpack for the cabin.",
+        "start":  14.13
+    },
+    {
+        "speaker":  "Agent",
+        "end":  25.24,
+        "text":  "That is fine. Would you prefer a window seat or an aisle seat?",
+        "start":  20
+    },
+    {
+        "speaker":  "Passenger",
+        "end":  30.83,
+        "text":  "A window seat, please. What time does boarding start?",
+        "start":  25.24
+    },
+    {
+        "speaker":  "Agent",
+        "end":  36.28,
+        "text":  "Boarding starts at two thirty. Your flight leaves from gate twelve.",
+        "start":  30.83
+    },
+    {
+        "speaker":  "Passenger",
+        "end":  39.56,
+        "text":  "Do I need to go through security first?",
+        "start":  36.28
+    },
+    {
+        "speaker":  "Agent",
+        "end":  47.46,
+        "text":  "Yes. Security is on your right. Please be at the gate twenty minutes before departure.",
+        "start":  39.56
+    },
+    {
+        "speaker":  "Passenger",
+        "end":  51.47,
+        "text":  "Thank you for your help. Have a good day!",
+        "start":  47.46
+    }
+]

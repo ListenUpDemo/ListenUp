@@ -1,0 +1,44 @@
+﻿[
+    {
+        "speaker":  "Manager",
+        "end":  8.89,
+        "text":  "Good morning, everyone. Let us review our progress. The deadline for our project is this Friday.",
+        "start":  0
+    },
+    {
+        "speaker":  "Sarah",
+        "end":  17.21,
+        "text":  "The research is complete. I will prepare the presentation. It should be ready by Thursday afternoon.",
+        "start":  8.89
+    },
+    {
+        "speaker":  "Manager",
+        "end":  22,
+        "text":  "Excellent. David, how is the budget looking?",
+        "start":  17.21
+    },
+    {
+        "speaker":  "David",
+        "end":  29.04,
+        "text":  "We are within budget. However, we need to confirm the final costs with our supplier.",
+        "start":  22
+    },
+    {
+        "speaker":  "Manager",
+        "end":  36.48,
+        "text":  "Please contact them today. Sarah, could you share a draft with the team before the final version?",
+        "start":  29.04
+    },
+    {
+        "speaker":  "Sarah",
+        "end":  42.88,
+        "text":  "Certainly. I will send everyone a draft tomorrow so there is time for feedback.",
+        "start":  36.48
+    },
+    {
+        "speaker":  "Manager",
+        "end":  54.5,
+        "text":  "Perfect. Let us have another check-in on Wednesday morning. Please let me know if anything blocks your progress. Thank you, everyone.",
+        "start":  42.88
+    }
+]
