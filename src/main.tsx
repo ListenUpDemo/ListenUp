@@ -5,10 +5,13 @@ import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 import "@fontsource/inter/800.css";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, HashRouter } from "react-router-dom";
 import { AppProvider } from "./app/providers/AppProvider";
 import AppRouter from "./app/router/AppRouter";
 import "./styles/globals.css";
+
+const Router = import.meta.env.MODE === "pages" ? HashRouter : BrowserRouter;
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
