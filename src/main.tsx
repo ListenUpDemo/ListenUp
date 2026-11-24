@@ -14,10 +14,10 @@ const Router = import.meta.env.MODE === "pages" ? HashRouter : BrowserRouter;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <Router>
       <AppProvider>
         <AppRouter />
       </AppProvider>
-    </BrowserRouter>
+    </Router>
   </React.StrictMode>,
 );
