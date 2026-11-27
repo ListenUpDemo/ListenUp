@@ -20,6 +20,7 @@ export type Loadout = Partial<Record<Slot, string>>;
 export interface StageOutcome {
   answer: number;
   correct: boolean;
+  skipped?: boolean;
   coins: number;
   bonus: number;
   chest?: { kind: "potion" | "gear"; itemId: string; opened?: boolean };
@@ -30,10 +31,13 @@ export interface ExpeditionRun {
   startedAt: number;
   index: number;
   loadout: Loadout;
-  eliminated: number[];
   selected?: number;
+  feedback?: "shield" | "damage";
+  finalMisses?: number;
+  usedPotion?: boolean;
   outcomes: StageOutcome[];
   finished: boolean;
+  failed?: boolean;
   attempts: Attempt[];
 }
 

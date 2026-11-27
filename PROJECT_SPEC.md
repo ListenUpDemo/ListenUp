@@ -115,9 +115,10 @@ Tìm kiếm theo tên và mô tả, không phân biệt hoa/thường hoặc d�
 
 - Player thật: Play/Pause, tiến/lùi 10 giây, seek bằng thanh thời gian, tốc độ 0.5×–2×, âm lượng, thời lượng và thời gian hiện tại.
 - Không tự phát audio khi mở trang. Có lỗi tải/phát và thao tác thử lại.
-- Trả lời lần lượt các chặng. Khi chặng được phân định, khóa câu trả lời và hiển thị đúng/sai cùng giải thích tiếng Việt. Khi khiên đỡ một đòn, tiếp tục trả lời cùng chặng với lựa chọn sai đã bị loại.
+- Trả lời lần lượt các chặng. Ở chặng thường, khiên đỡ một đáp án sai, giữ sinh mệnh và cho bỏ qua chặng. Câu đã chọn vẫn tính là sai trong kết quả. Sau khi trả lời đúng hoặc bỏ qua nhờ khiên, người chơi thấy đáp án đúng và lời giải trước khi đi tiếp.
+- Nếu trả lời sai mà không có khiên còn độ bền, người chơi mất 1 sinh mệnh và phải trả lời lại. Ở chặng cuối, khiên chỉ giữ sinh mệnh. Người chơi thấy đủ lựa chọn và phải tự trả lời đúng để vượt qua. Đáp án và lời giải của chặng cuối xuất hiện trên trang kết quả sau khi hoàn thành ải.
 - Lưu tiến độ, lựa chọn hiện tại và phần thưởng sau mỗi thao tác. Sau chặng cuối, mở rương và hoàn thành ải để lưu lượt làm của từng bài với điểm, đáp án, thời gian và thời điểm hoàn thành.
-- Có thể chơi lại ải chiến dịch hoặc ải một bài. Lịch sử đã hoàn thành vẫn có thể xem lại.
+- Có thể chơi lại ải chiến dịch hoặc ải một bài và thử lại ải hằng ngày nếu lượt trước thất bại. Lịch sử đã hoàn thành vẫn có thể xem lại.
 - Transcript mặc định đóng; có speaker, timestamp, highlight câu đang phát, nhấn vào câu để tua và tùy chọn chữ lớn.
 - Audio và transcript là hai tài nguyên riêng gắn trong dữ liệu bài học.
 
@@ -125,9 +126,9 @@ Tìm kiếm theo tên và mô tả, không phân biệt hoa/thường hoặc d�
 
 - Mỗi cặp chủ đề và trình độ có nội dung là một ải chiến dịch. Hoàn thành mọi ải của chủ đề được tính là hoàn thành chủ đề. Bộ bài của ải hằng ngày luân phiên theo ngày trên thiết bị, gồm ba bài mẫu và có thể hoàn thành một lần mỗi ngày. Ải vào từ thư viện không mở khóa tiến trình chiến dịch.
 - Một chặng hiện là một câu trắc nghiệm. Mô hình chặng có trường `kind` để mở rộng tương tác. Sprite nhà thám hiểm di chuyển theo chặng, cùng một pet nếu đã sở hữu và trang bị.
-- Tối đa 5 sinh mệnh, tự hồi 1 mỗi 10 phút theo mốc thời gian đã lưu. Sai mà khiên không đỡ mất 1 sinh mệnh. Khi hết sinh mệnh, chặng chưa trả lời tạm dừng cho đến khi hồi hoặc dùng thuốc đã trang bị.
-- Mỗi chặng đã phân định cho 15 vàng, kể cả chặng sai. Kiếm còn độ bền cộng 20%, 40% hoặc 60% vàng theo loại và mất 1 độ bền. Khiên còn độ bền tự đỡ một câu sai nếu còn hơn hai lựa chọn, loại câu sai và mất 1 độ bền. Kiếm và khiên hết độ bền vẫn thuộc kho và có thể bảo dưỡng với giá thấp hơn giá mua.
-- Một lượt vào ải giữ một loại thuốc, một khiên, một kiếm và một pet theo bộ trang bị tại thời điểm bắt đầu. Thuốc tiêu hao theo từng lọ và hồi 1–5 sinh mệnh theo độ hiếm.
+- Tối đa 5 sinh mệnh, tự hồi 1 mỗi 10 phút theo mốc thời gian đã lưu. Khi một lượt làm sinh mệnh về 0, tự dùng một lọ thuốc đã trang bị nếu còn trong túi và lượt này chưa dùng thuốc. Hết sinh mệnh khi không có thuốc trang bị hoặc đã dùng thuốc trong lượt thì thua ải. Muốn bắt đầu lượt mới cần có ít nhất 1 sinh mệnh.
+- Mỗi chặng đã phân định cho 15 vàng, kể cả chặng thường bỏ qua nhờ khiên. Chặng đã nhận thưởng giữ nguyên vàng khi thua ải. Kiếm còn độ bền cộng 20%, 40% hoặc 60% vàng theo loại và mất 1 độ bền. Khiên tự mất 1 độ bền mỗi lần đỡ đòn. Kiếm và khiên hết độ bền vẫn thuộc kho và có thể bảo dưỡng với giá thấp hơn giá mua.
+- Một lượt vào ải giữ một loại thuốc, một khiên, một kiếm và một pet theo bộ trang bị tại thời điểm bắt đầu. Thuốc tiêu hao mỗi lần một lọ, hồi 1–5 sinh mệnh theo độ hiếm và không vượt quá 5. Tại cửa hàng có thể dùng ngay mọi loại thuốc đã sở hữu khi đang thiếu sinh mệnh.
 - Rương giữa ải cho một lọ thuốc với độ hiếm ngẫu nhiên. Rương cuối rút một kiếm hoặc khiên từ nhóm đã mở khóa hiện tại. Mở lần đầu nhận vật phẩm, mở trùng khôi phục độ bền tối đa. Mỗi rương của lượt chỉ mở một lần.
 - Cửa hàng bán thuốc, bán và bảo dưỡng trang bị, bán pet theo tiến trình hoàn thành chủ đề. Vàng khởi đầu bằng 0 và kiếm được khi giải các chặng.
 

@@ -10,13 +10,17 @@ Cập nhật 28/11/2026. Phạm vi bàn giao gồm frontend RPG phiêu lưu ch�
 - Mỗi chặng có một câu hỏi nghe, phản hồi đúng/sai, phần thưởng và tiến độ lưu cục bộ. Kết quả mới xuất hiện trong lịch sử cùng các lượt đã nộp trước đây.
 - Hệ thống 5 sinh mệnh, hồi 1 mỗi 10 phút, vàng, thuốc hồi phục, khiên, kiếm, kho đồ, mua và bảo dưỡng trang bị, mở khóa và mua pet.
 - Rương thuốc giữa ải và rương trang bị cuối ải. Rương trang bị có thể cấp món đã mở khóa hoặc sửa món đã sở hữu lên độ bền tối đa.
+- Cửa hàng cho dùng thuốc trong túi. Trong ải, thuốc trang bị tự kích hoạt tối đa một lần khi sinh mệnh về 0. Nếu không còn lượt tự hồi, ải thất bại. Chặng cuối buộc trả lời đúng và chỉ hiển thị lời giải trong kết quả.
+- Khiên đỡ đòn, giữ sinh mệnh và cho xem đáp án khi bỏ qua chặng thường. Ở chặng cuối, khiên chỉ giữ sinh mệnh. Khi không có khiên còn độ bền, người chơi phải trả lời lại sau khi mất 1 sinh mệnh.
 
 ### Đã kiểm chứng
 
 - Trình duyệt Chromium tích hợp kiểm tra đường đi từ thư viện đến kết quả At the Coffee Shop, lưu bài qua tải lại, giữ lựa chọn đang làm, phát/tạm dừng audio và tua transcript đến 11,8 giây.
-- Ở ải chiến dịch, đã thử dùng thuốc, nhận 18 vàng với kiếm cộng 20%, mở rương và hoàn thành chủ đề để mua, trang bị mèo. Ải hằng ngày hiển thị cả sprite nhân vật và mèo, với một phần tử audio.
+- Ở ải chiến dịch, đã nhận 18 vàng với kiếm cộng 20%, mở rương và hoàn thành chủ đề để mua, trang bị mèo. Ải hằng ngày hiển thị cả sprite nhân vật và mèo, với một phần tử audio.
+- Trong bản cập nhật luật thuốc, Chromium xác nhận dùng thuốc trực tiếp, tự hồi đúng một lần, giữ trạng thái sau tải lại, thua ải ở lần hết sinh mệnh tiếp theo và bắt đầu lượt mới sau khi hồi tại cửa hàng. Chặng cuối giữ đủ lựa chọn và ẩn lời giải khi sai, chỉ cho hoàn thành sau khi chọn đúng.
 - Kiểm tra bố cục bản đồ, ải, cửa hàng và thư viện tại 1280, 768 và 360px. Đã đo ải đang hoạt động không tràn ngang.
-- `npm test` đạt 13/13 và `npm run build` thành công. Test RPG bao phủ hồi sinh mệnh theo mốc thời gian, quy tắc hai lựa chọn của khiên, giảm độ bền kiếm, mở rương một lần, bảo dưỡng, giới hạn hồi máu và lượt ải hằng ngày.
+- Chromium xác nhận khiên ở chặng thường mở đường sang chặng tiếp theo và hiển thị đáp án qua tải lại. Ở chặng cuối, khiên giữ sinh mệnh và giữ đủ lựa chọn. Khiên cạn khiến câu sai tiêu hao sinh mệnh. Cả hai loại chặng yêu cầu trả lời lại khi không có khiên. Màn hình trả lời lại không tràn ngang ở 360, 768 và 1280px.
+- `npm test` đạt 17/17 và `npm run build` thành công. Các bài kiểm tra bao phủ hao độ bền, bỏ qua chặng thường, chặng cuối bắt buộc đúng, thuốc tự hồi và phần thưởng của lượt lưu cũ.
 
 ### Còn lại
 

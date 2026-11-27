@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Check, Coins, LockKeyhole, ShoppingBag, Wrench } from "lucide-react";
+import {
+  Check,
+  Coins,
+  Heart,
+  LockKeyhole,
+  ShoppingBag,
+  Wrench,
+} from "lucide-react";
 import { useApp } from "../app/providers/AppProvider";
 import { items, slots, slotLabels } from "../data/mock/adventureItems";
 import type { AdventureItem, Slot } from "../data/mock/adventureItems";
@@ -8,14 +15,16 @@ import {
   AdventureHud,
   slotIcons,
   Sprite,
+  useAdventureClock,
 } from "../features/adventure/AdventureVisuals";
+import { MAX_HEALTH, settleHealth } from "../features/adventure/engine";
 
 function describe(item: AdventureItem) {
   switch (item.slot) {
     case "potion":
-      return `Hồi ${item.effect} sinh mệnh, tối đa 5.`;
+      return `Hồi ${item.effect} sinh mệnh, tối đa ${MAX_HEALTH}.`;
     case "shield":
-      return `Đỡ câu sai khi còn hơn 2 lựa chọn. Độ bền ${item.durability}.`;
+      return `Đỡ đòn khi trả lời sai. Ở chặng thường, bỏ qua chặng và xem đáp án đúng. Ở chặng cuối, chỉ giữ sinh mệnh. Độ bền ${item.durability}.`;
     case "sword":
       return `Thêm ${item.effect}% vàng mỗi chặng. Độ bền ${item.durability}.`;
     case "pet":
@@ -27,6 +36,7 @@ export default function Shop() {
   const { adventure, act, masteredTopics, notify } = useApp();
   const [slot, setSlot] = useState<Slot>("potion");
   const unlocked = masteredTopics.length;
+  const { health } = settleHealth(adventure, useAdventureClock());
 
   return (
     <div className="container page-content adventure-shop">
@@ -59,6 +69,12 @@ export default function Shop() {
           );
         })}
       </div>
+      {slot === "potion" && (
+        <p>
+          Dùng thuốc tại đây để hồi sinh mệnh, hoặc trang bị cho lượt sau. Trong
+          ải, thuốc đã trang bị tự dùng một lần khi sinh mệnh về 0.
+        </p>
+      )}
       <div className="shop-grid">
         {items
           .filter((item) => item.slot === slot)
@@ -111,6 +127,17 @@ export default function Shop() {
                   )}
                 </div>
                 <div className="shop-item-actions">
+                  {slot === "potion" && owned && (
+                    <Button
+                      disabled={health === MAX_HEALTH}
+                      onClick={() => {
+                        act({ type: "drink", itemId: item.id });
+                        notify(`Đã dùng ${item.name}.`);
+                      }}
+                    >
+                      <Heart size={16} /> Dùng ngay
+                    </Button>
+                  )}
                   {(!owned || slot === "potion") && (
                     <Button
                       variant={owned ? "secondary" : "primary"}

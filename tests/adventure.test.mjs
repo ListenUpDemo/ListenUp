@@ -4,6 +4,7 @@ import {
   applyAdventureAction,
   HEART_INTERVAL,
   initialAdventure,
+  resolvedStage,
   settleHealth,
 } from "../src/features/adventure/engine.ts";
 
@@ -34,12 +35,16 @@ const act = (state, type, index, props = {}) =>
     now,
   );
 const answer = (state, index, value, props = {}) =>
-  act(state, "answer", index, {
-    answer: value,
-    random: 0,
-    unlocked: 0,
-    ...props,
-  });
+  act(
+    act(state, "select", index, { ...props, answer: value }),
+    "answer",
+    index,
+    {
+      random: 0,
+      unlocked: 0,
+      ...props,
+    },
+  );
 
 test("sinh mệnh hồi mỗi 10 phút, kể cả thời gian ứng dụng đóng", () => {
   const state = answer(prepare(), 0, 1);
@@ -57,26 +62,48 @@ test("sinh mệnh hồi mỗi 10 phút, kể cả thời gian ứng dụng đón
   assert.equal(full.nextHeartAt, null);
 });
 
-test("khiên loại câu sai hai lần và ngừng chặn khi chỉ còn hai lựa chọn", () => {
+test("khiên giữ sinh mệnh và cho bỏ qua chặng thường mà vẫn lưu câu đã chọn", () => {
   const state = prepare({
     ...initialAdventure,
-    inventory: { "shield-3": 6, "sword-1": 5 },
-    loadout: { shield: "shield-3", sword: "sword-1" },
+    inventory: { "shield-1": 2, "sword-1": 5 },
+    loadout: { shield: "shield-1", sword: "sword-1" },
   });
-  const blockedOnce = answer(state, 0, 1);
-  const blockedTwice = answer(blockedOnce, 0, 2);
-  assert.equal(blockedTwice.health, 5);
-  assert.equal(blockedTwice.coins, 0);
-  assert.equal(blockedTwice.inventory["shield-3"], 4);
-  assert.deepEqual(blockedTwice.runs[key].eliminated, [1, 2]);
-  assert.equal(answer(blockedTwice, 0, 1), blockedTwice);
+  const skipped = answer(state, 0, 1);
+  assert.equal(skipped.health, 5);
+  assert.equal(skipped.coins, 18);
+  assert.equal(skipped.inventory["shield-1"], 1);
+  assert.equal(skipped.inventory["sword-1"], 4);
+  assert.deepEqual(resolvedStage(expedition, skipped.runs[key]), {
+    answer: 1,
+    correct: false,
+    skipped: true,
+    coins: 18,
+    bonus: 3,
+    chest: undefined,
+  });
+  assert.equal(answer(skipped, 0, 2), skipped);
+  const middle = answer(act(skipped, "advance", 0), 1, 0);
+  const final = act(act(middle, "open", 1), "advance", 1);
+  const completed = act(act(answer(final, 2, 0), "open", 2), "advance", 2);
+  assert.equal(completed.attempts[0].answers.q0, 1);
+  assert.equal(completed.attempts[0].score, 2);
+});
 
-  const failed = answer(blockedTwice, 0, 3);
-  assert.equal(failed.health, 4);
-  assert.equal(failed.inventory["shield-3"], 4);
-  assert.equal(failed.inventory["sword-1"], 4);
-  assert.equal(failed.coins, 18);
-  assert.equal(answer(failed, 0, 0), failed);
+test("chặng thường với khiên hết độ bền trừ sinh mệnh và phải trả lời đúng", () => {
+  const run = prepare({
+    ...initialAdventure,
+    inventory: { "shield-1": 2 },
+    loadout: { shield: "shield-1" },
+  });
+  const state = { ...run, inventory: { "shield-1": 0 } };
+  const miss = answer(state, 0, 1);
+  assert.equal(miss.health, 4);
+  assert.equal(miss.coins, 0);
+  assert.equal(miss.runs[key].feedback, "damage");
+  assert.equal(resolvedStage(expedition, miss.runs[key]), undefined);
+  assert.equal(act(miss, "answer", 0, { random: 0, unlocked: 0 }), miss);
+  assert.equal(act(miss, "advance", 0), miss);
+  assert.equal(answer(miss, 0, 0).coins, 15);
 });
 
 test("rương mở một lần, phục hồi độ bền và hoàn tất lượt làm có index 0", () => {
@@ -103,7 +130,6 @@ test("túi đồ khóa theo lượt, thuốc không vượt tối đa và bảo 
     coins: 200,
     nextHeartAt: now + HEART_INTERVAL,
     inventory: { "potion-3": 1, "sword-1": 0 },
-    loadout: { potion: "potion-3" },
   };
   const shop = (state, type, itemId, unlocked = 0) =>
     applyAdventureAction(state, { type, itemId, unlocked }, now);
@@ -116,10 +142,91 @@ test("túi đồ khóa theo lượt, thuốc không vượt tối đa và bảo 
   assert.equal(equipped.runs[key].loadout.sword, undefined);
   assert.equal(shop(equipped, "buy", "cat-1"), equipped);
   assert.equal(shop(equipped, "buy", "cat-1", 1).inventory["cat-1"], 1);
-  const healed = act(equipped, "heal", 0);
+  const healed = shop(equipped, "drink", "potion-3");
   assert.equal(healed.health, 5);
   assert.equal(healed.inventory["potion-3"], 0);
   assert.equal(healed.nextHeartAt, null);
+  assert.equal(healed.runs[key].usedPotion, undefined);
+  assert.equal(shop(healed, "drink", "potion-3"), healed);
+});
+
+test("khiên ở chặng cuối chỉ giữ sinh mệnh, chặng chỉ trả thưởng khi đúng", () => {
+  const run = prepare({
+    ...initialAdventure,
+    inventory: { "shield-1": 2, "sword-1": 5 },
+    loadout: { shield: "shield-1", sword: "sword-1" },
+  });
+  let state = act(answer(run, 0, 0), "advance", 0);
+  state = act(act(answer(state, 1, 0), "open", 1), "advance", 1);
+  const blocked = answer(answer(state, 2, 1), 2, 1);
+  assert.equal(blocked.health, 5);
+  assert.equal(blocked.inventory["shield-1"], 0);
+  assert.equal(blocked.runs[key].feedback, "shield");
+  assert.equal(resolvedStage(expedition, blocked.runs[key]), undefined);
+  const miss = answer(blocked, 2, 2);
+  assert.equal(miss.health, 4);
+  assert.equal(miss.coins, state.coins);
+  assert.deepEqual(miss.inventory, blocked.inventory);
+  assert.equal(miss.runs[key].feedback, "damage");
+  assert.equal(resolvedStage(expedition, miss.runs[key]), undefined);
+  assert.equal(act(miss, "advance", 2), miss);
+  assert.equal(act(miss, "open", 2), miss);
+  const correct = answer(miss, 2, 0);
+  assert.equal(correct.coins, state.coins + 18);
+  assert.equal(correct.inventory["sword-1"], state.inventory["sword-1"] - 1);
+  assert.equal(resolvedStage(expedition, correct.runs[key]).correct, true);
+});
+
+test("thuốc tự cứu một lần mỗi lượt, hết sinh mệnh lần nữa đánh dấu thất bại", () => {
+  const low = {
+    ...initialAdventure,
+    health: 1,
+    nextHeartAt: now + HEART_INTERVAL,
+    inventory: { "potion-1": 2 },
+    loadout: { potion: "potion-1" },
+  };
+  const state = prepare(low);
+  const revived = answer(state, 0, 1);
+  assert.equal(revived.health, 1);
+  assert.equal(revived.inventory["potion-1"], 1);
+  assert.equal(revived.runs[key].usedPotion, true);
+  assert.equal(resolvedStage(expedition, revived.runs[key]), undefined);
+  const failed = answer(revived, 0, 1);
+  assert.equal(failed.health, 0);
+  assert.equal(failed.inventory["potion-1"], 1);
+  assert.equal(failed.runs[key].failed, true);
+  assert.equal(failed.runs[key].finished, false);
+  assert.equal(failed.attempts.length, 0);
+  assert.equal(failed.coins, revived.coins);
+  assert.equal(prepare(failed), failed);
+  const healed = applyAdventureAction(
+    failed,
+    { type: "drink", itemId: "potion-1" },
+    now,
+  );
+  assert.equal(act(healed, "advance", 1), healed);
+  const retry = prepare(healed);
+  assert.equal(retry.runs[key].failed, undefined);
+  assert.equal(retry.runs[key].index, 0);
+  assert.equal(retry.runs[key].usedPotion, undefined);
+});
+
+test("chặng cuối lưu trước bản cập nhật phải trả lời đúng mà không trả lại vàng hoặc rương", () => {
+  let state = prepare();
+  state = act(answer(state, 0, 0), "advance", 0);
+  state = act(act(answer(state, 1, 0), "open", 1), "advance", 1);
+  state = act(answer(state, 2, 0), "open", 2);
+  state.runs[key].outcomes[2] = {
+    ...state.runs[key].outcomes[2],
+    answer: 1,
+    correct: false,
+  };
+  assert.equal(act(state, "advance", 2), state);
+  const corrected = answer(state, 2, 0);
+  assert.equal(corrected.coins, state.coins);
+  assert.equal(act(corrected, "open", 2), corrected);
+  const completed = act(corrected, "advance", 2);
+  assert.equal(completed.attempts[0].score, 3);
 });
 
 test("ải hằng ngày không thể bắt đầu lại sau khi đã hoàn thành", () => {

@@ -68,15 +68,19 @@ export default function Home() {
           <p>
             {dailyRun?.finished
               ? "Bạn đã nhận thưởng hôm nay. Ải mới mở vào ngày mai."
-              : `${daily.stages.length} chặng luyện nghe · Rương giữa ải và cuối ải`}
+              : dailyRun?.failed
+                ? "Lượt trước thất bại. Bạn có thể thử lại hôm nay."
+                : `${daily.stages.length} chặng luyện nghe · Rương giữa ải và cuối ải`}
           </p>
         </div>
         <Link className="btn btn-primary" to="/adventure/daily">
           {dailyRun?.finished
             ? "Xem kết quả"
-            : dailyRun
-              ? "Tiếp tục"
-              : "Vào ải"}{" "}
+            : dailyRun?.failed
+              ? "Thử lại"
+              : dailyRun
+                ? "Tiếp tục"
+                : "Vào ải"}{" "}
           <ArrowRight size={17} />
         </Link>
       </section>
@@ -127,9 +131,11 @@ export default function Home() {
                           <small>
                             {done
                               ? "Đã hoàn thành"
-                              : run
-                                ? `Chặng ${run.index + 1}/${campaign.stages.length}`
-                                : `${campaign.stages.length} chặng`}
+                              : run?.failed
+                                ? "Lượt trước thất bại"
+                                : run
+                                  ? `Chặng ${run.index + 1}/${campaign.stages.length}`
+                                  : `${campaign.stages.length} chặng`}
                           </small>
                         </span>
                         <ArrowRight size={16} />

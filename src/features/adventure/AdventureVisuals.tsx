@@ -156,19 +156,23 @@ export function StageMap({
           {Array.from({ length: count }, (_, i) => {
             const chest = i === count - 1 || i === Math.ceil(count / 2) - 1;
             const visited = run?.outcomes[i];
-            const Icon = visited?.correct
-              ? Check
-              : visited
-                ? Flag
-                : chest
-                  ? Gift
-                  : i === 0
-                    ? Tent
-                    : null;
+            const Icon = visited?.skipped
+              ? Shield
+              : visited?.correct
+                ? Check
+                : visited
+                  ? Flag
+                  : chest
+                    ? Gift
+                    : i === 0
+                      ? Tent
+                      : null;
             const label = visited
-              ? visited.correct
-                ? "Đã vượt qua"
-                : "Chưa đúng"
+              ? visited.skipped
+                ? "Đã bỏ qua nhờ khiên"
+                : visited.correct
+                  ? "Đã vượt qua"
+                  : "Chưa đúng"
               : chest
                 ? "Có rương"
                 : "";

@@ -44,18 +44,37 @@ type ExpeditionAction = { expedition: Expedition; key: string };
 type RunAction = ExpeditionAction & { index: number; version: string };
 export type AdventureAction =
   | { type: "buy" | "repair" | "equip"; itemId: string; unlocked: number }
+  | { type: "drink"; itemId: string }
   | ({ type: "start"; version: string } & ExpeditionAction)
   | ({
       type: "answer";
-      answer: number;
       random: number;
       unlocked: number;
     } & RunAction)
   | ({ type: "select"; answer: number } & RunAction)
-  | ({ type: "advance" | "heal" | "open" } & RunAction);
+  | ({ type: "advance" | "open" } & RunAction);
 
 function updateItem(state: AdventureState, item: AdventureItem, value: number) {
   return { ...state, inventory: { ...state.inventory, [item.id]: value } };
+}
+
+function drinkPotion(state: AdventureState, item: AdventureItem) {
+  if (
+    item.slot !== "potion" ||
+    state.health === MAX_HEALTH ||
+    !state.inventory[item.id]
+  )
+    return state;
+  const health = Math.min(MAX_HEALTH, state.health + item.effect);
+  return updateItem(
+    {
+      ...state,
+      health,
+      nextHeartAt: health === MAX_HEALTH ? null : state.nextHeartAt,
+    },
+    item,
+    state.inventory[item.id] - 1,
+  );
 }
 
 function manageGear(
@@ -64,6 +83,7 @@ function manageGear(
 ): AdventureState {
   const item = findItem(action.itemId);
   if (!item) return state;
+  if (action.type === "drink") return drinkPotion(state, item);
   const value = state.inventory[item.id];
   if (action.type === "equip") {
     if (value === undefined || (item.slot === "potion" && value <= 0))
@@ -107,6 +127,14 @@ function manageGear(
   );
 }
 
+export function resolvedStage(expedition: Expedition, run: ExpeditionRun) {
+  const outcome = run.outcomes[run.index];
+  // A saved final-stage miss from the earlier rules already paid its reward.
+  return run.index === expedition.stages.length - 1 && !outcome?.correct
+    ? undefined
+    : outcome;
+}
+
 function updateRun(
   state: AdventureState,
   key: string,
@@ -147,19 +175,21 @@ export function applyAdventureAction(
   const { key, expedition } = action;
   const run = state.runs[key];
   if (action.type === "start") {
-    if (run && (!run.finished || expedition.kind === "daily")) return state;
+    if (
+      state.health === 0 ||
+      (run && !run.failed && (!run.finished || expedition.kind === "daily"))
+    )
+      return state;
     const loadout = Object.fromEntries(
       slots.flatMap((slot) => {
         const id = state.loadout[slot];
         return id && state.inventory[id] > 0 ? [[slot, id]] : [];
       }),
     );
-    if (state.health === 0 && !loadout.potion) return state;
     return updateRun(state, key, {
       version: action.version,
       index: 0,
       startedAt: now,
-      eliminated: [],
       loadout,
       outcomes: [],
       finished: false,
@@ -169,28 +199,13 @@ export function applyAdventureAction(
   if (
     !run ||
     run.finished ||
+    run.failed ||
     run.index !== action.index ||
     run.version !== action.version
   )
     return state;
 
-  if (action.type === "heal") {
-    const potion = findItem(run.loadout.potion);
-    if (!potion || state.health === MAX_HEALTH || !state.inventory[potion.id])
-      return state;
-    const health = Math.min(MAX_HEALTH, state.health + potion.effect);
-    return updateItem(
-      {
-        ...state,
-        health,
-        nextHeartAt: health === MAX_HEALTH ? null : state.nextHeartAt,
-      },
-      potion,
-      state.inventory[potion.id] - 1,
-    );
-  }
-
-  const outcome = run.outcomes[run.index];
+  const outcome = resolvedStage(expedition, run);
   if (action.type === "open") {
     const chest = outcome?.chest;
     if (!chest || chest.opened) return state;
@@ -215,7 +230,7 @@ export function applyAdventureAction(
       return updateRun(state, key, {
         ...run,
         index: run.index + 1,
-        eliminated: [],
+        feedback: undefined,
         selected: undefined,
       });
     }
@@ -272,39 +287,62 @@ export function applyAdventureAction(
   )
     return state;
   const { question } = expedition.stages[run.index];
-  if (
-    !Number.isInteger(action.answer) ||
-    action.answer < 0 ||
-    action.answer >= question.options.length ||
-    run.eliminated.includes(action.answer)
-  )
-    return state;
-  if (action.type === "select")
+  if (action.type === "select") {
+    if (
+      !Number.isInteger(action.answer) ||
+      action.answer < 0 ||
+      action.answer >= question.options.length
+    )
+      return state;
     return updateRun(state, key, { ...run, selected: action.answer });
-  const correct = action.answer === question.answer;
-  const shield = findItem(run.loadout.shield);
-  if (
-    !correct &&
-    shield &&
-    state.inventory[shield.id] > 0 &&
-    question.options.length - run.eliminated.length > 2
-  ) {
-    return updateRun(
-      updateItem(state, shield, state.inventory[shield.id] - 1),
-      key,
-      {
-        ...run,
-        eliminated: [...run.eliminated, action.answer],
-        selected: undefined,
-      },
-    );
   }
+  const answer = run.selected;
+  if (answer === undefined) return state;
+  const correct = answer === question.answer;
+  const finalStage = run.index === expedition.stages.length - 1;
+  const shield = findItem(run.loadout.shield);
+  let nextRun = run;
+  let skipped = false;
   if (!correct) {
-    state = {
-      ...state,
-      health: state.health - 1,
-      nextHeartAt: state.nextHeartAt ?? now + HEART_INTERVAL,
-    };
+    if (shield && state.inventory[shield.id] > 0) {
+      state = updateItem(state, shield, state.inventory[shield.id] - 1);
+      skipped = !finalStage;
+      nextRun = { ...run, feedback: "shield" };
+    } else {
+      state = {
+        ...state,
+        health: state.health - 1,
+        nextHeartAt: state.nextHeartAt ?? now + HEART_INTERVAL,
+      };
+      const potion =
+        state.health === 0 && !run.usedPotion
+          ? findItem(run.loadout.potion)
+          : undefined;
+      const restored = potion ? drinkPotion(state, potion) : state;
+      nextRun = {
+        ...run,
+        feedback: "damage",
+        usedPotion: run.usedPotion || restored !== state,
+        failed: restored.health === 0,
+      };
+      state = restored;
+    }
+    if (!skipped) {
+      return updateRun(state, key, {
+        ...nextRun,
+        selected: undefined,
+      });
+    }
+  }
+  const savedReward = run.outcomes[run.index];
+  if (savedReward) {
+    return updateRun(state, key, {
+      ...nextRun,
+      outcomes: [
+        ...run.outcomes.slice(0, run.index),
+        { ...savedReward, answer, correct },
+      ],
+    });
   }
   const sword = findItem(run.loadout.sword);
   const bonus =
@@ -321,10 +359,10 @@ export function applyAdventureAction(
     action.unlocked,
   );
   return updateRun({ ...state, coins: state.coins + coins }, key, {
-    ...run,
+    ...nextRun,
     outcomes: [
       ...run.outcomes,
-      { answer: action.answer, correct, coins, bonus, chest },
+      { answer, correct, skipped, coins, bonus, chest },
     ],
   });
 }

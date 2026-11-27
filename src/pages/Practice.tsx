@@ -11,6 +11,7 @@ import {
   Shield,
   Store,
   Trophy,
+  XCircle,
 } from "lucide-react";
 import { useApp } from "../app/providers/AppProvider";
 import AudioPlayer from "../components/audio/AudioPlayer";
@@ -31,8 +32,8 @@ import {
   useAdventureClock,
 } from "../features/adventure/AdventureVisuals";
 import {
-  MAX_HEALTH,
   STAGE_COINS,
+  resolvedStage,
   settleHealth,
 } from "../features/adventure/engine";
 import TranscriptPanel from "../features/listening/TranscriptPanel";
@@ -107,9 +108,7 @@ function ExpeditionPage({
   const key = runKey(expedition);
   const run = adventure.runs[key];
   const { health } = settleHealth(adventure, now);
-  const potion = adventure.loadout.potion;
-  const canStart =
-    health > 0 || Boolean(potion && adventure.inventory[potion] > 0);
+  const canStart = health > 0;
   const start = () =>
     act({ type: "start", key, expedition, version: crypto.randomUUID() });
   const back =
@@ -154,7 +153,7 @@ function ExpeditionPage({
           <Equipment loadout={adventure.loadout} />
           {!canStart && (
             <p role="status">
-              Bạn đã hết sinh mệnh. Hãy đợi hồi hoặc trang bị thuốc hồi phục.
+              Bạn đã hết sinh mệnh. Hãy đợi hồi hoặc dùng thuốc ở cửa hàng.
             </p>
           )}
           <div className="adventure-actions">
@@ -163,6 +162,21 @@ function ExpeditionPage({
             </Button>
             <Link className="btn btn-secondary" to="/shop">
               <Store size={17} /> Cửa hàng & trang bị
+            </Link>
+          </div>
+        </section>
+      ) : run.failed ? (
+        <section className="card expedition-panel">
+          <h2>
+            <XCircle size={25} /> Ải thất bại
+          </h2>
+          <p>Bạn đã hết sinh mệnh. Hồi sinh mệnh để bắt đầu lượt mới.</p>
+          <div className="adventure-actions">
+            <Button disabled={!canStart} onClick={start}>
+              Thử lại ải <ArrowRight size={17} />
+            </Button>
+            <Link className="btn btn-secondary" to="/shop">
+              <Store size={17} /> Đến cửa hàng
             </Link>
           </div>
         </section>
@@ -223,17 +237,19 @@ function ExpeditionStage({
   run: ExpeditionRun;
   health: number;
 }) {
-  const { adventure, act, masteredTopics } = useApp();
+  const { act, masteredTopics } = useApp();
   const [playback, setPlayback] = useState({ lessonId: "", time: 0 });
   const audioRef = useRef<HTMLAudioElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const { lesson, question } = expedition.stages[run.index];
   const time = playback.lessonId === lesson.id ? playback.time : 0;
-  const outcome = run.outcomes[run.index];
+  const finalStage = run.index === expedition.stages.length - 1;
+  const outcome = resolvedStage(expedition, run);
   const chest = outcome?.chest;
   const loot = findItem(chest?.itemId);
   const selected = run.selected;
   const potion = findItem(run.loadout.potion);
+  const feedback = run.feedback ?? (run.finalMisses ? "damage" : undefined);
   const runAction = {
     expedition,
     key: runKey(expedition),
@@ -255,21 +271,12 @@ function ExpeditionStage({
         <div>
           <p>
             Chặng {run.index + 1}/{expedition.stages.length}
+            {finalStage && " · Chặng cuối"}
           </p>
           <h2 ref={headingRef} tabIndex={-1}>
             {lesson.title}
           </h2>
         </div>
-        {potion && (
-          <Button
-            variant="secondary"
-            disabled={health === MAX_HEALTH || !adventure.inventory[potion.id]}
-            onClick={() => act({ ...runAction, type: "heal" })}
-          >
-            <Heart size={16} /> Hồi {potion.effect} · còn{" "}
-            {adventure.inventory[potion.id] ?? 0}
-          </Button>
-        )}
       </div>
       <AudioPlayer
         src={lesson.audioUrl}
@@ -280,34 +287,68 @@ function ExpeditionStage({
       />
       {health === 0 && !outcome && (
         <p className="stage-alert" role="status">
-          <Heart size={18} /> Hết sinh mệnh. Dùng thuốc đã trang bị hoặc đợi hồi
-          để tiếp tục.
+          <Heart size={18} />
+          <span>
+            Hết sinh mệnh. Đợi hồi hoặc{" "}
+            <Link className="text-link" to="/shop">
+              đến cửa hàng dùng thuốc
+            </Link>
+            .
+          </span>
         </p>
       )}
-      {!outcome && run.eliminated.length > 0 && (
+      {run.usedPotion && potion && (
         <p className="stage-alert" role="status">
-          <Shield size={18} /> Khiên đã đỡ {run.eliminated.length} lần và loại{" "}
-          {run.eliminated.length} lựa chọn sai. Hãy chọn lại.
+          <Heart size={18} /> Đã tự dùng {potion.name} khi sinh mệnh về 0. Hết
+          sinh mệnh lần nữa sẽ thua ải.
+        </p>
+      )}
+      {!outcome && (feedback || finalStage) && (
+        <p className="stage-alert" role="status">
+          {feedback === "shield" ? (
+            <>
+              <Shield size={18} /> Khiên đã đỡ đòn. Hãy chọn lại để vượt qua
+              chặng cuối.
+            </>
+          ) : feedback === "damage" ? (
+            <>
+              <XCircle size={18} /> Chưa đúng. Bạn mất 1 sinh mệnh. Hãy chọn
+              lại.
+            </>
+          ) : (
+            <>
+              <Flag size={18} /> Trả lời đúng để vượt qua chặng cuối.
+            </>
+          )}
+        </p>
+      )}
+      {outcome?.skipped && (
+        <p className="stage-alert" role="status">
+          <Shield size={18} /> Khiên đã đỡ đòn và cho bạn bỏ qua chặng này.
         </p>
       )}
       <QuestionCard
         question={question}
         index={run.index}
         value={outcome?.answer ?? selected}
-        checked={Boolean(outcome)}
-        inactive={health === 0}
-        eliminated={run.eliminated}
+        checked={!finalStage && Boolean(outcome)}
+        inactive={health === 0 || Boolean(outcome)}
         onChange={(value) =>
           act({ ...runAction, type: "select", answer: value })
         }
       />
       {outcome ? (
         <div className="card stage-reward">
+          {finalStage && (
+            <p role="status">
+              <CheckCircle2 size={18} /> Đã vượt qua chặng cuối.
+            </p>
+          )}
           <p>
             <Coins size={19} /> <strong>+{outcome.coins} vàng</strong>
             {outcome.bonus > 0 && <span>Gồm +{outcome.bonus} từ kiếm</span>}
           </p>
-          {!outcome.correct && (
+          {!outcome.correct && !outcome.skipped && (
             <p>
               <Heart size={17} /> −1 sinh mệnh
             </p>
@@ -342,16 +383,14 @@ function ExpeditionStage({
         <div className="stage-submit">
           <Button
             disabled={selected === undefined || health === 0}
-            onClick={() => {
-              if (selected !== undefined)
-                act({
-                  ...runAction,
-                  type: "answer",
-                  answer: selected,
-                  unlocked: masteredTopics.length,
-                  random: Math.random(),
-                });
-            }}
+            onClick={() =>
+              act({
+                ...runAction,
+                type: "answer",
+                unlocked: masteredTopics.length,
+                random: Math.random(),
+              })
+            }
           >
             Kiểm tra đáp án <ArrowRight size={17} />
           </Button>
