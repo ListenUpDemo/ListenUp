@@ -7,6 +7,7 @@ import AuthLayout from "../../layouts/AuthLayout";
 import Home from "../../pages/Home";
 import Lessons from "../../pages/Lessons";
 import Topics from "../../pages/Topics";
+import Shop from "../../pages/Shop";
 import LessonDetail from "../../pages/LessonDetail";
 import Practice from "../../pages/Practice";
 import Result from "../../pages/Result";
@@ -18,9 +19,16 @@ import { Toast } from "../../components/layout/Navigation";
 export default function AppRouter() {
   const location = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const section =
+      location.hash === "#campaigns"
+        ? document.getElementById("campaigns")
+        : null;
+    if (section) section.scrollIntoView();
+    else window.scrollTo(0, 0);
     const names: Record<string, string> = {
-      "/": "Nghe tiếng Anh. Hiểu thế giới.",
+      "/": "Bản đồ phiêu lưu",
+      "/shop": "Cửa hàng phiêu lưu",
+      "/adventure/daily": "Ải hằng ngày",
       "/lessons": "Thư viện bài nghe",
       "/topics": "Khám phá chủ đề",
       "/dashboard": "Góc học tập",
@@ -31,8 +39,13 @@ export default function AppRouter() {
       "/profile": "Hồ sơ cá nhân",
       "/settings": "Cài đặt",
     };
-    document.title = `${names[location.pathname] || (location.pathname.includes("practice") ? "Luyện nghe" : "Bài học")} | ListenUp`;
-  }, [location.pathname]);
+    const fallback = location.pathname.startsWith("/adventure/")
+      ? "Ải chiến dịch"
+      : location.pathname.startsWith("/practice/")
+        ? "Luyện nghe"
+        : "Bài học";
+    document.title = `${names[location.pathname] ?? fallback} | ListenUp`;
+  }, [location.pathname, location.hash]);
   return (
     <>
       <a className="skip-link" href="#main">
@@ -45,11 +58,17 @@ export default function AppRouter() {
           <Route path="lessons/:slug" element={<LessonDetail />} />
           <Route path="topics" element={<Topics />} />
           <Route path="topics/:slug" element={<Lessons />} />
+          <Route path="shop" element={<Shop />} />
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route element={<LearningLayout />}>
           <Route path="practice/:lessonId" element={<Practice />} />
           <Route path="practice/:lessonId/result" element={<Result />} />
+          <Route
+            path="adventure/campaign/:campaignId"
+            element={<Practice kind="campaign" />}
+          />
+          <Route path="adventure/daily" element={<Practice kind="daily" />} />
         </Route>
         <Route element={<DashboardLayout />}>
           <Route path="dashboard" element={<Dashboard />} />

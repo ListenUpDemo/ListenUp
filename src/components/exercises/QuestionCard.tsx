@@ -5,12 +5,16 @@ export default function QuestionCard({
   index,
   value,
   checked,
+  eliminated = [],
+  inactive = false,
   onChange,
 }: {
   question: Question;
   index: number;
   value: number | undefined;
   checked: boolean;
+  eliminated?: number[];
+  inactive?: boolean;
   onChange: (value: number) => void;
 }) {
   return (
@@ -19,30 +23,33 @@ export default function QuestionCard({
       <fieldset>
         <legend>{question.prompt}</legend>
         <div className="answer-options">
-          {question.options.map((option, i) => (
-            <label
-              key={option}
-              className={`answer-option ${value === i ? "selected" : ""} ${checked && i === question.answer ? "correct" : ""} ${checked && value === i && i !== question.answer ? "incorrect" : ""}`}
-            >
-              <input
-                type="radio"
-                name={question.id}
-                value={i}
-                checked={value === i}
-                disabled={checked}
-                onChange={() => onChange(i)}
-              />
-              <span className="option-letter">
-                {String.fromCharCode(65 + i)}
-              </span>
-              <span>{option}</span>
-              {checked && i === question.answer ? (
-                <CheckCircle2 size={20} />
-              ) : checked && value === i ? (
-                <XCircle size={20} />
-              ) : null}
-            </label>
-          ))}
+          {question.options.map(
+            (option, i) =>
+              !eliminated.includes(i) && (
+                <label
+                  key={option}
+                  className={`answer-option ${value === i ? "selected" : ""} ${checked && i === question.answer ? "correct" : ""} ${checked && value === i && i !== question.answer ? "incorrect" : ""}`}
+                >
+                  <input
+                    type="radio"
+                    name={question.id}
+                    value={i}
+                    checked={value === i}
+                    disabled={checked || inactive}
+                    onChange={() => onChange(i)}
+                  />
+                  <span className="option-letter">
+                    {String.fromCharCode(65 + i)}
+                  </span>
+                  <span>{option}</span>
+                  {checked && i === question.answer ? (
+                    <CheckCircle2 size={20} />
+                  ) : checked && value === i ? (
+                    <XCircle size={20} />
+                  ) : null}
+                </label>
+              ),
+          )}
         </div>
       </fieldset>
       {checked && (

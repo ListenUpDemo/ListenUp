@@ -2979,7 +2979,7 @@ body {
 .btn-primary,
 .main-play,
 .preview-play {
-  background: #2563eb;
+  background: var(--primary);
 }
 .btn-primary:hover,
 .main-play:hover {

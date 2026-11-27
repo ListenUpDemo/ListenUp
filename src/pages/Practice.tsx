@@ -1,226 +1,372 @@
-import { useState, useRef } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Check, Send, RotateCcw } from "lucide-react";
-import { lessons } from "../data/mock/lessons";
-import { LevelBadge, Button, EmptyState } from "../components/ui";
-import Modal from "../components/ui/Modal";
+import { useEffect, useRef, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  Coins,
+  Flag,
+  Gift,
+  Heart,
+  Shield,
+  Store,
+  Trophy,
+} from "lucide-react";
+import { useApp } from "../app/providers/AppProvider";
 import AudioPlayer from "../components/audio/AudioPlayer";
 import QuestionCard from "../components/exercises/QuestionCard";
+import { Button, EmptyState } from "../components/ui";
+import { findItem, slots, slotLabels } from "../data/mock/adventureItems";
+import {
+  campaigns,
+  dailyExpedition,
+  lessonExpeditions,
+  runKey,
+} from "../data/mock/expeditions";
+import type { Expedition, ExpeditionRun, Loadout } from "../types/adventure";
+import {
+  AdventureHud,
+  slotIcons,
+  StageMap,
+  useAdventureClock,
+} from "../features/adventure/AdventureVisuals";
+import {
+  MAX_HEALTH,
+  STAGE_COINS,
+  settleHealth,
+} from "../features/adventure/engine";
 import TranscriptPanel from "../features/listening/TranscriptPanel";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import { useApp } from "../app/providers/AppProvider";
-import { gradeAnswers } from "../utils/scoring.mjs";
-export default function Practice() {
-  const { lessonId } = useParams();
-  const lesson = lessons.find((l) => l.id === lessonId);
-  return lesson ? (
-    <PracticeSession key={lesson.id} lesson={lesson} />
+
+export default function Practice({
+  kind = "lesson",
+}: {
+  kind?: Expedition["kind"];
+}) {
+  const { lessonId, campaignId } = useParams();
+  const now = useAdventureClock();
+  const expedition =
+    kind === "daily"
+      ? dailyExpedition(now)
+      : kind === "campaign"
+        ? campaigns.find(({ id }) => id === campaignId)
+        : lessonExpeditions.find(({ id }) => id === lessonId);
+  return expedition ? (
+    <ExpeditionPage
+      key={runKey(expedition)}
+      expedition={expedition}
+      now={now}
+    />
   ) : (
     <EmptyState
-      title="Không tìm thấy bài luyện nghe"
-      description="Hãy chọn một bài trong thư viện."
+      title="Không tìm thấy ải"
+      description="Hãy chọn một ải trên bản đồ hoặc một bài trong thư viện."
       action={
-        <Link className="btn btn-primary" to="/lessons">
-          Xem bài học
+        <Link className="btn btn-primary" to="/">
+          Về bản đồ
         </Link>
       }
     />
   );
 }
-function PracticeSession({ lesson }: { lesson: (typeof lessons)[number] }) {
-  const [draft, setDraft] = useLocalStorage<{
-    answers: Record<string, number>;
-    checked: string[];
-    index: number;
-  }>(`listenup.draft.${lesson.id}`, { answers: {}, checked: [], index: 0 });
-  const [currentTime, setCurrentTime] = useState(0);
-  const [confirm, setConfirm] = useState(false);
-  const [restart, setRestart] = useState(false);
-  const [started] = useState(Date.now());
+
+function Equipment({ loadout }: { loadout: Loadout }) {
+  const { adventure } = useApp();
+  return (
+    <ul className="loadout-list" aria-label="Trang bị đi ải">
+      {slots.map((slot) => {
+        const Icon = slotIcons[slot];
+        const item = findItem(loadout[slot]);
+        const value = item ? (adventure.inventory[item.id] ?? 0) : 0;
+        const stock = item?.durability
+          ? ` · ${value}/${item.durability}`
+          : item?.slot === "potion"
+            ? ` ×${value}`
+            : "";
+        return (
+          <li key={slot}>
+            <Icon size={18} />
+            <span>
+              <small>{slotLabels[slot]}</small>
+              <strong>{item ? item.name + stock : "Chưa trang bị"}</strong>
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function ExpeditionPage({
+  expedition,
+  now,
+}: {
+  expedition: Expedition;
+  now: number;
+}) {
+  const { adventure, act } = useApp();
+  const key = runKey(expedition);
+  const run = adventure.runs[key];
+  const { health } = settleHealth(adventure, now);
+  const potion = adventure.loadout.potion;
+  const canStart =
+    health > 0 || Boolean(potion && adventure.inventory[potion] > 0);
+  const start = () =>
+    act({ type: "start", key, expedition, version: crypto.randomUUID() });
+  const back =
+    expedition.kind === "lesson"
+      ? `/lessons/${expedition.stages[0].lesson.slug}`
+      : "/#campaigns";
+  const label =
+    expedition.kind === "daily"
+      ? "Luyện tập hằng ngày"
+      : expedition.kind === "campaign"
+        ? "Ải chiến dịch"
+        : "Ải luyện nghe";
+
+  return (
+    <div className="expedition-page">
+      <div className="expedition-topline">
+        <Link className="back-link" to={back}>
+          <ArrowLeft size={17} />{" "}
+          {expedition.kind === "lesson" ? "Về bài học" : "Về bản đồ ải"}
+        </Link>
+        <AdventureHud />
+      </div>
+      <header className="expedition-heading">
+        <p>
+          <Flag size={16} /> {label}
+        </p>
+        <h1>{expedition.title}</h1>
+      </header>
+      <StageMap
+        key={run ? `map-${run.version}` : "map-preparation"}
+        run={run}
+        count={expedition.stages.length}
+        pet={(run?.loadout ?? adventure.loadout).pet}
+      />
+      {!run ? (
+        <section className="card expedition-panel">
+          <h2>Chuẩn bị vào ải</h2>
+          <p>
+            {expedition.stages.length} chặng · {STAGE_COINS} vàng mỗi chặng ·
+            Rương giữa ải và cuối ải
+          </p>
+          <Equipment loadout={adventure.loadout} />
+          {!canStart && (
+            <p role="status">
+              Bạn đã hết sinh mệnh. Hãy đợi hồi hoặc trang bị thuốc hồi phục.
+            </p>
+          )}
+          <div className="adventure-actions">
+            <Button onClick={start} disabled={!canStart}>
+              Bắt đầu hành trình <ArrowRight size={17} />
+            </Button>
+            <Link className="btn btn-secondary" to="/shop">
+              <Store size={17} /> Cửa hàng & trang bị
+            </Link>
+          </div>
+        </section>
+      ) : run.finished ? (
+        <section className="card expedition-panel">
+          <h2>
+            <Trophy size={25} /> Hoàn thành ải
+          </h2>
+          <p>
+            {run.outcomes.filter((stage) => stage.correct).length}/
+            {run.outcomes.length} chặng đúng ·{" "}
+            {run.outcomes.reduce((total, stage) => total + stage.coins, 0)} vàng
+            đã nhận
+          </p>
+          <ul className="expedition-results">
+            {run.attempts.map((attempt) => (
+              <li key={attempt.id}>
+                <Link
+                  className="text-link"
+                  to={`/practice/${attempt.lessonId}/result?attempt=${attempt.id}`}
+                >
+                  {
+                    expedition.stages.find(
+                      (stage) => stage.lesson.id === attempt.lessonId,
+                    )?.lesson.title
+                  }{" "}
+                  · {attempt.score}/{attempt.total} đúng{" "}
+                  <ArrowRight size={16} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+          {expedition.kind !== "daily" && (
+            <Button disabled={!canStart} onClick={start}>
+              Đi ải lần nữa
+            </Button>
+          )}
+          {expedition.kind === "daily" && <p>Ải mới mở vào ngày mai.</p>}
+        </section>
+      ) : (
+        <ExpeditionStage
+          key={run.version}
+          expedition={expedition}
+          run={run}
+          health={health}
+        />
+      )}
+    </div>
+  );
+}
+
+function ExpeditionStage({
+  expedition,
+  run,
+  health,
+}: {
+  expedition: Expedition;
+  run: ExpeditionRun;
+  health: number;
+}) {
+  const { adventure, act, masteredTopics } = useApp();
+  const [playback, setPlayback] = useState({ lessonId: "", time: 0 });
   const audioRef = useRef<HTMLAudioElement>(null);
-  const { addAttempt } = useApp();
-  const navigate = useNavigate();
-  const index = Math.min(draft.index, lesson.questions.length - 1);
-  const question = lesson.questions[index];
-  const answered = lesson.questions.filter(
-    (q) => draft.answers[q.id] !== undefined,
-  ).length;
-  const submit = () => {
-    const id = crypto.randomUUID();
-    addAttempt({
-      id,
-      lessonId: lesson.id,
-      answers: draft.answers,
-      score: gradeAnswers(lesson.questions, draft.answers),
-      total: lesson.questions.length,
-      completedAt: new Date().toISOString(),
-      seconds: Math.max(1, Math.round((Date.now() - started) / 1000)),
-    });
-    setDraft({ answers: {}, checked: [], index: 0 });
-    audioRef.current?.pause();
-    navigate(`/practice/${lesson.id}/result?attempt=${id}`);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const { lesson, question } = expedition.stages[run.index];
+  const time = playback.lessonId === lesson.id ? playback.time : 0;
+  const outcome = run.outcomes[run.index];
+  const chest = outcome?.chest;
+  const loot = findItem(chest?.itemId);
+  const selected = run.selected;
+  const potion = findItem(run.loadout.potion);
+  const runAction = {
+    expedition,
+    key: runKey(expedition),
+    version: run.version,
+    index: run.index,
   };
+
+  useEffect(() => {
+    if (run.index > 0) headingRef.current?.focus({ preventScroll: true });
+  }, [run.index]);
+
   return (
     <>
-      <div className="practice-topline">
-        <Link className="back-link" to={`/lessons/${lesson.slug}`}>
-          <ArrowLeft size={16} /> Về bài học
-        </Link>
-        <Button
-          variant="ghost"
-          className="btn-small"
-          onClick={() => setRestart(true)}
-        >
-          <RotateCcw size={15} /> Làm lại
-        </Button>
-      </div>
-      <div className="practice-heading">
-        <LevelBadge level={lesson.level} />
-        <h1>{lesson.title}</h1>
-        <p>Nghe thật thoải mái. Bạn có thể nghe lại bao nhiêu lần tùy thích.</p>
-      </div>
-      <div className="exercise-progress">
-        <span>Tiến độ bài tập</span>
-        <strong>
-          {answered}/{lesson.questions.length} câu
-        </strong>
-        <progress
-          value={answered}
-          max={lesson.questions.length}
-          aria-label="Số câu đã trả lời"
-        />
+      <details className="card equipped-panel">
+        <summary>Trang bị của lượt này</summary>
+        <Equipment loadout={run.loadout} />
+      </details>
+      <div className="active-stage-heading">
+        <div>
+          <p>
+            Chặng {run.index + 1}/{expedition.stages.length}
+          </p>
+          <h2 ref={headingRef} tabIndex={-1}>
+            {lesson.title}
+          </h2>
+        </div>
+        {potion && (
+          <Button
+            variant="secondary"
+            disabled={health === MAX_HEALTH || !adventure.inventory[potion.id]}
+            onClick={() => act({ ...runAction, type: "heal" })}
+          >
+            <Heart size={16} /> Hồi {potion.effect} · còn{" "}
+            {adventure.inventory[potion.id] ?? 0}
+          </Button>
+        )}
       </div>
       <AudioPlayer
         src={lesson.audioUrl}
         audioRef={audioRef}
-        onTimeChange={setCurrentTime}
-      />
-      <div className="question-navigation">
-        <span>
-          Câu hỏi <strong>{index + 1}</strong> / {lesson.questions.length}
-        </span>
-        <div>
-          {lesson.questions.map((q, i) => (
-            <button
-              key={q.id}
-              className={`question-dot ${index === i ? "active" : ""} ${draft.answers[q.id] !== undefined ? "answered" : ""}`}
-              aria-label={`Câu hỏi ${i + 1}${draft.answers[q.id] !== undefined ? ", đã trả lời" : ""}`}
-              aria-current={index === i ? "step" : undefined}
-              onClick={() => setDraft({ ...draft, index: i })}
-            >
-              {i + 1}
-            </button>
-          ))}
-        </div>
-      </div>
-      <QuestionCard
-        question={question}
-        index={index}
-        value={draft.answers[question.id]}
-        checked={draft.checked.includes(question.id)}
-        onChange={(value) =>
-          setDraft({
-            ...draft,
-            answers: { ...draft.answers, [question.id]: value },
-          })
+        onTimeChange={(value) =>
+          setPlayback({ lessonId: lesson.id, time: value })
         }
       />
-      <div className="question-actions">
-        <Button
-          variant="secondary"
-          disabled={index === 0}
-          onClick={() => setDraft({ ...draft, index: index - 1 })}
-        >
-          <ArrowLeft size={17} /> Câu trước
-        </Button>
-        <div>
-          {!draft.checked.includes(question.id) && (
-            <Button
-              variant="secondary"
-              disabled={draft.answers[question.id] === undefined}
-              onClick={() =>
-                setDraft({ ...draft, checked: [...draft.checked, question.id] })
-              }
-            >
-              <Check size={17} /> Kiểm tra đáp án
-            </Button>
-          )}
-          {index < lesson.questions.length - 1 ? (
-            <Button onClick={() => setDraft({ ...draft, index: index + 1 })}>
-              Câu tiếp theo <ArrowRight size={17} />
-            </Button>
-          ) : (
-            <Button
-              disabled={answered !== lesson.questions.length}
-              onClick={() => setConfirm(true)}
-            >
-              Nộp bài <Send size={16} />
-            </Button>
-          )}
-        </div>
-      </div>
-      {index === lesson.questions.length - 1 &&
-        answered !== lesson.questions.length && (
-          <p className="muted text-right" role="status">
-            Trả lời đủ {lesson.questions.length} câu để nộp bài.
+      {health === 0 && !outcome && (
+        <p className="stage-alert" role="status">
+          <Heart size={18} /> Hết sinh mệnh. Dùng thuốc đã trang bị hoặc đợi hồi
+          để tiếp tục.
+        </p>
+      )}
+      {!outcome && run.eliminated.length > 0 && (
+        <p className="stage-alert" role="status">
+          <Shield size={18} /> Khiên đã đỡ {run.eliminated.length} lần và loại{" "}
+          {run.eliminated.length} lựa chọn sai. Hãy chọn lại.
+        </p>
+      )}
+      <QuestionCard
+        question={question}
+        index={run.index}
+        value={outcome?.answer ?? selected}
+        checked={Boolean(outcome)}
+        inactive={health === 0}
+        eliminated={run.eliminated}
+        onChange={(value) =>
+          act({ ...runAction, type: "select", answer: value })
+        }
+      />
+      {outcome ? (
+        <div className="card stage-reward">
+          <p>
+            <Coins size={19} /> <strong>+{outcome.coins} vàng</strong>
+            {outcome.bonus > 0 && <span>Gồm +{outcome.bonus} từ kiếm</span>}
           </p>
-        )}
+          {!outcome.correct && (
+            <p>
+              <Heart size={17} /> −1 sinh mệnh
+            </p>
+          )}
+          {chest &&
+            loot &&
+            (chest.opened ? (
+              <p role="status">
+                <CheckCircle2 size={18} /> {loot.name}{" "}
+                {loot.durability ? "· Độ bền tối đa" : "· Đã thêm vào túi"}
+              </p>
+            ) : (
+              <Button
+                variant="secondary"
+                onClick={() => act({ ...runAction, type: "open" })}
+              >
+                <Gift size={18} /> Mở rương{" "}
+                {chest.kind === "potion" ? "hồi phục" : "trang bị"}
+              </Button>
+            ))}
+          <Button
+            disabled={Boolean(chest && !chest.opened)}
+            onClick={() => act({ ...runAction, type: "advance" })}
+          >
+            {run.index + 1 === expedition.stages.length
+              ? "Hoàn thành ải"
+              : "Sang chặng tiếp theo"}{" "}
+            <ArrowRight size={17} />
+          </Button>
+        </div>
+      ) : (
+        <div className="stage-submit">
+          <Button
+            disabled={selected === undefined || health === 0}
+            onClick={() => {
+              if (selected !== undefined)
+                act({
+                  ...runAction,
+                  type: "answer",
+                  answer: selected,
+                  unlocked: masteredTopics.length,
+                  random: Math.random(),
+                });
+            }}
+          >
+            Kiểm tra đáp án <ArrowRight size={17} />
+          </Button>
+        </div>
+      )}
       <TranscriptPanel
         url={lesson.transcriptUrl}
-        currentTime={currentTime}
-        onSeek={(time) => {
+        currentTime={time}
+        onSeek={(value) => {
           if (audioRef.current) {
-            audioRef.current.currentTime = time;
-            setCurrentTime(time);
+            audioRef.current.currentTime = value;
+            setPlayback({ lessonId: lesson.id, time: value });
           }
         }}
       />
-      <p className="practice-note">
-        Tiến độ làm bài được lưu tự động trên trình duyệt này.
-      </p>
-      <Modal
-        open={confirm}
-        title="Sẵn sàng xem kết quả?"
-        onClose={() => setConfirm(false)}
-      >
-        <p>
-          Bạn đã trả lời {answered}/{lesson.questions.length} câu. Nộp bài để
-          xem điểm và giải thích chi tiết.
-        </p>
-        <div className="modal-actions">
-          <Button variant="secondary" onClick={() => setConfirm(false)}>
-            Nghe thêm một chút
-          </Button>
-          <Button onClick={submit}>Nộp bài & xem kết quả</Button>
-        </div>
-      </Modal>
-      <Modal
-        open={restart}
-        title="Làm lại bài nghe?"
-        onClose={() => setRestart(false)}
-      >
-        <p>
-          Các câu trả lời hiện tại sẽ được xóa. Kết quả đã nộp vẫn được giữ lại.
-        </p>
-        <div className="modal-actions">
-          <Button variant="secondary" onClick={() => setRestart(false)}>
-            Tiếp tục làm bài
-          </Button>
-          <Button
-            onClick={() => {
-              setDraft({ answers: {}, checked: [], index: 0 });
-              if (audioRef.current) {
-                audioRef.current.pause();
-                audioRef.current.currentTime = 0;
-              }
-              setCurrentTime(0);
-              setRestart(false);
-            }}
-          >
-            Bắt đầu lại
-          </Button>
-        </div>
-      </Modal>
     </>
   );
 }

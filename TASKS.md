@@ -1,8 +1,29 @@
 # Công việc và tiến độ ListenUp
 
-Cập nhật: 21/10/2026. Phạm vi bàn giao: bộ khung frontend local, không có backend hoặc triển khai công khai. Đặc tả đầy đủ nằm trong PROJECT_SPEC.md; quy tắc phát triển nằm trong AGENTS.md.
+Cập nhật 28/11/2026. Phạm vi bàn giao gồm frontend RPG phiêu lưu chạy cục bộ. Đặc tả đầy đủ nằm trong PROJECT_SPEC.md. Quy tắc phát triển nằm trong AGENTS.md.
 
-## Tổng quan
+## Giao diện và tiến trình RPG
+
+### Đã triển khai
+
+- Bản đồ chiến dịch theo cặp chủ đề/trình độ, ải một bài từ thư viện và ải hằng ngày luân phiên ba bài. Nhà thám hiểm và mèo đã trang bị di chuyển trên bản đồ.
+- Mỗi chặng có một câu hỏi nghe, phản hồi đúng/sai, phần thưởng và tiến độ lưu cục bộ. Kết quả mới xuất hiện trong lịch sử cùng các lượt đã nộp trước đây.
+- Hệ thống 5 sinh mệnh, hồi 1 mỗi 10 phút, vàng, thuốc hồi phục, khiên, kiếm, kho đồ, mua và bảo dưỡng trang bị, mở khóa và mua pet.
+- Rương thuốc giữa ải và rương trang bị cuối ải. Rương trang bị có thể cấp món đã mở khóa hoặc sửa món đã sở hữu lên độ bền tối đa.
+
+### Đã kiểm chứng
+
+- Trình duyệt Chromium tích hợp kiểm tra đường đi từ thư viện đến kết quả At the Coffee Shop, lưu bài qua tải lại, giữ lựa chọn đang làm, phát/tạm dừng audio và tua transcript đến 11,8 giây.
+- Ở ải chiến dịch, đã thử dùng thuốc, nhận 18 vàng với kiếm cộng 20%, mở rương và hoàn thành chủ đề để mua, trang bị mèo. Ải hằng ngày hiển thị cả sprite nhân vật và mèo, với một phần tử audio.
+- Kiểm tra bố cục bản đồ, ải, cửa hàng và thư viện tại 1280, 768 và 360px. Đã đo ải đang hoạt động không tràn ngang.
+- `npm test` đạt 13/13 và `npm run build` thành công. Test RPG bao phủ hồi sinh mệnh theo mốc thời gian, quy tắc hai lựa chọn của khiên, giảm độ bền kiếm, mở rương một lần, bảo dưỡng, giới hạn hồi máu và lượt ải hằng ngày.
+
+### Còn lại
+
+- Bổ sung các kiểu tương tác ngoài trắc nghiệm khi có yêu cầu nội dung.
+- Chưa kiểm tra Safari, Firefox, thiết bị thật hoặc chạy kiểm định hỗ trợ tiếp cận đầy đủ. Các ảnh tại `docs/screenshots` thuộc giao diện trước RPG.
+
+## Tổng quan bộ khung trước RPG
 
 Checklist bộ khung trong kế hoạch: **10/10 hạng mục đã triển khai**, đã kiểm tra build, luồng sử dụng chính và responsive cơ bản. Đây không phải tuyên bố đã hoàn tất kiểm định production hoặc WCAG trên mọi trình duyệt.
 
@@ -27,7 +48,7 @@ Checklist bộ khung trong kế hoạch: **10/10 hạng mục đã triển khai*
 - [x] Tích hợp AudioPlayer và transcript hoạt động.
 - [x] Kiểm tra responsive và khả năng truy cập cơ bản.
 
-## Chức năng đã triển khai
+## Chức năng của bộ khung trước RPG
 
 - [x] Tìm tên/mô tả không phân biệt dấu và hoa/thường; kết hợp lọc trình độ/chủ đề; query string giữ bộ lọc.
 - [x] 6 bài nghe, 4 chủ đề, 20 câu hỏi có giải thích, nhãn A1–B2.
@@ -46,7 +67,7 @@ Checklist bộ khung trong kế hoạch: **10/10 hạng mục đã triển khai*
 - [x] PROJECT_SPEC.md, AGENTS.md, TASKS.md và README.md.
 - [x] Prettier cho mã nguồn; npm run format để tiếp tục giữ định dạng.
 
-## Bằng chứng kiểm tra
+## Bằng chứng kiểm tra bộ khung trước RPG
 
 ### Tự động
 

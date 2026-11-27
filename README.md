@@ -1,6 +1,6 @@
 # ListenUp
 
-Bộ khung frontend luyện nghe tiếng Anh theo kế hoạch được cung cấp. React + TypeScript + Vite, React Router, Tailwind CSS 4/CSS variables, Lucide và font Inter phục vụ cục bộ.
+Game RPG phiêu lưu luyện nghe tiếng Anh, chạy cục bộ với React, TypeScript, Vite, React Router, Tailwind CSS, Lucide và Inter.
 
 ## Chạy dự án
 
@@ -23,7 +23,11 @@ Build được xuất ra dist. Khi đưa lên static hosting, cấu hình SPA fa
 
 ## Trải nghiệm mẫu
 
-Vào Bài học → At the Coffee Shop → Bắt đầu luyện nghe → Phát audio → Chọn đáp án → Kiểm tra hoặc chuyển câu → Nộp bài → Xem kết quả. Transcript mặc định đóng, có thể mở và nhấn từng dòng để tua. Tốc độ, âm lượng, chữ lớn, dấu trang, bản nháp và lịch sử được lưu trên trình duyệt.
+Từ Bản đồ ải, chọn một ải chiến dịch hoặc ải hằng ngày. Bạn cũng có thể vào ải của một bài qua Bài học → At the Coffee Shop → Bắt đầu luyện nghe. Trong mỗi chặng, nghe audio, kiểm tra đáp án rồi tiếp tục. Mở rương giữa ải và cuối ải để nhận vật phẩm. Chọn bài trên màn hình hoàn thành để xem điểm và lời giải.
+
+Mỗi chặng cho 15 vàng trước thưởng từ kiếm. Sai mất 1 trong 5 sinh mệnh nếu khiên không đỡ. Sinh mệnh tự hồi 1 sau mỗi 10 phút. Cửa hàng dùng vàng để mua thuốc, khiên, kiếm và pet, hoặc bảo dưỡng trang bị đã sở hữu. Hoàn thành tất cả các ải của một chủ đề để mở khóa thêm hàng.
+
+Transcript mặc định đóng, có thể mở và nhấn từng dòng để tua. Tiến độ chặng, vàng, sinh mệnh, kho đồ, dấu trang và lịch sử được lưu trên trình duyệt. Sprite nhân vật của Ozzbit Games dùng theo giấy phép cá nhân, phi thương mại. Sprite mèo từ Pet Cats Pack dùng giấy phép CC0.
 
 6 bài mẫu, 20 câu hỏi, 4 chủ đề, trình độ A1–B2. Audio WAV có sẵn, không gọi dịch vụ bên ngoài khi phát. Nội dung demo gốc được đọc bằng Windows English speech voice; giọng tổng hợp một người, không phải bản thu hội thoại thật. Có thể sinh lại trên Windows có English voice bằng:
 
@@ -48,4 +52,4 @@ Transcript JSON được sinh cùng audio, dựa trên độ dài PCM. Font đó
 - [AGENTS.md](AGENTS.md): quy tắc cho Codex và các agent phát triển tiếp.
 - [TASKS.md](TASKS.md): tiến độ, bằng chứng kiểm tra và các giai đoạn tiếp theo.
 
-Test tự động hiện kiểm tra grading (gồm index 0/câu chưa trả lời), tìm kiếm tiếng Việt không dấu, header WAV và mốc transcript của cả 6 bài. Kiểm tra tương tác trình duyệt trong quá trình triển khai được ghi tại TASKS.md.
+Test tự động kiểm tra luật hồi sinh mệnh, khiên, kiếm, rương và lượt ải hằng ngày, cùng grading, tìm kiếm tiếng Việt và hợp đồng WAV/transcript của sáu bài. Kết quả kiểm tra trình duyệt được ghi trong TASKS.md.

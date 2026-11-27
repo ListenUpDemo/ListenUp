@@ -1,0 +1,769 @@
+.site-header {
+  background: #fffcf4f5;
+  border-color: var(--border);
+}
+.btn-primary {
+  box-shadow: 0 4px 9px #315d4822;
+}
+.btn-secondary,
+.input {
+  border-color: var(--border);
+}
+.btn-secondary:hover,
+.btn-ghost:hover,
+.icon-btn:hover {
+  background: var(--primary-soft);
+}
+:focus-visible {
+  outline-color: #8b5624;
+}
+.brand-icon {
+  background: var(--rpg-ink);
+  color: var(--rpg-gold);
+}
+
+.adventure-home {
+  padding: 26px 0 64px;
+}
+.adventure-bar,
+.expedition-topline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 18px;
+  margin-bottom: 16px;
+}
+.adventure-bar > span,
+.health-display,
+.coin-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.adventure-bar > span {
+  color: var(--primary-text);
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+.adventure-hud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.77rem;
+  font-weight: 750;
+}
+.health-display,
+.coin-display,
+.heart-timer {
+  min-height: 34px;
+  padding: 5px 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.health-display {
+  color: #aa4038;
+  gap: 3px;
+}
+.coin-display {
+  color: #764715;
+}
+.heart-timer {
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+}
+.adventure-hero,
+.stage-map {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--rpg-ink);
+  border: 1px solid #344d3f;
+  border-radius: var(--radius);
+}
+.adventure-hero {
+  min-height: 425px;
+  display: grid;
+  align-items: center;
+  padding: clamp(32px, 6vw, 76px);
+  color: #fff4d9;
+}
+.adventure-hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 580px;
+}
+.adventure-hero h1 {
+  font:
+    700 clamp(48px, 6.7vw, 92px)/0.98 Georgia,
+    "Times New Roman",
+    serif;
+  letter-spacing: -0.055em;
+  margin: 0 0 20px;
+}
+.adventure-hero h1 em {
+  color: var(--rpg-gold);
+  font-weight: 500;
+}
+.adventure-hero p {
+  color: #e0ead9;
+  max-width: 350px;
+  line-height: 1.65;
+}
+.adventure-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+.adventure-actions .btn {
+  white-space: normal;
+}
+.btn-adventure {
+  background: var(--rpg-gold);
+  color: #352a18;
+}
+.btn-adventure:hover {
+  background: #f8d594;
+}
+.btn-adventure-outline {
+  color: #fff4d9;
+  background: #172e28cf;
+  border-color: #d3b48188;
+}
+.btn-adventure-outline:hover {
+  background: #284b39;
+}
+.rpg-landscape {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.rpg-landscape > i {
+  display: block;
+  position: absolute;
+}
+.rpg-landscape {
+  background:
+    radial-gradient(circle at 80% 25%, #f4b97c41, transparent 33%),
+    linear-gradient(115deg, #162c29, #35594e 68%, #566552);
+}
+.adventure-hero .rpg-landscape::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #132c29 0%,
+    #132c29a8 34%,
+    transparent 74%
+  );
+}
+.rpg-sun {
+  width: clamp(64px, 15vw, 170px);
+  aspect-ratio: 1;
+  top: 15%;
+  right: 14%;
+  border-radius: 50%;
+  background: #ecc182;
+  box-shadow:
+    0 0 65px #ecc18275,
+    inset 0 -14px #e7a46452;
+}
+.ridge {
+  width: 100%;
+  bottom: 0;
+}
+.ridge-far {
+  height: 74%;
+  background: #526e60;
+  clip-path: polygon(
+    0 51%,
+    12% 32%,
+    20% 52%,
+    38% 27%,
+    46% 40%,
+    59% 11%,
+    65% 19%,
+    74% 0,
+    84% 34%,
+    92% 19%,
+    100% 43%,
+    100% 100%,
+    0 100%
+  );
+}
+.ridge-near {
+  height: 62%;
+  background: #294f40;
+  clip-path: polygon(
+    0 55%,
+    14% 18%,
+    29% 57%,
+    46% 50%,
+    56% 25%,
+    68% 59%,
+    82% 34%,
+    95% 7%,
+    100% 19%,
+    100% 100%,
+    0 100%
+  );
+}
+.rpg-ground {
+  inset: auto 0 0;
+  height: 31%;
+  background:
+    repeating-linear-gradient(
+      174deg,
+      transparent 0 20px,
+      #47684b57 21px 23px,
+      transparent 24px 42px
+    ),
+    #213e32;
+  clip-path: polygon(
+    0 8%,
+    15% 17%,
+    30% 14%,
+    45% 33%,
+    70% 0,
+    83% 13%,
+    100% 4%,
+    100% 100%,
+    0 100%
+  );
+}
+.rpg-trees {
+  position: absolute;
+  bottom: 10%;
+  height: auto;
+  width: 19%;
+  color: #19392f;
+  stroke-width: 1.05;
+}
+.trees-left {
+  left: 23%;
+}
+.trees-right {
+  right: -2%;
+  width: 24%;
+}
+.rpg-mountain {
+  position: absolute;
+  right: 16%;
+  width: 31%;
+  height: auto;
+  bottom: 19%;
+  color: #6c8870;
+  opacity: 0.4;
+}
+.hero-party {
+  position: absolute;
+  right: 20%;
+  bottom: 12%;
+  z-index: 1;
+  display: flex;
+  align-items: end;
+}
+.rpg-sprite {
+  --sprite-width: 56px;
+  --sprite-height: 72px;
+  --sprite-scale: 1;
+  display: block;
+  flex: none;
+  width: calc(var(--sprite-width) * var(--sprite-scale));
+  height: calc(var(--sprite-height) * var(--sprite-scale));
+  background-size: calc(
+      var(--sprite-width) * var(--sprite-scale) * var(--sprite-frames)
+    )
+    100%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  animation: sprite-cycle 1.35s steps(var(--sprite-frames)) infinite;
+}
+.rpg-sprite-cat {
+  --sprite-width: 32px;
+  --sprite-height: 26px;
+}
+.rpg-sprite-walk {
+  animation-duration: 0.58s;
+}
+.hero-party .rpg-sprite {
+  --sprite-scale: 3.15;
+  filter: drop-shadow(4px 7px 1px #132e22);
+}
+@keyframes sprite-cycle {
+  to {
+    background-position-x: calc(
+      var(--sprite-width) * var(--sprite-scale) * var(--sprite-frames) * -1
+    );
+  }
+}
+
+.daily-banner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  margin-top: 18px;
+  padding: 17px 22px;
+}
+.daily-icon,
+.campaign-region svg,
+.shop-item-art {
+  background: #f4e7c8;
+  color: #7b501e;
+  border-radius: 10px;
+}
+.daily-icon {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+}
+.daily-banner h2,
+.campaign-heading h2,
+.campaign-region h3,
+.expedition-panel h2 {
+  margin: 0;
+}
+.daily-banner h2 {
+  font-size: 1.15rem;
+}
+.daily-banner p,
+.campaign-heading p {
+  color: var(--muted);
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+}
+.campaign-section {
+  scroll-margin-top: 100px;
+  margin-top: 39px;
+}
+.campaign-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 17px;
+}
+.campaign-heading h2 {
+  font:
+    700 clamp(30px, 4vw, 43px)/1.1 Georgia,
+    "Times New Roman",
+    serif;
+}
+.campaign-heading > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #764715;
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+.campaign-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+}
+.campaign-card {
+  padding: 15px;
+  border-top: 3px solid var(--region, #587459);
+}
+.campaign-card[data-region="travel"] {
+  --region: #4b777b;
+}
+.campaign-card[data-region="work"] {
+  --region: #846347;
+}
+.campaign-card[data-region="stories"] {
+  --region: #746583;
+}
+.campaign-region {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+}
+.campaign-region svg {
+  width: 40px;
+  height: 40px;
+  padding: 9px;
+  color: var(--region, #537257);
+  background: #efece0;
+}
+.campaign-region h3 {
+  font-size: 0.93rem;
+}
+.campaign-links {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+}
+.campaign-links a {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 9px;
+  align-items: center;
+  padding: 9px;
+  border-radius: 8px;
+  color: var(--primary-text);
+  background: var(--primary-soft);
+}
+.campaign-links a:hover {
+  background: #dbe8d8;
+}
+.campaign-links strong,
+.campaign-links small {
+  display: block;
+}
+.campaign-links strong {
+  font-size: 0.83rem;
+}
+.campaign-links small {
+  font-size: 0.71rem;
+  color: var(--muted);
+}
+
+.expedition-topline .back-link {
+  margin: 0;
+}
+.expedition-heading {
+  margin: 22px 0 17px;
+}
+.expedition-heading p {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--primary-text);
+  font-size: 0.82rem;
+  font-weight: 750;
+  margin: 0 0 6px;
+}
+.expedition-heading h1,
+.adventure-shop h1 {
+  font:
+    700 clamp(31px, 5vw, 52px)/1.07 Georgia,
+    "Times New Roman",
+    serif;
+  margin: 0;
+}
+.stage-map {
+  min-height: 163px;
+  margin-bottom: 16px;
+}
+.stage-map .rpg-sun {
+  width: 66px;
+  top: 9%;
+}
+.stage-map .rpg-trees {
+  max-width: 115px;
+}
+.stage-track {
+  position: absolute;
+  inset: auto 12px 13px;
+}
+.stage-track ol {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--stage-count), minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.stage-path {
+  position: absolute;
+  inset: 50% calc(50% / var(--stage-count)) auto;
+  border-top: 2px dashed #ebbd68b9;
+}
+.stage-track li {
+  display: flex;
+  justify-content: center;
+}
+.stage-track li > span {
+  width: min(32px, 91%);
+  min-height: 29px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  border: 1px solid #597765;
+  color: #f4e6c8;
+  background: #1d382e;
+  font-size: 0.73rem;
+  font-weight: 750;
+}
+.stage-track li[aria-current] > span {
+  color: #332517;
+  background: var(--rpg-gold);
+  border-color: #f7d08d;
+}
+.stage-track li.visited:not([aria-current]) > span {
+  background: #466c50;
+  color: #fff9e9;
+}
+.stage-party {
+  display: flex;
+  align-items: end;
+  position: absolute;
+  bottom: calc(100% + 5px);
+  z-index: 1;
+  transform: translateX(-50%);
+  transition: left 700ms ease-in-out;
+}
+.stage-party .rpg-sprite-cat {
+  position: absolute;
+  right: 70%;
+}
+.stage-party:has(.rpg-sprite-cat) {
+  bottom: calc(100% + 9px);
+}
+.stage-party .rpg-sprite-cat {
+  bottom: -4px;
+}
+.stage-party-start .rpg-sprite-cat {
+  left: 68%;
+  right: auto;
+}
+.expedition-panel {
+  padding: clamp(17px, 4vw, 29px);
+}
+.expedition-panel h2 {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 1.35rem;
+}
+.expedition-panel p {
+  color: var(--muted);
+  margin: 6px 0;
+}
+.loadout-list {
+  padding: 0;
+  margin: 14px 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+.loadout-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary-soft);
+  color: var(--primary-text);
+  border-radius: 8px;
+  padding: 8px;
+  overflow-wrap: anywhere;
+}
+.loadout-list small,
+.loadout-list strong {
+  display: block;
+}
+.loadout-list small {
+  font-size: 0.7rem;
+}
+.loadout-list strong {
+  font-size: 0.81rem;
+}
+.equipped-panel {
+  padding: 10px 14px;
+  margin-bottom: 17px;
+}
+.equipped-panel summary {
+  cursor: pointer;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+.active-stage-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.active-stage-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.81rem;
+  font-weight: 700;
+}
+.active-stage-heading h2 {
+  margin: 4px 0 0;
+  font-size: 1.2rem;
+}
+.stage-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  color: #713e16;
+  background: #f7e7c9;
+  border-radius: 8px;
+  font-size: 0.88rem;
+}
+.stage-submit {
+  display: flex;
+  justify-content: end;
+  margin: 15px 0;
+}
+.stage-reward {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px 15px;
+  margin: 13px 0;
+  padding: 10px;
+}
+.stage-reward p {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #744613;
+  margin: 0;
+  font-size: 0.83rem;
+}
+.stage-reward .btn:last-child {
+  margin-left: auto;
+}
+.expedition-results {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+  list-style: none;
+  padding: 0;
+}
+
+.adventure-shop .adventure-bar {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+.shop-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 17px 0;
+}
+.shop-tabs .btn {
+  padding: 8px 13px;
+}
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+}
+.shop-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  padding: 15px;
+}
+.shop-item-art {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+}
+.shop-item-art .rpg-sprite {
+  --sprite-scale: 1.5;
+}
+.shop-item h2 {
+  font-size: 1.02rem;
+  margin: 1px 0;
+}
+.shop-item p,
+.shop-item small {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.shop-item p {
+  margin: 4px 0;
+}
+.shop-item small {
+  display: block;
+}
+.shop-item .item-lock {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  color: #784b1c;
+  margin-top: 6px;
+}
+.shop-rarity {
+  font-size: 0.7rem;
+  color: #784b1c;
+  font-weight: 750;
+}
+.shop-item-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-self: end;
+  gap: 6px;
+}
+.shop-item-actions .btn {
+  min-height: 40px;
+  padding: 7px 10px;
+  white-space: normal;
+}
+
+@media (max-width: 950px) {
+  .campaign-grid,
+  .shop-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .adventure-hero {
+    min-height: 440px;
+    align-items: start;
+    padding: 24px;
+  }
+  .adventure-hero h1 {
+    font-size: clamp(38px, 10vw, 62px);
+  }
+  .adventure-hero .rpg-sun {
+    top: 43%;
+  }
+  .hero-party {
+    right: 12%;
+    bottom: 7%;
+  }
+  .hero-party .rpg-sprite {
+    --sprite-scale: 1.9;
+  }
+  .daily-banner {
+    grid-template-columns: auto 1fr;
+    padding: 12px;
+    gap: 9px;
+  }
+  .daily-banner .btn {
+    grid-column: 2;
+    justify-self: start;
+  }
+  .campaign-grid,
+  .shop-grid {
+    grid-template-columns: 1fr;
+  }
+  .loadout-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .stage-track {
+    inset-inline: 5px;
+  }
+  .stage-track li > span {
+    min-height: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rpg-sprite {
+    animation: none;
+  }
+  .stage-party {
+    transition: none;
+  }
+}

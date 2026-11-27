@@ -9,6 +9,7 @@ import { BrowserRouter, HashRouter } from "react-router-dom";
 import { AppProvider } from "./app/providers/AppProvider";
 import AppRouter from "./app/router/AppRouter";
 import "./styles/globals.css";
+import "./styles/adventure.css";
 
 const Router = import.meta.env.MODE === "pages" ? HashRouter : BrowserRouter;
 

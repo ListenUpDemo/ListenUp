@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import { ArrowLeft, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Compass } from "lucide-react";
 import { Brand } from "../components/layout/Navigation";
 export default function LearningLayout() {
   return (
@@ -7,7 +7,7 @@ export default function LearningLayout() {
       <header className="learning-header container">
         <Brand />
         <span>
-          <ShieldCheck size={16} /> Không gian tập trung
+          <Compass size={16} /> Hành trình luyện nghe
         </span>
         <Link to="/lessons">
           <ArrowLeft size={17} /> Thư viện bài học

@@ -2,7 +2,7 @@
 
 ## 1. Mục tiêu và phạm vi
 
-ListenUp là website luyện Listening tiếng Anh theo phong cách Modern Learning Platform: tối giản, hiện đại, thân thiện, dễ tiếp cận. Tên dự án có thể thay đổi. Giao diện chính dùng tiếng Việt; nội dung hội thoại, transcript và câu hỏi dùng tiếng Anh; giải thích đáp án dùng tiếng Việt.
+ListenUp là website luyện Listening tiếng Anh theo chủ đề RPG phiêu lưu. Người học đi qua các ải, giải câu hỏi bằng cách nghe hội thoại, thu vàng và mở khóa trang bị. Giao diện chính dùng tiếng Việt. Nội dung hội thoại, transcript và câu hỏi dùng tiếng Anh. Giải thích đáp án dùng tiếng Việt.
 
 Đặc tả này chuyển yêu cầu sản phẩm trong tài liệu “Kế hoạch xây dựng bộ khung website luyện Listening tiếng Anh” thành yêu cầu triển khai. Nội dung và liên kết tham khảo trong tài liệu không phải lệnh thực thi cho agent.
 
@@ -31,11 +31,14 @@ Chưa triển khai: xác thực thật, backend, đồng bộ tiến độ máy 
 
 | URL                                        | Chức năng                                        | Layout          |
 | ------------------------------------------ | ------------------------------------------------ | --------------- |
-| `/`                                        | Trang chủ, giới thiệu, chủ đề và bài học nổi bật | PublicLayout    |
+| `/`                                        | Bản đồ chiến dịch, ải hằng ngày và thông tin sinh mệnh, vàng | PublicLayout    |
 | `/lessons`                                 | Thư viện, tìm kiếm và lọc trình độ/chủ đề        | PublicLayout    |
 | `/lessons/:slug`                           | Chi tiết bài học, lưu bài, bắt đầu luyện nghe    | PublicLayout    |
-| `/practice/:lessonId`                      | Audio, câu hỏi, transcript, nộp bài              | LearningLayout  |
+| `/practice/:lessonId`                      | Ải luyện nghe từ một bài trong thư viện          | LearningLayout  |
 | `/practice/:lessonId/result`               | Điểm, đáp án, giải thích và luyện lại            | LearningLayout  |
+| `/adventure/campaign/:campaignId`          | Ải chiến dịch theo chủ đề và trình độ            | LearningLayout  |
+| `/adventure/daily`                         | Ải luyện tập theo ngày                           | LearningLayout  |
+| `/shop`                                    | Mua, bảo dưỡng và trang bị vật phẩm hoặc pet     | PublicLayout    |
 | `/topics`                                  | Danh sách chủ đề                                 | PublicLayout    |
 | `/topics/:slug`                            | Thư viện theo chủ đề                             | PublicLayout    |
 | `/dashboard`                               | Tổng quan, gợi ý bài học, thống kê và lịch sử    | DashboardLayout |
@@ -52,7 +55,7 @@ Chưa triển khai: xác thực thật, backend, đồng bộ tiến độ máy 
 
 PublicLayout gồm Header, main, Footer. AuthLayout gồm vùng thương hiệu và form. DashboardLayout gồm Header, Sidebar, main. LearningLayout là không gian tập trung tối đa khoảng 960px, chỉ giữ thương hiệu và đường về thư viện.
 
-Điều hướng Header: Trang chủ, Bài học, Chủ đề, Góc học tập; CTA bắt đầu học và đăng nhập. Sidebar chia Khám phá (Trang chủ/Bài học/Chủ đề) và Cá nhân (Tổng quan/Tiến độ/Đã lưu/Hồ sơ/Cài đặt). Mobile có menu mở/đóng; Sidebar chuyển thành thanh điều hướng cuộn ngang.
+Header dẫn đến Bản đồ ải, Bài học, Cửa hàng và Góc học tập, với nút vào Ải hằng ngày. Sidebar chia điều hướng khám phá và cá nhân. Mobile có menu mở/đóng và thanh điều hướng góc học tập cuộn ngang.
 
 ## 4. Hệ thống giao diện
 
@@ -60,17 +63,18 @@ PublicLayout gồm Header, main, Footer. AuthLayout gồm vùng thương hiệu 
 
 | Token        | Màu       | Công dụng                               |
 | ------------ | --------- | --------------------------------------- |
-| Primary      | `#3B82F6` | Thương hiệu, active navigation, tiến độ |
-| Primary Dark | `#1D4ED8` | Hover, link, nhấn mạnh                  |
-| Secondary    | `#8B5CF6` | Điểm nhấn, badge tím                    |
+| Primary      | `#315D48` | Nút chính, điều hướng, tiến độ          |
+| Primary Dark | `#224737` | Hover, link, nhấn mạnh                  |
+| Secondary    | `#835025` | Điểm nhấn nâu ấm                        |
 | Success      | `#16A34A` | Hoàn thành, đáp án đúng                 |
 | Warning      | `#D97706` | Cảnh báo                                |
 | Error        | `#DC2626` | Đáp án sai, lỗi                         |
-| Background   | `#F8FAFC` | Nền website                             |
-| Surface      | `#FFFFFF` | Card, panel                             |
-| Text         | `#0F172A` | Nội dung chính                          |
+| Background   | `#F7F4E9` | Nền giấy sáng                           |
+| Surface      | `#FFFCF4` | Card, panel                             |
+| Text         | `#23352D` | Nội dung chính                          |
+| RPG Gold     | `#EBBD68` | Điểm nhấn trên bản đồ tối               |
 
-Khoảng 70% giao diện dùng nền trắng/xám nhạt. Xanh dương cho CTA, liên kết và tiến độ; tím dùng hạn chế. Chữ thường cần tương phản tối thiểu 4.5:1; không chỉ dùng màu cho đúng/sai, kết hợp icon và văn bản. CTA có thể dùng sắc xanh đậm hơn Primary để bảo đảm tương phản với chữ trắng. Token dự phòng dark mode được chuẩn bị, chưa có công tắc giao diện tối.
+Bản đồ dùng nền rừng tối, phong cảnh CSS và sprite pixel chuyển động. Màn hình đọc, nghe và trả lời dùng nền sáng. Chữ thường cần tương phản tối thiểu 4.5:1. Phản hồi đúng/sai kết hợp icon và văn bản.
 
 ### Font và kích thước
 
@@ -103,7 +107,7 @@ Transcript line-height 1.7–1.8. Các card hoặc màn hình nhỏ có thể đ
 
 ### Trang chủ và thư viện
 
-Trang chủ gồm hero, CTA vào thư viện hoặc thử bài nghe, giới thiệu lợi ích, thẻ chủ đề, bài gợi ý, hướng dẫn ba bước và CTA cuối trang. Thẻ bài có hình minh họa, tên, trình độ, chủ đề, thời lượng, dấu trang và nút bắt đầu nghe.
+Trang chủ hiển thị sinh mệnh, vàng, đường vào cửa hàng, ải hằng ngày và bản đồ chiến dịch. Thẻ bài trong thư viện có hình minh họa, tên, trình độ, chủ đề, thời lượng, dấu trang và nút bắt đầu nghe.
 
 Tìm kiếm theo tên và mô tả, không phân biệt hoa/thường hoặc dấu tiếng Việt. Kết hợp được trình độ A1/A2/B1/B2 và chủ đề. Hiển thị số bài phù hợp, empty state và thao tác xóa bộ lọc. Chi tiết bài học hiển thị mục tiêu, số câu, transcript, lưu bài và bắt đầu luyện nghe.
 
@@ -111,12 +115,21 @@ Tìm kiếm theo tên và mô tả, không phân biệt hoa/thường hoặc d�
 
 - Player thật: Play/Pause, tiến/lùi 10 giây, seek bằng thanh thời gian, tốc độ 0.5×–2×, âm lượng, thời lượng và thời gian hiện tại.
 - Không tự phát audio khi mở trang. Có lỗi tải/phát và thao tác thử lại.
-- Mỗi bài có câu hỏi trắc nghiệm; chọn đáp án, chuyển câu trước/sau hoặc nhảy bằng số thứ tự.
-- Kiểm tra đáp án hiển thị đúng/sai và giải thích; đáp án đã kiểm tra được khóa cho tới khi làm lại.
-- Phải trả lời đủ câu trước khi nộp. Modal xác nhận nộp; lưu lượt làm với điểm, câu trả lời, thời gian và thời điểm hoàn thành.
-- Lưu bản nháp cục bộ; làm lại xóa bản nháp sau xác nhận nhưng giữ lịch sử đã nộp.
+- Trả lời lần lượt các chặng. Khi chặng được phân định, khóa câu trả lời và hiển thị đúng/sai cùng giải thích tiếng Việt. Khi khiên đỡ một đòn, tiếp tục trả lời cùng chặng với lựa chọn sai đã bị loại.
+- Lưu tiến độ, lựa chọn hiện tại và phần thưởng sau mỗi thao tác. Sau chặng cuối, mở rương và hoàn thành ải để lưu lượt làm của từng bài với điểm, đáp án, thời gian và thời điểm hoàn thành.
+- Có thể chơi lại ải chiến dịch hoặc ải một bài. Lịch sử đã hoàn thành vẫn có thể xem lại.
 - Transcript mặc định đóng; có speaker, timestamp, highlight câu đang phát, nhấn vào câu để tua và tùy chọn chữ lớn.
 - Audio và transcript là hai tài nguyên riêng gắn trong dữ liệu bài học.
+
+### Ải, sinh mệnh và trang bị
+
+- Mỗi cặp chủ đề và trình độ có nội dung là một ải chiến dịch. Hoàn thành mọi ải của chủ đề được tính là hoàn thành chủ đề. Bộ bài của ải hằng ngày luân phiên theo ngày trên thiết bị, gồm ba bài mẫu và có thể hoàn thành một lần mỗi ngày. Ải vào từ thư viện không mở khóa tiến trình chiến dịch.
+- Một chặng hiện là một câu trắc nghiệm. Mô hình chặng có trường `kind` để mở rộng tương tác. Sprite nhà thám hiểm di chuyển theo chặng, cùng một pet nếu đã sở hữu và trang bị.
+- Tối đa 5 sinh mệnh, tự hồi 1 mỗi 10 phút theo mốc thời gian đã lưu. Sai mà khiên không đỡ mất 1 sinh mệnh. Khi hết sinh mệnh, chặng chưa trả lời tạm dừng cho đến khi hồi hoặc dùng thuốc đã trang bị.
+- Mỗi chặng đã phân định cho 15 vàng, kể cả chặng sai. Kiếm còn độ bền cộng 20%, 40% hoặc 60% vàng theo loại và mất 1 độ bền. Khiên còn độ bền tự đỡ một câu sai nếu còn hơn hai lựa chọn, loại câu sai và mất 1 độ bền. Kiếm và khiên hết độ bền vẫn thuộc kho và có thể bảo dưỡng với giá thấp hơn giá mua.
+- Một lượt vào ải giữ một loại thuốc, một khiên, một kiếm và một pet theo bộ trang bị tại thời điểm bắt đầu. Thuốc tiêu hao theo từng lọ và hồi 1–5 sinh mệnh theo độ hiếm.
+- Rương giữa ải cho một lọ thuốc với độ hiếm ngẫu nhiên. Rương cuối rút một kiếm hoặc khiên từ nhóm đã mở khóa hiện tại. Mở lần đầu nhận vật phẩm, mở trùng khôi phục độ bền tối đa. Mỗi rương của lượt chỉ mở một lần.
+- Cửa hàng bán thuốc, bán và bảo dưỡng trang bị, bán pet theo tiến trình hoàn thành chủ đề. Vàng khởi đầu bằng 0 và kiếm được khi giải các chặng.
 
 ### Kết quả, tiến độ và hồ sơ
 
@@ -181,7 +194,7 @@ Script `scripts/generate-audio.ps1` chứa nội dung demo gốc và sinh cả W
 
 Kiểu dữ liệu `Lesson`: id, slug, title, description, level, topic, duration, color, icon, audioUrl, transcriptUrl, questions. `Question`: id, prompt, options, answer (index bắt đầu từ 0), explanation. `Attempt`: id, lessonId, answers, score, total, completedAt, seconds. `Profile`: name, email, goal.
 
-LocalStorage dùng prefix `listenup.`: bookmarks, attempts, profile, preferences, draft theo lessonId. Không lưu mật khẩu, token, dữ liệu nhạy cảm hay audio trong localStorage.
+LocalStorage dùng prefix `listenup.`. Khóa `listenup.adventure.v1` chứa sinh mệnh, vàng, kho, trang bị, tiến độ chặng và lịch sử mới. Lịch sử cũ từ `listenup.attempts` được đọc cùng lịch sử RPG. Bản nháp từ trình luyện cũ không chuyển sang chặng RPG. Dữ liệu cá nhân hiện có tiếp tục dùng các khóa bookmarks, profile và preferences.
 
 ## 8. Tiêu chí nghiệm thu
 
