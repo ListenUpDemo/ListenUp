@@ -1,0 +1,32 @@
+﻿[
+    {
+        "speaker":  "Passenger",
+        "end":  7.04,
+        "text":  "Hi. I\u0027m trying to get to the library. Is this the bus that goes downtown?",
+        "start":  0
+    },
+    {
+        "speaker":  "Driver",
+        "end":  8.76,
+        "text":  "Downtown?",
+        "start":  7.04
+    },
+    {
+        "speaker":  "Driver",
+        "end":  14.9,
+        "text":  "Yes, this is the number twelve. I can tell you when we get to your stop.",
+        "start":  8.76
+    },
+    {
+        "speaker":  "Passenger",
+        "end":  19.67,
+        "text":  "Thanks. Can I pay with my phone on this bus?",
+        "start":  14.9
+    },
+    {
+        "speaker":  "Driver",
+        "end":  24.64,
+        "text":  "Yes. Just tap your phone on the reader next to me.",
+        "start":  19.67
+    }
+]

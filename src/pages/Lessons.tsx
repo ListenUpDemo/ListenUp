@@ -50,14 +50,13 @@ export default function Lessons() {
         </Link>
       )}
       <div className="page-heading">
-        <span className="eyebrow">LISTEN A LITTLE. GROW A LOT.</span>
         <h1>
           {topic?.name || "Thư viện bài nghe"}
           <span className="heading-dot">.</span>
         </h1>
         <p>
           {topic?.description ||
-            "Một thế giới hội thoại đang chờ bạn khám phá. Chọn bài nghe phù hợp và bắt đầu nhé."}
+            "Luyện nghe và phát âm tiếng Anh qua các tình huống đời thường."}
         </p>
       </div>
       <LessonFilter

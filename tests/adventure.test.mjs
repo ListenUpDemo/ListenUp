@@ -14,7 +14,11 @@ const questions = Array.from({ length: 3 }, (_, index) => ({
   options: ["A", "B", "C", "D"],
   answer: 0,
 }));
-const lesson = { id: "lesson", questions };
+const lesson = {
+  id: "lesson",
+  questions,
+  pronunciation: { phrase: "Check in." },
+};
 const expedition = {
   id: "campaign",
   kind: "campaign",
@@ -73,6 +77,7 @@ test("khiên giữ sinh mệnh và cho bỏ qua chặng thường mà vẫn lưu
   assert.equal(skipped.coins, 18);
   assert.equal(skipped.inventory["shield-1"], 1);
   assert.equal(skipped.inventory["sword-1"], 4);
+  assert.deepEqual(skipped.notebookLessonIds, [lesson.id]);
   assert.deepEqual(resolvedStage(expedition, skipped.runs[key]), {
     answer: 1,
     correct: false,
@@ -87,6 +92,7 @@ test("khiên giữ sinh mệnh và cho bỏ qua chặng thường mà vẫn lưu
   const completed = act(act(answer(final, 2, 0), "open", 2), "advance", 2);
   assert.equal(completed.attempts[0].answers.q0, 1);
   assert.equal(completed.attempts[0].score, 2);
+  assert.deepEqual(completed.notebookLessonIds, [lesson.id]);
 });
 
 test("chặng thường với khiên hết độ bền trừ sinh mệnh và phải trả lời đúng", () => {

@@ -286,7 +286,7 @@ export function applyAdventureAction(
     state.health === 0
   )
     return state;
-  const { question } = expedition.stages[run.index];
+  const { lesson, question } = expedition.stages[run.index];
   if (action.type === "select") {
     if (
       !Number.isInteger(action.answer) ||
@@ -349,8 +349,13 @@ export function applyAdventureAction(
     sword && state.inventory[sword.id] > 0
       ? Math.floor((STAGE_COINS * sword.effect) / 100)
       : 0;
-  if (sword && bonus)
+  if (sword && bonus) {
     state = updateItem(state, sword, state.inventory[sword.id] - 1);
+    const noted = state.notebookLessonIds ?? [];
+    if (lesson.pronunciation && !noted.includes(lesson.id)) {
+      state = { ...state, notebookLessonIds: [...noted, lesson.id] };
+    }
+  }
   const coins = STAGE_COINS + bonus;
   const chest = rewardChest(
     run.index,

@@ -1,17 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 import {
   Check,
   Coins,
-  FlaskConical,
+  Sandwich,
+  BookOpen,
+  NotebookPen,
+  Zap,
   Flag,
-  Heart,
   PawPrint,
-  Shield,
-  Swords,
-  Trees,
-  Mountain,
-  Tent,
   Gift,
 } from "lucide-react";
 import type { Slot } from "../../data/mock/adventureItems";
@@ -20,11 +17,11 @@ import { useApp } from "../../app/providers/AppProvider";
 import { HEART_INTERVAL, MAX_HEALTH, settleHealth } from "./engine";
 
 export const slotIcons = {
-  potion: FlaskConical,
-  shield: Shield,
-  sword: Swords,
+  potion: Sandwich,
+  shield: BookOpen,
+  sword: NotebookPen,
   pet: PawPrint,
-} satisfies Record<Slot, typeof Heart>;
+} satisfies Record<Slot, typeof Zap>;
 const assetBase = `${import.meta.env.BASE_URL}assets/adventure/`;
 
 export function useAdventureClock() {
@@ -52,24 +49,14 @@ export function AdventureHud() {
   const countdown = `${Math.floor(remaining / 60)}:${String(remaining % 60).padStart(2, "0")}`;
   return (
     <div className="adventure-hud">
-      <span
-        className="health-display"
-        role="img"
-        aria-label={`Sinh mệnh ${health}/${MAX_HEALTH}`}
-      >
-        {Array.from({ length: MAX_HEALTH }, (_, index) => (
-          <Heart
-            key={index}
-            size={17}
-            fill={index < health ? "currentColor" : "none"}
-            aria-hidden="true"
-          />
-        ))}
+      <span className="health-display">
+        <Zap size={17} fill="currentColor" aria-hidden="true" />
+        Năng lượng {health}/{MAX_HEALTH}
       </span>
       {nextHeartAt !== null && (
         <span
           className="heart-timer"
-          title="Thời gian đến lần hồi sinh mệnh tiếp theo"
+          title="Thời gian đến lần hồi năng lượng tiếp theo"
         >
           +1 sau {countdown}
         </span>
@@ -81,39 +68,13 @@ export function AdventureHud() {
   );
 }
 
-export function Sprite({
-  id,
-  walking = false,
-}: {
-  id: string;
-  walking?: boolean;
-}) {
-  const hero = id === "hero";
+export function Sprite({ id }: { id: string }) {
   return (
     <span
       aria-hidden="true"
-      className={`rpg-sprite ${hero ? "rpg-sprite-hero" : "rpg-sprite-cat"} ${walking ? "rpg-sprite-walk" : ""}`}
-      style={
-        {
-          "--sprite-frames": walking && !hero ? 8 : 10,
-          backgroundImage: `url("${assetBase}${id}-${walking ? "walk" : "idle"}.png")`,
-        } as CSSProperties
-      }
+      className="rpg-sprite rpg-sprite-cat"
+      style={{ backgroundImage: `url("${assetBase}${id}-idle.png")` }}
     />
-  );
-}
-
-export function Landscape() {
-  return (
-    <div className="rpg-landscape" aria-hidden="true">
-      <i className="rpg-sun" />
-      <i className="ridge ridge-far" />
-      <i className="ridge ridge-near" />
-      <i className="rpg-ground" />
-      <Mountain className="rpg-mountain" strokeWidth={0.8} />
-      <Trees className="rpg-trees trees-left" />
-      <Trees className="rpg-trees trees-right" />
-    </div>
   );
 }
 
@@ -127,64 +88,47 @@ export function StageMap({
   pet?: string;
 }) {
   const index = run?.index ?? 0;
-  const previousIndex = useRef(index);
-  const [walking, setWalking] = useState(false);
-  useEffect(() => {
-    if (previousIndex.current === index) return;
-    previousIndex.current = index;
-    setWalking(true);
-    const timer = window.setTimeout(() => setWalking(false), 720);
-    return () => window.clearTimeout(timer);
-  }, [index]);
 
   return (
     <div className="stage-map">
-      <Landscape />
       <div
         className="stage-track"
         style={{ "--stage-count": count } as CSSProperties}
       >
         <div className="stage-path" />
-        <div
-          className={`stage-party ${index === 0 ? "stage-party-start" : ""}`}
-          style={{ left: `${((index + 0.5) / count) * 100}%` }}
-        >
-          <Sprite id="hero" walking={walking} />
-          {pet && <Sprite id={pet} walking={walking} />}
-        </div>
-        <ol aria-label="Các chặng của ải">
+        <ol aria-label="Tiến độ câu hỏi">
           {Array.from({ length: count }, (_, i) => {
             const chest = i === count - 1 || i === Math.ceil(count / 2) - 1;
             const visited = run?.outcomes[i];
             const Icon = visited?.skipped
-              ? Shield
+              ? BookOpen
               : visited?.correct
                 ? Check
                 : visited
                   ? Flag
                   : chest
                     ? Gift
-                    : i === 0
-                      ? Tent
-                      : null;
+                    : null;
             const label = visited
               ? visited.skipped
-                ? "Đã bỏ qua nhờ khiên"
+                ? "Đã xem đáp án bằng từ điển"
                 : visited.correct
-                  ? "Đã vượt qua"
+                  ? "Đã trả lời đúng"
                   : "Chưa đúng"
               : chest
-                ? "Có rương"
+                ? "Có quà"
                 : "";
             return (
               <li
                 key={i}
-                aria-current={index === i ? "step" : undefined}
+                aria-current={
+                  !run?.finished && index === i ? "step" : undefined
+                }
                 className={visited ? "visited" : undefined}
               >
-                <span title={`Chặng ${i + 1}${label ? ` · ${label}` : ""}`}>
+                <span title={`Câu ${i + 1}${label ? ` · ${label}` : ""}`}>
                   <span className="sr-only">
-                    Chặng {i + 1} {label}
+                    Câu {i + 1} {label}
                   </span>
                   {Icon ? (
                     <Icon size={15} aria-hidden="true" />
@@ -197,6 +141,7 @@ export function StageMap({
           })}
         </ol>
       </div>
+      {pet && <Sprite id={pet} />}
     </div>
   );
 }

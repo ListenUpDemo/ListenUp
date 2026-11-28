@@ -1,0 +1,32 @@
+﻿[
+    {
+        "speaker":  "Manager",
+        "end":  5.83,
+        "text":  "Welcome aboard. Could we check in after lunch to go over your first week?",
+        "start":  0
+    },
+    {
+        "speaker":  "New employee",
+        "end":  11.24,
+        "text":  "Sure. Just to confirm, should I bring my notes?",
+        "start":  5.83
+    },
+    {
+        "speaker":  "New employee",
+        "end":  12.79,
+        "text":  "Check in?",
+        "start":  11.24
+    },
+    {
+        "speaker":  "Manager",
+        "end":  19.22,
+        "text":  "Yes, please bring your notes. Let\u0027s meet at one thirty in the break room.",
+        "start":  12.79
+    },
+    {
+        "speaker":  "New employee",
+        "end":  24.83,
+        "text":  "One thirty in the break room. Got it. Thanks!",
+        "start":  19.22
+    }
+]

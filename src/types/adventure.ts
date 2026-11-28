@@ -49,5 +49,6 @@ export interface AdventureState {
   loadout: Loadout;
   runs: Record<string, ExpeditionRun>;
   clearedCampaigns: string[];
+  notebookLessonIds?: string[];
   attempts: Attempt[];
 }

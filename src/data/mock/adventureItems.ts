@@ -15,9 +15,9 @@ export interface AdventureItem {
 
 export const slots = ["potion", "shield", "sword", "pet"] as const;
 export const slotLabels: Record<Slot, string> = {
-  potion: "Hồi phục",
-  shield: "Phòng thủ",
-  sword: "Tấn công",
+  potion: "Đồ ăn",
+  shield: "Từ điển",
+  sword: "Sổ tay cụm từ",
   pet: "Bạn đồng hành",
 };
 
@@ -25,7 +25,7 @@ export const items: readonly AdventureItem[] = [
   {
     id: "potion-1",
     slot: "potion",
-    name: "Thuốc thảo mộc",
+    name: "Táo",
     rarity: "Phổ thông",
     unlockedAt: 0,
     price: 15,
@@ -34,7 +34,7 @@ export const items: readonly AdventureItem[] = [
   {
     id: "potion-2",
     slot: "potion",
-    name: "Tinh chất hổ phách",
+    name: "Sữa chua và granola",
     rarity: "Hiếm",
     unlockedAt: 1,
     price: 29,
@@ -43,7 +43,7 @@ export const items: readonly AdventureItem[] = [
   {
     id: "potion-3",
     slot: "potion",
-    name: "Dược thủy ánh sao",
+    name: "Bánh mì sandwich",
     rarity: "Sử thi",
     unlockedAt: 2,
     price: 42,
@@ -52,7 +52,7 @@ export const items: readonly AdventureItem[] = [
   {
     id: "potion-4",
     slot: "potion",
-    name: "Linh dược cổ thụ",
+    name: "Súp gà",
     rarity: "Huyền thoại",
     unlockedAt: 3,
     price: 55,
@@ -61,7 +61,7 @@ export const items: readonly AdventureItem[] = [
   {
     id: "potion-5",
     slot: "potion",
-    name: "Nước nguồn sự sống",
+    name: "Bữa trưa đầy đủ",
     rarity: "Thần thoại",
     unlockedAt: 4,
     price: 68,
@@ -70,7 +70,7 @@ export const items: readonly AdventureItem[] = [
   {
     id: "shield-1",
     slot: "shield",
-    name: "Khiên gỗ sồi",
+    name: "Từ điển bỏ túi",
     rarity: "Phổ thông",
     unlockedAt: 0,
     price: 105,
@@ -81,7 +81,7 @@ export const items: readonly AdventureItem[] = [
   {
     id: "shield-2",
     slot: "shield",
-    name: "Khiên hộ vệ",
+    name: "Từ điển minh họa",
     rarity: "Hiếm",
     unlockedAt: 2,
     price: 190,
@@ -92,7 +92,7 @@ export const items: readonly AdventureItem[] = [
   {
     id: "shield-3",
     slot: "shield",
-    name: "Khiên cổ thành",
+    name: "Từ điển song ngữ",
     rarity: "Sử thi",
     unlockedAt: 4,
     price: 300,
@@ -103,7 +103,7 @@ export const items: readonly AdventureItem[] = [
   {
     id: "sword-1",
     slot: "sword",
-    name: "Kiếm lữ hành",
+    name: "Sổ tay bỏ túi",
     rarity: "Phổ thông",
     unlockedAt: 0,
     price: 115,
@@ -114,7 +114,7 @@ export const items: readonly AdventureItem[] = [
   {
     id: "sword-2",
     slot: "sword",
-    name: "Kiếm trăng non",
+    name: "Sổ tay theo chủ đề",
     rarity: "Hiếm",
     unlockedAt: 2,
     price: 205,
@@ -125,7 +125,7 @@ export const items: readonly AdventureItem[] = [
   {
     id: "sword-3",
     slot: "sword",
-    name: "Kiếm bình minh",
+    name: "Sổ tay hội thoại",
     rarity: "Sử thi",
     unlockedAt: 4,
     price: 320,

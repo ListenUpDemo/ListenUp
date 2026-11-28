@@ -7,13 +7,13 @@ import {
   XCircle,
 } from "lucide-react";
 import { useApp } from "../app/providers/AppProvider";
-import { lessons } from "../data/mock/lessons";
+import { allLessons } from "../data/mock/lessons";
 import { EmptyState } from "../components/ui";
 export default function Result() {
   const { lessonId } = useParams();
   const [params] = useSearchParams();
   const { attempts } = useApp();
-  const lesson = lessons.find((l) => l.id === lessonId);
+  const lesson = allLessons.find((l) => l.id === lessonId);
   const attemptId = params.get("attempt");
   const attempt = [...attempts]
     .reverse()

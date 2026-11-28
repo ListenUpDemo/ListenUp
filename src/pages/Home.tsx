@@ -5,7 +5,6 @@ import {
   CalendarDays,
   Compass,
   Flag,
-  Map,
   Store,
   Trophy,
 } from "lucide-react";
@@ -15,10 +14,10 @@ import { topics } from "../data/mock/lessons";
 import { TopicIcon } from "../components/ui";
 import {
   AdventureHud,
-  Landscape,
   Sprite,
   useAdventureClock,
 } from "../features/adventure/AdventureVisuals";
+import { CharacterPortrait } from "../features/adventure/Character";
 
 export default function Home() {
   const { adventure, masteredTopics } = useApp();
@@ -35,28 +34,38 @@ export default function Home() {
         <AdventureHud />
       </div>
       <section className="adventure-hero">
-        <Landscape />
         <div className="adventure-hero-copy">
+          <p className="journey-kicker">Luyện nghe và phát âm</p>
           <h1>
-            Hành trình <br />
-            <em>qua từng ải.</em>
+            Tiếng Anh cho
+            <br />
+            <em>cuộc sống mới.</em>
           </h1>
           <p>
-            Nghe tiếng Anh, giải thử thách và mở rương cùng nhà thám hiểm của
-            bạn.
+            Cùng một người vừa chuyển đến nơi mới nghe hội thoại, tìm hiểu thói
+            quen địa phương và luyện nói theo mẫu.
           </p>
           <div className="adventure-actions">
             <a className="btn btn-adventure" href="#campaigns">
-              <Map size={17} /> Xem bản đồ ải <ArrowDown size={16} />
+              Chọn chủ đề <ArrowDown size={16} />
             </a>
             <Link className="btn btn-adventure-outline" to="/shop">
               <Store size={17} /> Cửa hàng
             </Link>
           </div>
         </div>
-        <div className="hero-party">
-          <Sprite id="hero" />
-          {pet && <Sprite id={pet} />}
+        <div className="journey-portrait">
+          <div className="city-skyline" aria-hidden="true" />
+          <CharacterPortrait />
+          <span className="journey-name">
+            <strong>Bạn học</strong>
+            <small>Vừa chuyển đến</small>
+          </span>
+          {pet && (
+            <span className="journey-pet">
+              <Sprite id={pet} />
+            </span>
+          )}
         </div>
       </section>
       <section className="daily-banner card" aria-labelledby="daily-heading">
@@ -64,13 +73,13 @@ export default function Home() {
           <CalendarDays size={25} />
         </div>
         <div>
-          <h2 id="daily-heading">Ải hằng ngày</h2>
+          <h2 id="daily-heading">Luyện tập hằng ngày</h2>
           <p>
             {dailyRun?.finished
-              ? "Bạn đã nhận thưởng hôm nay. Ải mới mở vào ngày mai."
+              ? "Bạn đã hoàn thành. Bài luyện mới mở vào ngày mai."
               : dailyRun?.failed
                 ? "Lượt trước thất bại. Bạn có thể thử lại hôm nay."
-                : `${daily.stages.length} chặng luyện nghe · Rương giữa ải và cuối ải`}
+                : `${daily.stages.length} câu từ ba tình huống đời thường`}
           </p>
         </div>
         <Link className="btn btn-primary" to="/adventure/daily">
@@ -80,7 +89,7 @@ export default function Home() {
               ? "Thử lại"
               : dailyRun
                 ? "Tiếp tục"
-                : "Vào ải"}{" "}
+                : "Luyện ngay"}{" "}
           <ArrowRight size={17} />
         </Link>
       </section>
@@ -91,10 +100,9 @@ export default function Home() {
       >
         <div className="campaign-heading">
           <div>
-            <h2 id="campaign-heading">Bản đồ chiến dịch</h2>
+            <h2 id="campaign-heading">Chủ đề đời thường</h2>
             <p>
-              Hoàn thành các ải trong một chủ đề để mở khóa vật phẩm và bạn đồng
-              hành.
+              Mỗi chủ đề kết hợp tình huống văn hóa, bài nghe và mẫu phát âm.
             </p>
           </div>
           <span>
@@ -112,6 +120,7 @@ export default function Home() {
                 <TopicIcon name={topic.icon} size={24} />
                 <h3>{topic.name}</h3>
               </div>
+              <p className="campaign-description">{topic.description}</p>
               <div className="campaign-links">
                 {campaigns
                   .filter((campaign) => campaign.topic === topic.slug)
@@ -127,15 +136,20 @@ export default function Home() {
                       >
                         <Flag size={17} />
                         <span>
-                          <strong>{campaign.stages[0].lesson.level}</strong>
+                          <strong>
+                            {campaign.stages[0].lesson.level} ·{" "}
+                            <span lang="en-US">
+                              {campaign.stages[0].lesson.title}
+                            </span>
+                          </strong>
                           <small>
                             {done
                               ? "Đã hoàn thành"
                               : run?.failed
                                 ? "Lượt trước thất bại"
                                 : run
-                                  ? `Chặng ${run.index + 1}/${campaign.stages.length}`
-                                  : `${campaign.stages.length} chặng`}
+                                  ? `Câu ${run.index + 1}/${campaign.stages.length}`
+                                  : `${campaign.stages.length} câu hỏi`}
                           </small>
                         </span>
                         <ArrowRight size={16} />

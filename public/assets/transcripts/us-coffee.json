@@ -1,0 +1,38 @@
+﻿[
+    {
+        "speaker":  "Barista",
+        "end":  3.76,
+        "text":  "Hi! What can I get for you today?",
+        "start":  0
+    },
+    {
+        "speaker":  "Customer",
+        "end":  7.96,
+        "text":  "Could I get a small coffee with oat milk, please?",
+        "start":  3.76
+    },
+    {
+        "speaker":  "Barista",
+        "end":  11.9,
+        "text":  "Sure. Is that for here or to go?",
+        "start":  7.96
+    },
+    {
+        "speaker":  "Customer",
+        "end":  14.32,
+        "text":  "To go, please.",
+        "start":  11.9
+    },
+    {
+        "speaker":  "Barista",
+        "end":  18.92,
+        "text":  "Got it. We\u0027ll call your name at the pickup counter.",
+        "start":  14.32
+    },
+    {
+        "speaker":  "Customer",
+        "end":  23.37,
+        "text":  "Thanks. I’ll wait by the pickup counter.",
+        "start":  18.92
+    }
+]

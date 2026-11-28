@@ -1,0 +1,32 @@
+﻿[
+    {
+        "speaker":  "New neighbor",
+        "end":  5,
+        "text":  "Hi there! I just moved into the apartment next door.",
+        "start":  0
+    },
+    {
+        "speaker":  "Jordan",
+        "end":  6.82,
+        "text":  "How\u0027s it going?",
+        "start":  5
+    },
+    {
+        "speaker":  "New neighbor",
+        "end":  11.26,
+        "text":  "Pretty good, thanks. How about you?",
+        "start":  6.82
+    },
+    {
+        "speaker":  "Jordan",
+        "end":  17.92,
+        "text":  "Good! A few neighbors are having a potluck on Saturday. Want to come?",
+        "start":  11.26
+    },
+    {
+        "speaker":  "New neighbor",
+        "end":  22.16,
+        "text":  "I\u0027d love to. I\u0027ll bring something to share.",
+        "start":  17.92
+    }
+]

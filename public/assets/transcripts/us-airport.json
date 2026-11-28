@@ -1,0 +1,32 @@
+﻿[
+    {
+        "speaker":  "Passenger",
+        "end":  6.59,
+        "text":  "Excuse me. I just landed. Where can I pick up my suitcase?",
+        "start":  0
+    },
+    {
+        "speaker":  "Airport staff",
+        "end":  12.68,
+        "text":  "Follow the signs for baggage claim. Your bags are on carousel six.",
+        "start":  6.59
+    },
+    {
+        "speaker":  "Passenger",
+        "end":  14.55,
+        "text":  "Baggage claim.",
+        "start":  12.68
+    },
+    {
+        "speaker":  "Passenger",
+        "end":  18.16,
+        "text":  "Could you say that number again, please?",
+        "start":  14.55
+    },
+    {
+        "speaker":  "Airport staff",
+        "end":  25.47,
+        "text":  "Six. Take the elevator down one floor. The carousel is on your left.",
+        "start":  18.16
+    }
+]

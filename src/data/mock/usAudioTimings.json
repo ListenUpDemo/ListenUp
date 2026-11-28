@@ -1,0 +1,38 @@
+{
+    "us-airport":  {
+                       "duration":  25,
+                       "start":  12.68,
+                       "end":  14.55,
+                       "folder":  "beginner"
+                   },
+    "us-bus":  {
+                   "duration":  25,
+                   "start":  7.04,
+                   "end":  8.76,
+                   "folder":  "beginner"
+               },
+    "us-coffee":  {
+                      "duration":  23,
+                      "start":  11.9,
+                      "end":  14.32,
+                      "folder":  "beginner"
+                  },
+    "us-neighbor":  {
+                        "duration":  22,
+                        "start":  5,
+                        "end":  6.82,
+                        "folder":  "beginner"
+                    },
+    "us-library":  {
+                       "duration":  23,
+                       "start":  6.42,
+                       "end":  8.56,
+                       "folder":  "intermediate"
+                   },
+    "us-work":  {
+                    "duration":  25,
+                    "start":  11.24,
+                    "end":  12.79,
+                    "folder":  "intermediate"
+                }
+}

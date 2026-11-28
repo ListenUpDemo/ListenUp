@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { useApp } from "../app/providers/AppProvider";
-import { lessons } from "../data/mock/lessons";
+import { allLessons } from "../data/mock/lessons";
 import { EmptyState, LessonCard } from "../components/ui";
 export default function Bookmarks() {
   const { bookmarks } = useApp();
-  const saved = lessons.filter((l) => bookmarks.includes(l.id));
+  const saved = allLessons.filter((l) => bookmarks.includes(l.id));
   return (
     <>
       <div className="page-heading">

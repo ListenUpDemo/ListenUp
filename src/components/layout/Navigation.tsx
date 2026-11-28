@@ -42,7 +42,7 @@ export function Header() {
         <Brand />
         <nav className="desktop-nav" aria-label="Điều hướng chính">
           <NavLink to="/" end>
-            Bản đồ ải
+            Hành trình
           </NavLink>
           <NavLink to="/lessons">Bài học</NavLink>
           <NavLink to="/shop">Cửa hàng</NavLink>
@@ -53,7 +53,7 @@ export function Header() {
             Đăng nhập
           </Link>
           <Link className="btn btn-primary btn-small" to="/adventure/daily">
-            Ải hằng ngày <ArrowUpRight size={16} />
+            Luyện hằng ngày <ArrowUpRight size={16} />
           </Link>
           <Link className="avatar" to="/profile" aria-label="Hồ sơ cá nhân">
             {profile.name.charAt(0).toUpperCase()}
@@ -70,11 +70,11 @@ export function Header() {
       </div>
       {open && (
         <nav className="mobile-nav" aria-label="Menu di động">
-          <NavLink to="/">Bản đồ ải</NavLink>
+          <NavLink to="/">Hành trình</NavLink>
           <NavLink to="/lessons">Bài học</NavLink>
           <NavLink to="/topics">Chủ đề</NavLink>
           <NavLink to="/shop">Cửa hàng</NavLink>
-          <NavLink to="/adventure/daily">Ải hằng ngày</NavLink>
+          <NavLink to="/adventure/daily">Luyện hằng ngày</NavLink>
           <NavLink to="/dashboard">Góc học tập</NavLink>
           <NavLink to="/bookmarks">Bài học đã lưu</NavLink>
           <NavLink to="/login">Đăng nhập</NavLink>
@@ -89,7 +89,10 @@ export function Footer() {
       <div>
         <Brand />
         <p>Mỗi ngày nghe, mỗi ngày tiến bộ.</p>
-        <p>Sprite nhân vật của Ozzbit Games.</p>
+        <p>
+          Minh họa nhân vật từ gói Character poses with cool outfit. Sprite mèo
+          của Ozzbit Games.
+        </p>
       </div>
       <div className="footer-links">
         <Link to="/lessons">Khám phá bài học</Link>
@@ -104,8 +107,8 @@ const sidebarGroups = [
   {
     name: "KHÁM PHÁ",
     items: [
-      { to: "/", label: "Bản đồ ải", icon: House },
-      { to: "/adventure/daily", label: "Ải hằng ngày", icon: Compass },
+      { to: "/", label: "Hành trình", icon: House },
+      { to: "/adventure/daily", label: "Luyện hằng ngày", icon: Compass },
       { to: "/shop", label: "Cửa hàng", icon: Store },
       { to: "/lessons", label: "Bài học", icon: BookOpen },
       { to: "/topics", label: "Chủ đề", icon: Shapes },

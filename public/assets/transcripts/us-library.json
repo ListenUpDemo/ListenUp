@@ -1,0 +1,32 @@
+﻿[
+    {
+        "speaker":  "Visitor",
+        "end":  6.42,
+        "text":  "Hi. I\u0027m new to the neighborhood. What do I need to borrow books here?",
+        "start":  0
+    },
+    {
+        "speaker":  "Librarian",
+        "end":  8.56,
+        "text":  "A library card.",
+        "start":  6.42
+    },
+    {
+        "speaker":  "Librarian",
+        "end":  14.4,
+        "text":  "At this branch, we ask for an ID and something with your current address on it.",
+        "start":  8.56
+    },
+    {
+        "speaker":  "Visitor",
+        "end":  17.1,
+        "text":  "Would a copy of my lease work?",
+        "start":  14.4
+    },
+    {
+        "speaker":  "Librarian",
+        "end":  22.94,
+        "text":  "Yes, that works here. Bring it to the front desk when you\u0027re ready.",
+        "start":  17.1
+    }
+]

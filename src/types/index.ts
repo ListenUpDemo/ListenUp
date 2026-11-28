@@ -24,6 +24,14 @@ export interface Lesson {
   icon: string;
   audioUrl: string;
   transcriptUrl: string;
+  culture?: string;
+  pronunciation?: {
+    phrase: string;
+    ipa: string;
+    tip: string;
+    start: number;
+    end: number;
+  };
   questions: Question[];
 }
 export interface Attempt {

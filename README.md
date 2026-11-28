@@ -1,6 +1,6 @@
 # ListenUp
 
-Game RPG phiêu lưu luyện nghe tiếng Anh, chạy cục bộ với React, TypeScript, Vite, React Router, Tailwind CSS, Lucide và Inter.
+Ứng dụng luyện nghe và phát âm tiếng Anh qua hành trình của một người Việt mới chuyển đến một nơi xa lạ. Chạy cục bộ với React, TypeScript, Vite, React Router, Tailwind CSS, Lucide và Inter.
 
 ## Chạy dự án
 
@@ -23,23 +23,21 @@ Build được xuất ra dist. Khi đưa lên static hosting, cấu hình SPA fa
 
 ## Trải nghiệm mẫu
 
-Từ Bản đồ ải, chọn một ải chiến dịch hoặc ải hằng ngày. Bạn cũng có thể vào ải của một bài qua Bài học → At the Coffee Shop → Bắt đầu luyện nghe. Trong mỗi chặng, nghe audio, kiểm tra đáp án rồi tiếp tục. Mở rương giữa ải và cuối ải để nhận vật phẩm. Chọn bài trên màn hình hoàn thành để xem điểm và lời giải.
+Trên trang Hành trình, chọn chủ đề hoặc bài luyện hằng ngày. Bạn cũng có thể vào Bài học → Coffee to Go → Bắt đầu luyện nghe. Mở Ghi chú văn hóa để xem bối cảnh, rồi mở Luyện phát âm tiếng Anh để nghe đoạn mẫu và nhắc lại. Transcript hỗ trợ tua theo từng câu. Bạn học có bốn biểu cảm cho trạng thái bình thường, trả lời sai, trả lời đúng và hoàn thành bài.
 
-Mỗi chặng đã phân định cho 15 vàng trước thưởng từ kiếm. Sinh mệnh tối đa là 5 và tự hồi 1 sau mỗi 10 phút. Dùng thuốc trực tiếp trong cửa hàng hoặc trang bị một loại thuốc để tự dùng một lần khi sinh mệnh về 0 trong ải. Khi hết sinh mệnh mà không thể tự dùng thuốc, lượt đó thất bại.
+Năng lượng tối đa 5 và tự hồi 1 điểm sau mỗi 10 phút. Dùng đồ ăn ở cửa hàng để hồi ngay hoặc mang theo để tự dùng một lần khi năng lượng về 0. Từ điển dùng một lượt để giữ năng lượng khi chọn sai. Ở câu thường, bạn được xem đáp án và đi tiếp. Ở câu cuối, hãy thử lại.
 
-Khiên giữ sinh mệnh khi trả lời sai và hao 1 độ bền. Ở chặng thường, khiên cho bỏ qua chặng và xem đáp án đúng. Ở chặng cuối, khiên chỉ giữ sinh mệnh và bạn vẫn phải tự trả lời đúng. Khi không có khiên còn độ bền, mỗi câu sai trừ 1 sinh mệnh và bạn phải thử lại.
+Sổ tay cụm từ cộng thêm vàng mỗi câu được tính thưởng và lưu cụm phát âm của bài. Xem cụm đã lưu ở Cửa hàng → Sổ tay cụm từ. Có thể nạp lượt dùng cho từ điển và sổ tay. Hoàn thành mọi bài luyện trong một chủ đề mở khóa thêm vật phẩm.
 
-Cửa hàng dùng vàng để mua thuốc, khiên, kiếm và pet, hoặc bảo dưỡng trang bị đã sở hữu. Hoàn thành tất cả các ải của một chủ đề để mở khóa thêm hàng.
+Nhánh Git cục bộ `backup/adventure-theme` giữ theme phiêu lưu tại commit `0531a5b`. Bài cũ, dấu trang, tiến độ đã nộp và vật phẩm đã mua vẫn đọc được trên trình duyệt.
 
-Transcript mặc định đóng, có thể mở và nhấn từng dòng để tua. Tiến độ chặng, vàng, sinh mệnh, kho đồ, dấu trang và lịch sử được lưu trên trình duyệt. Sprite nhân vật của Ozzbit Games dùng theo giấy phép cá nhân, phi thương mại. Sprite mèo từ Pet Cats Pack dùng giấy phép CC0.
-
-6 bài mẫu, 20 câu hỏi, 4 chủ đề, trình độ A1–B2. Audio WAV có sẵn, không gọi dịch vụ bên ngoài khi phát. Nội dung demo gốc được đọc bằng Windows English speech voice; giọng tổng hợp một người, không phải bản thu hội thoại thật. Có thể sinh lại trên Windows có English voice bằng:
+Danh mục hiện tại có 6 bài, 18 câu hỏi và 4 chủ đề. WAV có sẵn và dùng một giọng tổng hợp tiếng Anh. Dự án hỗ trợ nghe và nhắc lại thành tiếng. Điểm số dựa trên trắc nghiệm. Sinh lại audio trên Windows có giọng en-US bằng:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/generate-audio.ps1
 ```
 
-Transcript JSON được sinh cùng audio, dựa trên độ dài PCM. Font đóng gói từ @fontsource/inter (SIL Open Font License), icon từ lucide-react (ISC); giấy phép nằm trong các package tương ứng.
+Transcript JSON và mốc của đoạn luyện phát âm được sinh cùng audio, dựa trên độ dài PCM. Font đóng gói từ @fontsource/inter (SIL Open Font License), icon từ lucide-react (ISC); giấy phép nằm trong các package tương ứng.
 
 ## Giới hạn có chủ đích
 
@@ -56,4 +54,4 @@ Transcript JSON được sinh cùng audio, dựa trên độ dài PCM. Font đó
 - [AGENTS.md](AGENTS.md): quy tắc cho Codex và các agent phát triển tiếp.
 - [TASKS.md](TASKS.md): tiến độ, bằng chứng kiểm tra và các giai đoạn tiếp theo.
 
-Test tự động kiểm tra luật hồi sinh mệnh, khiên, kiếm, rương và lượt ải hằng ngày, cùng grading, tìm kiếm tiếng Việt và hợp đồng WAV/transcript của sáu bài. Kết quả kiểm tra trình duyệt được ghi trong TASKS.md.
+Test tự động kiểm tra chấm điểm, tìm kiếm, năng lượng, đồ ăn, từ điển, sổ tay, phần thưởng và đồng bộ WAV/transcript. Kết quả kiểm tra trình duyệt được ghi trong TASKS.md.

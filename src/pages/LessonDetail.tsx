@@ -9,7 +9,7 @@ import {
   Bookmark,
   Check,
 } from "lucide-react";
-import { lessons, topics } from "../data/mock/lessons";
+import { allLessons, allTopics, lessons } from "../data/mock/lessons";
 import {
   LessonArt,
   LevelBadge,
@@ -20,7 +20,7 @@ import {
 import { useApp } from "../app/providers/AppProvider";
 export default function LessonDetail() {
   const { slug } = useParams();
-  const lesson = lessons.find((l) => l.slug === slug);
+  const lesson = allLessons.find((l) => l.slug === slug);
   const { bookmarks, toggleBookmark, attempts } = useApp();
   if (!lesson)
     return (
@@ -67,7 +67,7 @@ export default function LessonDetail() {
             </span>
           </div>
           <p className="eyebrow">
-            {topics.find((t) => t.slug === lesson.topic)?.name}
+            {allTopics.find((t) => t.slug === lesson.topic)?.name}
           </p>
           <div className="detail-actions">
             <Link className="btn btn-primary" to={`/practice/${lesson.id}`}>
@@ -101,7 +101,11 @@ export default function LessonDetail() {
           </div>
           <div>
             <ListChecks />
-            <h3>Kiểm tra khả năng hiểu</h3>
+            <h3>
+              {lesson.pronunciation
+                ? "Nghe và nhận diện âm"
+                : "Kiểm tra khả năng hiểu"}
+            </h3>
             <p>
               Trả lời {lesson.questions.length} câu hỏi và xem giải thích cụ thể
               cho từng đáp án.
@@ -109,8 +113,19 @@ export default function LessonDetail() {
           </div>
           <div>
             <FileText />
-            <h3>Học cùng transcript</h3>
-            <p>Theo dõi từng câu theo thời gian phát và nhấn để nghe lại.</p>
+            <h3>
+              {lesson.pronunciation
+                ? "Nhắc lại theo mẫu"
+                : "Học cùng transcript"}
+            </h3>
+            {lesson.pronunciation ? (
+              <p>
+                <span lang="en-US">{lesson.pronunciation.phrase}</span>{" "}
+                {lesson.pronunciation.ipa} · {lesson.pronunciation.tip}
+              </p>
+            ) : (
+              <p>Theo dõi từng câu theo thời gian phát và nhấn để nghe lại.</p>
+            )}
           </div>
         </div>
       </div>

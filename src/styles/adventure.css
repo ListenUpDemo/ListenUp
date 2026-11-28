@@ -64,8 +64,7 @@
   background: var(--surface);
 }
 .health-display {
-  color: #aa4038;
-  gap: 3px;
+  color: #795013;
 }
 .coin-display {
   color: #764715;
@@ -87,30 +86,30 @@
 .adventure-hero {
   min-height: 425px;
   display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   align-items: center;
-  padding: clamp(32px, 6vw, 76px);
   color: #fff4d9;
 }
 .adventure-hero-copy {
   position: relative;
   z-index: 2;
   max-width: 580px;
+  padding: clamp(24px, 5vw, 68px);
+  padding-right: 0;
 }
 .adventure-hero h1 {
-  font:
-    700 clamp(48px, 6.7vw, 92px)/0.98 Georgia,
-    "Times New Roman",
-    serif;
-  letter-spacing: -0.055em;
+  font: 800 clamp(42px, 5.4vw, 76px)/1.04 var(--font);
+  letter-spacing: -0.045em;
   margin: 0 0 20px;
+  text-wrap: balance;
 }
 .adventure-hero h1 em {
   color: var(--rpg-gold);
-  font-weight: 500;
+  font-weight: 650;
 }
 .adventure-hero p {
   color: #e0ead9;
-  max-width: 350px;
+  max-width: 42ch;
   line-height: 1.65;
 }
 .adventure-actions {
@@ -137,142 +136,11 @@
 .btn-adventure-outline:hover {
   background: #284b39;
 }
-.rpg-landscape {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-.rpg-landscape > i {
-  display: block;
-  position: absolute;
-}
-.rpg-landscape {
-  background:
-    radial-gradient(circle at 80% 25%, #f4b97c41, transparent 33%),
-    linear-gradient(115deg, #162c29, #35594e 68%, #566552);
-}
-.adventure-hero .rpg-landscape::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    #132c29 0%,
-    #132c29a8 34%,
-    transparent 74%
-  );
-}
-.rpg-sun {
-  width: clamp(64px, 15vw, 170px);
-  aspect-ratio: 1;
-  top: 15%;
-  right: 14%;
-  border-radius: 50%;
-  background: #ecc182;
-  box-shadow:
-    0 0 65px #ecc18275,
-    inset 0 -14px #e7a46452;
-}
-.ridge {
-  width: 100%;
-  bottom: 0;
-}
-.ridge-far {
-  height: 74%;
-  background: #526e60;
-  clip-path: polygon(
-    0 51%,
-    12% 32%,
-    20% 52%,
-    38% 27%,
-    46% 40%,
-    59% 11%,
-    65% 19%,
-    74% 0,
-    84% 34%,
-    92% 19%,
-    100% 43%,
-    100% 100%,
-    0 100%
-  );
-}
-.ridge-near {
-  height: 62%;
-  background: #294f40;
-  clip-path: polygon(
-    0 55%,
-    14% 18%,
-    29% 57%,
-    46% 50%,
-    56% 25%,
-    68% 59%,
-    82% 34%,
-    95% 7%,
-    100% 19%,
-    100% 100%,
-    0 100%
-  );
-}
-.rpg-ground {
-  inset: auto 0 0;
-  height: 31%;
-  background:
-    repeating-linear-gradient(
-      174deg,
-      transparent 0 20px,
-      #47684b57 21px 23px,
-      transparent 24px 42px
-    ),
-    #213e32;
-  clip-path: polygon(
-    0 8%,
-    15% 17%,
-    30% 14%,
-    45% 33%,
-    70% 0,
-    83% 13%,
-    100% 4%,
-    100% 100%,
-    0 100%
-  );
-}
-.rpg-trees {
-  position: absolute;
-  bottom: 10%;
-  height: auto;
-  width: 19%;
-  color: #19392f;
-  stroke-width: 1.05;
-}
-.trees-left {
-  left: 23%;
-}
-.trees-right {
-  right: -2%;
-  width: 24%;
-}
-.rpg-mountain {
-  position: absolute;
-  right: 16%;
-  width: 31%;
-  height: auto;
-  bottom: 19%;
-  color: #6c8870;
-  opacity: 0.4;
-}
-.hero-party {
-  position: absolute;
-  right: 20%;
-  bottom: 12%;
-  z-index: 1;
-  display: flex;
-  align-items: end;
-}
 .rpg-sprite {
-  --sprite-width: 56px;
-  --sprite-height: 72px;
+  --sprite-width: 32px;
+  --sprite-height: 26px;
   --sprite-scale: 1;
+  --sprite-frames: 10;
   display: block;
   flex: none;
   width: calc(var(--sprite-width) * var(--sprite-scale));
@@ -285,17 +153,7 @@
   image-rendering: pixelated;
   animation: sprite-cycle 1.35s steps(var(--sprite-frames)) infinite;
 }
-.rpg-sprite-cat {
-  --sprite-width: 32px;
-  --sprite-height: 26px;
-}
-.rpg-sprite-walk {
-  animation-duration: 0.58s;
-}
-.hero-party .rpg-sprite {
-  --sprite-scale: 3.15;
-  filter: drop-shadow(4px 7px 1px #132e22);
-}
+
 @keyframes sprite-cycle {
   to {
     background-position-x: calc(
@@ -353,10 +211,7 @@
   margin-bottom: 17px;
 }
 .campaign-heading h2 {
-  font:
-    700 clamp(30px, 4vw, 43px)/1.1 Georgia,
-    "Times New Roman",
-    serif;
+  font: 750 clamp(29px, 4vw, 40px)/1.15 var(--font);
 }
 .campaign-heading > span {
   display: flex;
@@ -375,13 +230,13 @@
   padding: 15px;
   border-top: 3px solid var(--region, #587459);
 }
-.campaign-card[data-region="travel"] {
+.campaign-card[data-region="arrival"] {
   --region: #4b777b;
 }
-.campaign-card[data-region="work"] {
+.campaign-card[data-region="workplace"] {
   --region: #846347;
 }
-.campaign-card[data-region="stories"] {
+.campaign-card[data-region="community"] {
   --region: #746583;
 }
 .campaign-region {
@@ -447,26 +302,8 @@
 }
 .expedition-heading h1,
 .adventure-shop h1 {
-  font:
-    700 clamp(31px, 5vw, 52px)/1.07 Georgia,
-    "Times New Roman",
-    serif;
+  font: 750 clamp(29px, 5vw, 48px)/1.13 var(--font);
   margin: 0;
-}
-.stage-map {
-  min-height: 163px;
-  margin-bottom: 16px;
-}
-.stage-map .rpg-sun {
-  width: 66px;
-  top: 9%;
-}
-.stage-map .rpg-trees {
-  max-width: 115px;
-}
-.stage-track {
-  position: absolute;
-  inset: auto 12px 13px;
 }
 .stage-track ol {
   position: relative;
@@ -475,6 +312,19 @@
   list-style: none;
   margin: 0;
   padding: 0;
+}
+.stage-map {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 11px 12px;
+  margin-bottom: 16px;
+}
+.stage-track {
+  position: relative;
+  flex: 1;
+  min-width: 0;
 }
 .stage-path {
   position: absolute;
@@ -505,29 +355,6 @@
 .stage-track li.visited:not([aria-current]) > span {
   background: #466c50;
   color: #fff9e9;
-}
-.stage-party {
-  display: flex;
-  align-items: end;
-  position: absolute;
-  bottom: calc(100% + 5px);
-  z-index: 1;
-  transform: translateX(-50%);
-  transition: left 700ms ease-in-out;
-}
-.stage-party .rpg-sprite-cat {
-  position: absolute;
-  right: 70%;
-}
-.stage-party:has(.rpg-sprite-cat) {
-  bottom: calc(100% + 9px);
-}
-.stage-party .rpg-sprite-cat {
-  bottom: -4px;
-}
-.stage-party-start .rpg-sprite-cat {
-  left: 68%;
-  right: auto;
 }
 .expedition-panel {
   padding: clamp(17px, 4vw, 29px);
@@ -719,22 +546,7 @@
 }
 @media (max-width: 640px) {
   .adventure-hero {
-    min-height: 440px;
     align-items: start;
-    padding: 24px;
-  }
-  .adventure-hero h1 {
-    font-size: clamp(38px, 10vw, 62px);
-  }
-  .adventure-hero .rpg-sun {
-    top: 43%;
-  }
-  .hero-party {
-    right: 12%;
-    bottom: 7%;
-  }
-  .hero-party .rpg-sprite {
-    --sprite-scale: 1.9;
   }
   .daily-banner {
     grid-template-columns: auto 1fr;
@@ -752,9 +564,6 @@
   .loadout-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .stage-track {
-    inset-inline: 5px;
-  }
   .stage-track li > span {
     min-height: 24px;
   }
@@ -763,7 +572,270 @@
   .rpg-sprite {
     animation: none;
   }
-  .stage-party {
-    transition: none;
+}
+
+.adventure-hero .journey-kicker {
+  color: #f8d594;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.journey-portrait {
+  align-self: stretch;
+  position: relative;
+  display: grid;
+  align-items: end;
+  justify-items: center;
+  isolation: isolate;
+  min-height: 390px;
+  background: radial-gradient(
+    ellipse at 55% 56%,
+    #edbf7d 0%,
+    #a47748 39%,
+    transparent 75%
+  );
+}
+.city-skyline {
+  position: absolute;
+  inset: 23% 7% 0;
+  z-index: -1;
+  background: linear-gradient(#475f53, #203d32);
+  clip-path: polygon(
+    0 64%,
+    7% 64%,
+    7% 38%,
+    15% 38%,
+    15% 58%,
+    21% 58%,
+    21% 22%,
+    25% 22%,
+    25% 12%,
+    28% 12%,
+    28% 22%,
+    32% 22%,
+    32% 48%,
+    42% 48%,
+    42% 35%,
+    51% 35%,
+    51% 58%,
+    63% 58%,
+    63% 18%,
+    68% 18%,
+    68% 4%,
+    70% 4%,
+    70% 18%,
+    75% 18%,
+    75% 42%,
+    84% 42%,
+    84% 32%,
+    90% 32%,
+    90% 53%,
+    100% 53%,
+    100% 100%,
+    0 100%
+  );
+}
+.character-portrait {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+}
+.journey-portrait > .character-portrait {
+  position: absolute;
+  bottom: 0;
+  height: 94%;
+  width: 92%;
+}
+.journey-name {
+  position: absolute;
+  right: clamp(12px, 4vw, 52px);
+  bottom: 18px;
+  display: grid;
+  gap: 2px;
+  padding: 8px 13px;
+  border: 1px solid #e6cc9088;
+  border-radius: 10px;
+  background: var(--rpg-ink);
+}
+.journey-name small {
+  color: #e0ead9;
+}
+.journey-pet {
+  position: absolute;
+  bottom: 16px;
+  left: 12%;
+}
+.journey-pet .rpg-sprite {
+  --sprite-scale: 1.6;
+}
+.campaign-description {
+  color: var(--muted);
+  font-size: 0.83rem;
+  margin: 10px 0 0;
+}
+.campaign-region svg {
+  flex: none;
+}
+.culture-note {
+  padding: 11px 15px;
+  margin-bottom: 12px;
+}
+.culture-note summary,
+.pronunciation-panel summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.culture-note p,
+.pronunciation-panel p {
+  margin: 7px 0;
+}
+.pronunciation-panel {
+  border-top: 1px solid var(--border);
+  margin-top: 14px;
+  padding-top: 11px;
+}
+.pronunciation-panel div {
+  padding: 8px 0 0;
+}
+.pronunciation-panel span {
+  margin-inline-start: 6px;
+  color: var(--muted);
+}
+.stage-question-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 0.48fr);
+  column-gap: 14px;
+  align-items: start;
+}
+.stage-question-layout > .question-card {
+  margin: 0;
+}
+.stage-question-layout > .character-reaction {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  position: sticky;
+  top: 12px;
+}
+.character-reaction {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+.character-art {
+  height: 210px;
+  background: radial-gradient(ellipse at center bottom, #e7c48c, #f4e9d1 75%);
+  overflow: hidden;
+}
+.character-illustration {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  padding-top: 8px;
+}
+.character-dialogue {
+  padding: 12px 14px;
+}
+.character-dialogue strong {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--primary-dark);
+}
+.character-dialogue svg {
+  flex: none;
+}
+.character-dialogue p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+.character-correct,
+.character-complete {
+  border-color: #81ab8b;
+  background: #e9f1e7;
+}
+.character-correct .character-art,
+.character-complete .character-art {
+  background: radial-gradient(ellipse at center bottom, #8db899, #dceadb 78%);
+}
+.character-correct .character-illustration,
+.character-complete .character-illustration {
+  animation: character-cheer 450ms ease-out both;
+}
+.character-retry .character-art,
+.character-dictionary .character-art {
+  background: radial-gradient(ellipse at center bottom, #ebc49f, #f7eadb 78%);
+}
+.expedition-panel .character-reaction {
+  display: grid;
+  grid-template-columns: minmax(128px, 0.48fr) minmax(0, 1fr);
+  align-items: center;
+  margin: 14px 0;
+}
+.expedition-panel .character-art {
+  height: clamp(150px, 25vw, 250px);
+}
+.expedition-panel .character-dialogue strong {
+  font-size: clamp(1rem, 2.8vw, 1.6rem);
+}
+.notebook-panel {
+  padding: 16px;
+  margin-top: 16px;
+}
+.notebook-panel h2 {
+  font-size: 1.2rem;
+}
+@keyframes character-cheer {
+  0% {
+    transform: translateY(10%);
+  }
+  58% {
+    transform: translateY(-3%);
+  }
+}
+@media (max-width: 700px) {
+  .stage-question-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+  .stage-question-layout > .character-reaction {
+    position: static;
+    grid-column: 1;
+    grid-row: auto;
+    display: grid;
+    grid-template-columns: 118px minmax(0, 1fr);
+    align-items: center;
+  }
+  .stage-question-layout .character-art {
+    height: 142px;
+  }
+  .stage-question-layout > .stage-submit,
+  .stage-question-layout > .stage-reward {
+    margin-top: 0;
+  }
+}
+@media (max-width: 640px) {
+  .adventure-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .adventure-hero-copy {
+    padding: 24px;
+  }
+  .adventure-hero h1 {
+    font-size: clamp(32px, 9.4vw, 56px);
+  }
+  .journey-portrait {
+    min-height: 280px;
+    margin-top: -12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .character-correct .character-illustration,
+  .character-complete .character-illustration {
+    animation: none;
   }
 }

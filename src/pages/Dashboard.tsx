@@ -8,7 +8,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useApp } from "../app/providers/AppProvider";
-import { lessons } from "../data/mock/lessons";
+import { allLessons, lessons } from "../data/mock/lessons";
 import { LessonCard, StatCard } from "../components/ui";
 import ProgressChart from "../features/progress/ProgressChart";
 export default function Dashboard() {
@@ -41,7 +41,7 @@ export default function Dashboard() {
           icon={<BookOpen size={21} />}
           label="Bài đã hoàn thành"
           value={unique}
-          note={`Trong ${lessons.length} bài học hiện có`}
+          note="Từ các lượt đã nộp"
         />
         <StatCard
           icon={<Target size={21} />}
@@ -79,7 +79,7 @@ export default function Dashboard() {
       {attempts.length ? (
         <div className="history-list">
           {[...attempts].reverse().map((a) => {
-            const lesson = lessons.find((l) => l.id === a.lessonId);
+            const lesson = allLessons.find((l) => l.id === a.lessonId);
             return (
               <Link
                 className="history-item card"

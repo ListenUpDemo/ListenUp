@@ -1,0 +1,274 @@
+[
+  {
+    "id": "us-airport",
+    "title": "Picking Up My Suitcase",
+    "level": "A1",
+    "topic": "arrival",
+    "culture": "Ở sân bay, biển “Baggage Claim” chỉ khu nhận hành lý ký gửi. Hãy xem màn hình để tìm băng chuyền của chuyến bay.",
+    "sample": 2,
+    "ipa": "/ˈbæɡɪdʒ kleɪm/",
+    "tip": "Nhấn âm đầu của baggage. Giữ /æ/ mở miệng, rồi khép môi ở /m/ cuối claim.",
+    "lines": [
+      [
+        "Passenger",
+        "Excuse me. I just landed. Where can I pick up my suitcase?"
+      ],
+      [
+        "Airport staff",
+        "Follow the signs for baggage claim. Your bags are on carousel six."
+      ],
+      ["Passenger", "Baggage claim."],
+      ["Passenger", "Could you say that number again, please?"],
+      [
+        "Airport staff",
+        "Six. Take the elevator down one floor. The carousel is on your left."
+      ]
+    ],
+    "questions": [
+      {
+        "prompt": "Which sign should she follow?",
+        "options": ["Baggage Claim", "Departures", "Ground Transportation"],
+        "answer": 0,
+        "explanation": "Nhân viên hướng hành khách theo biển “Baggage Claim” để lấy vali."
+      },
+      {
+        "prompt": "Which carousel does she need?",
+        "options": ["Five", "Six", "Seven"],
+        "answer": 1,
+        "explanation": "Nhân viên nhắc lại “six”. Khi nói, giữ cụm /ks/ ở cuối."
+      },
+      {
+        "prompt": "In “baggage,” which syllable is stressed?",
+        "options": ["The first", "The second", "Neither"],
+        "answer": 0,
+        "explanation": "Trọng âm rơi vào âm tiết đầu: /ˈbæɡɪdʒ/."
+      }
+    ]
+  },
+  {
+    "id": "us-bus",
+    "title": "Finding the Downtown Bus",
+    "level": "A2",
+    "topic": "arrival",
+    "culture": "Ở điểm dừng xe buýt, cùng một số tuyến có thể chạy hai hướng. Hỏi thêm tên điểm đến trước khi lên xe.",
+    "sample": 1,
+    "ipa": "/ˈdaʊntaʊn/",
+    "tip": "Downtown có /aʊ/ trong cả hai âm tiết. Bắt đầu mở miệng rồi tròn môi nhẹ.",
+    "lines": [
+      [
+        "Passenger",
+        "Hi. I'm trying to get to the library. Is this the bus that goes downtown?"
+      ],
+      ["Driver", "Downtown?"],
+      [
+        "Driver",
+        "Yes, this is the number twelve. I can tell you when we get to your stop."
+      ],
+      ["Passenger", "Thanks. Can I pay with my phone on this bus?"],
+      ["Driver", "Yes. Just tap your phone on the reader next to me."]
+    ],
+    "questions": [
+      {
+        "prompt": "Where is the passenger going?",
+        "options": ["The airport", "The library", "A grocery store"],
+        "answer": 1,
+        "explanation": "Cô ấy muốn đến thư viện và hỏi xe có đi về trung tâm không."
+      },
+      {
+        "prompt": "How can she pay on this bus?",
+        "options": ["With cash", "With a phone", "With a paper ticket"],
+        "answer": 1,
+        "explanation": "Tài xế nói “tap your phone”, tức chạm điện thoại vào máy đọc."
+      },
+      {
+        "prompt": "Which vowel sound occurs twice in “downtown”?",
+        "options": ["/i/", "/eɪ/", "/aʊ/"],
+        "answer": 2,
+        "explanation": "Cả down và town đều chứa /aʊ/."
+      }
+    ]
+  },
+  {
+    "id": "us-coffee",
+    "title": "Coffee to Go",
+    "level": "A1",
+    "topic": "daily-life",
+    "culture": "Khi gọi đồ ăn hoặc thức uống, “for here” nghĩa là dùng tại quán, còn “to go” nghĩa là mang đi.",
+    "sample": 3,
+    "ipa": "/tə ˈɡoʊ/",
+    "tip": "Nói nhẹ và ngắn ở to /tə/, rồi nhấn go. Hơi tròn môi ở cuối /oʊ/.",
+    "lines": [
+      ["Barista", "Hi! What can I get for you today?"],
+      ["Customer", "Could I get a small coffee with oat milk, please?"],
+      ["Barista", "Sure. Is that for here or to go?"],
+      ["Customer", "To go, please."],
+      ["Barista", "Got it. We'll call your name at the pickup counter."],
+      ["Customer", "Thanks. I’ll wait by the pickup counter."]
+    ],
+    "questions": [
+      {
+        "prompt": "What kind of milk does the customer ask for?",
+        "options": ["Whole milk", "Oat milk", "Almond milk"],
+        "answer": 1,
+        "explanation": "Khách gọi cà phê với “oat milk”, tức sữa yến mạch."
+      },
+      {
+        "prompt": "What does “to go” mean here?",
+        "options": [
+          "Drink it at the café",
+          "Cancel the order",
+          "Take the drink away"
+        ],
+        "answer": 2,
+        "explanation": "“To go” là mang đi. Nếu uống tại quán, hãy nói “for here”."
+      },
+      {
+        "prompt": "Which word carries the main stress in “to go”?",
+        "options": ["To", "Go", "Both equally"],
+        "answer": 1,
+        "explanation": "Go mang trọng âm. To thường được nói nhẹ thành /tə/."
+      }
+    ]
+  },
+  {
+    "id": "us-neighbor",
+    "title": "Meeting My Neighbor",
+    "level": "A2",
+    "topic": "community",
+    "culture": "“How’s it going?” có thể chỉ là một lời chào thân mật. Trong cuộc gặp thoáng qua, bạn có thể đáp ngắn gọn rồi hỏi lại.",
+    "sample": 1,
+    "ipa": "/haʊz ɪt ˈɡoʊɪŋ/",
+    "tip": "Nối âm /z/ cuối how’s sang it, rồi nhấn âm đầu của going.",
+    "lines": [
+      ["New neighbor", "Hi there! I just moved into the apartment next door."],
+      ["Jordan", "How's it going?"],
+      ["New neighbor", "Pretty good, thanks. How about you?"],
+      [
+        "Jordan",
+        "Good! A few neighbors are having a potluck on Saturday. Want to come?"
+      ],
+      ["New neighbor", "I'd love to. I'll bring something to share."]
+    ],
+    "questions": [
+      {
+        "prompt": "What does Jordan say as a casual greeting?",
+        "options": [
+          "Where are you going?",
+          "How’s it going?",
+          "Who are you looking for?"
+        ],
+        "answer": 1,
+        "explanation": "“How’s it going?” là lời hỏi thăm ngắn khi gặp nhau."
+      },
+      {
+        "prompt": "What will the new neighbor bring to the potluck?",
+        "options": ["A dish to share", "A ticket", "A name tag"],
+        "answer": 0,
+        "explanation": "Ở potluck, người tham dự thường mang món ăn để chia sẻ."
+      },
+      {
+        "prompt": "What sound at the end of “how’s” links into “it”?",
+        "options": ["/s/", "/ʃ/", "/z/"],
+        "answer": 2,
+        "explanation": "How’s kết thúc bằng âm hữu thanh /z/. Nối nhẹ âm này với it."
+      }
+    ]
+  },
+  {
+    "id": "us-library",
+    "title": "Asking About a Library Card",
+    "level": "B1",
+    "topic": "community",
+    "culture": "Khi đăng ký thẻ thư viện công, hãy hỏi chi nhánh về giấy tờ họ chấp nhận. Yêu cầu có thể khác tùy thư viện.",
+    "sample": 1,
+    "ipa": "/ˈlaɪˌbrɛri kɑrd/",
+    "tip": "Nhấn âm đầu của library, giữ cụm /br/ liền nhau và giữ âm /r/ trong card.",
+    "lines": [
+      [
+        "Visitor",
+        "Hi. I'm new to the neighborhood. What do I need to borrow books here?"
+      ],
+      ["Librarian", "A library card."],
+      [
+        "Librarian",
+        "At this branch, we ask for an ID and something with your current address on it."
+      ],
+      ["Visitor", "Would a copy of my lease work?"],
+      [
+        "Librarian",
+        "Yes, that works here. Bring it to the front desk when you're ready."
+      ]
+    ],
+    "questions": [
+      {
+        "prompt": "What does the visitor want to do?",
+        "options": ["Borrow books", "Sell books", "Reserve a study room"],
+        "answer": 0,
+        "explanation": "Cô ấy hỏi cần gì để mượn sách: “What do I need to borrow books here?”"
+      },
+      {
+        "prompt": "What can she bring to show her address at this branch?",
+        "options": ["A bus pass", "A copy of her lease", "A grocery receipt"],
+        "answer": 1,
+        "explanation": "Librarian xác nhận bản sao hợp đồng thuê nhà được chấp nhận tại chi nhánh này."
+      },
+      {
+        "prompt": "Where is the main stress in “library”?",
+        "options": [
+          "The first syllable",
+          "The second syllable",
+          "The last syllable"
+        ],
+        "answer": 0,
+        "explanation": "Library nhấn ở âm tiết đầu /ˈlaɪ/."
+      }
+    ]
+  },
+  {
+    "id": "us-work",
+    "title": "Checking In With My Team",
+    "level": "B1",
+    "topic": "workplace",
+    "culture": "Trong nhiều nhóm làm việc, “check in” là trao đổi ngắn để cập nhật tình hình. Bạn có thể xác nhận giờ và việc cần chuẩn bị.",
+    "sample": 2,
+    "ipa": "/tʃɛk ɪn/",
+    "tip": "Bắt đầu check bằng /tʃ/ rồi nối /k/ cuối từ sang nguyên âm /ɪ/ trong in.",
+    "lines": [
+      [
+        "Manager",
+        "Welcome aboard. Could we check in after lunch to go over your first week?"
+      ],
+      ["New employee", "Sure. Just to confirm, should I bring my notes?"],
+      ["New employee", "Check in?"],
+      [
+        "Manager",
+        "Yes, please bring your notes. Let's meet at one thirty in the break room."
+      ],
+      ["New employee", "One thirty in the break room. Got it. Thanks!"]
+    ],
+    "questions": [
+      {
+        "prompt": "Why does the manager want to check in?",
+        "options": [
+          "To review her first week",
+          "To schedule a job interview",
+          "To change her work location"
+        ],
+        "answer": 0,
+        "explanation": "Quản lý muốn trao đổi nhanh về tuần đầu làm việc của nhân viên mới."
+      },
+      {
+        "prompt": "What time will they meet?",
+        "options": ["Twelve thirty", "One thirteen", "One thirty"],
+        "answer": 2,
+        "explanation": "Quản lý nói “one thirty”. Trong thirty, trọng âm ở âm đầu."
+      },
+      {
+        "prompt": "Which consonant at the end of “check” links into “in”?",
+        "options": ["/t/", "/k/", "/g/"],
+        "answer": 1,
+        "explanation": "Nối /k/ cuối check sang /ɪ/ đầu in, tránh chèn nguyên âm ở giữa."
+      }
+    ]
+  }
+]

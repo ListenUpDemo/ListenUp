@@ -1,4 +1,5 @@
-# Original demo scripts, synthesized locally using the Windows English voice.
+param([switch]$Legacy)
+# Original demo scripts, synthesized locally using a Windows US English voice.
 Add-Type -AssemblyName System.Speech
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
@@ -57,9 +58,13 @@ $stories = @(
     @('Speaker','I would recommend a hybrid approach. Spending a few days in the office allows teams to build relationships, while remote days provide space for focused work.'),
     @('Speaker','Ultimately, the goal should be to measure results rather than hours spent at a desk. Organizations that trust their employees are more likely to create a sustainable working culture.')) }
 )
+if (-not $Legacy) {
+  $stories = Get-Content (Join-Path $root 'src/data/mock/us-lessons.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+}
+$timings = [ordered]@{}
 $synth = New-Object System.Speech.Synthesis.SpeechSynthesizer
-$voice = $synth.GetInstalledVoices() | Where-Object { $_.VoiceInfo.Culture.Name -like 'en-*' } | Select-Object -First 1
-if (-not $voice) { throw 'An English Windows speech voice is required.' }
+$voice = $synth.GetInstalledVoices() | Where-Object { $_.Enabled -and $_.VoiceInfo.Culture.Name -eq 'en-US' } | Select-Object -First 1
+if (-not $voice) { throw 'A US English Windows speech voice is required.' }
 $synth.SelectVoice($voice.VoiceInfo.Name)
 $synth.Rate = -1
 $format = New-Object System.Speech.AudioFormat.SpeechAudioFormatInfo(16000, [System.Speech.AudioFormat.AudioBitsPerSample]::Sixteen, [System.Speech.AudioFormat.AudioChannel]::Mono)
@@ -74,7 +79,8 @@ foreach ($story in $stories) {
     $transcript += @{start=[Math]::Round($start,2); end=[Math]::Round($end,2); speaker=$line[0]; text=$line[1]}
   }
   $synth.SetOutputToNull()
-  $audioPath = Join-Path $root "public/assets/audio/$($story.level)/$($story.id).wav"
+  $folder = if ($Legacy) { $story.level } elseif ($story.level -eq 'B1') { 'intermediate' } else { 'beginner' }
+  $audioPath = Join-Path $root "public/assets/audio/$folder/$($story.id).wav"
   $pcm = $stream.ToArray()
   $file = [IO.File]::Create($audioPath)
   $writer = New-Object IO.BinaryWriter($file)
@@ -86,7 +92,15 @@ foreach ($story in $stories) {
   $writer.Write([Text.Encoding]::ASCII.GetBytes('data')); $writer.Write([int]$pcm.Length); $writer.Write($pcm)
   $writer.Dispose()
   $transcript | ConvertTo-Json -Depth 4 | Set-Content -Encoding UTF8 (Join-Path $root "public/assets/transcripts/$($story.id).json")
+  if (-not $Legacy) {
+    $sample = $transcript[$story.sample]
+    $timings[$story.id] = [ordered]@{duration=[Math]::Round($end); start=$sample.start; end=$sample.end; folder=$folder}
+  }
   Write-Output "$($story.id): $([Math]::Round($end,1)) seconds"
   $stream.Dispose()
 }
 $synth.Dispose()
+if (-not $Legacy) {
+  $json = $timings | ConvertTo-Json -Depth 4
+  [IO.File]::WriteAllText((Join-Path $root 'src/data/mock/usAudioTimings.json'), $json)
+}

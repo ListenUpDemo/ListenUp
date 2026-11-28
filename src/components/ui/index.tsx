@@ -19,7 +19,7 @@ import type {
 import { Link } from "react-router-dom";
 import type { Lesson, Level } from "../../types";
 import { useApp } from "../../app/providers/AppProvider";
-import { levelLabels, topics } from "../../data/mock/lessons";
+import { allTopics, levelLabels } from "../../data/mock/lessons";
 export function Button({
   children,
   variant = "primary",
@@ -138,7 +138,7 @@ export function LessonCard({ lesson }: { lesson: Lesson }) {
         </Link>
         <p className="lesson-description">{lesson.description}</p>
         <div className="lesson-meta">
-          <span>{topics.find((t) => t.slug === lesson.topic)?.name}</span>
+          <span>{allTopics.find((t) => t.slug === lesson.topic)?.name}</span>
           <span>·</span>
           <span>{Math.ceil(lesson.duration / 60)} phút</span>
         </div>

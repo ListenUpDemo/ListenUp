@@ -9,6 +9,7 @@ import {
   Headphones,
 } from "lucide-react";
 import { useApp } from "../../app/providers/AppProvider";
+import type { Lesson } from "../../types";
 import { ErrorState } from "../ui";
 export const formatTime = (seconds: number) =>
   `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
@@ -16,10 +17,12 @@ export default function AudioPlayer({
   src,
   audioRef,
   onTimeChange,
+  pronunciation,
 }: {
   src: string;
   audioRef: RefObject<HTMLAudioElement | null>;
   onTimeChange: (time: number) => void;
+  pronunciation?: Lesson["pronunciation"];
 }) {
   const { preferences, setPreferences } = useApp();
   const [playing, setPlaying] = useState(false);
@@ -28,6 +31,7 @@ export default function AudioPlayer({
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);
   const playRequest = useRef(0);
+  const clip = useRef<{ start: number; end: number } | null>(null);
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.playbackRate = preferences.speed;
@@ -35,6 +39,8 @@ export default function AudioPlayer({
     }
   }, [preferences.speed, preferences.volume, audioRef]);
   useEffect(() => {
+    clip.current = null;
+    playRequest.current++;
     setCurrent(0);
     setDuration(0);
     setPlaying(false);
@@ -42,28 +48,42 @@ export default function AudioPlayer({
   }, [src]);
   const seek = (value: number) => {
     if (audioRef.current && duration) {
+      clip.current = null;
       audioRef.current.currentTime = Math.max(0, Math.min(duration, value));
       setCurrent(audioRef.current.currentTime);
       onTimeChange(audioRef.current.currentTime);
     }
   };
-  const toggle = async () => {
-    const audio = audioRef.current;
-    if (!audio) return;
+  const play = async (audio: HTMLAudioElement) => {
     const request = ++playRequest.current;
-    if (!audio.paused) {
-      audio.pause();
-      return;
-    }
     try {
       await audio.play();
     } catch (e) {
       if (
         request === playRequest.current &&
         (!(e instanceof DOMException) || e.name !== "AbortError")
-      )
+      ) {
+        clip.current = null;
         setError("Không thể phát audio. Hãy thử tải lại.");
+      }
     }
+  };
+  const toggle = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    clip.current = null;
+    if (audio.paused) void play(audio);
+    else {
+      playRequest.current++;
+      audio.pause();
+    }
+  };
+  const playSample = () => {
+    const audio = audioRef.current;
+    if (!audio || !pronunciation || !duration) return;
+    clip.current = pronunciation;
+    audio.currentTime = pronunciation.start;
+    void play(audio);
   };
   return (
     <div className="audio-player card">
@@ -76,8 +96,21 @@ export default function AudioPlayer({
           setError("");
         }}
         onTimeUpdate={(e) => {
-          setCurrent(e.currentTarget.currentTime);
-          onTimeChange(e.currentTarget.currentTime);
+          const audio = e.currentTarget;
+          if (clip.current && audio.currentTime >= clip.current.end) {
+            clip.current = null;
+            audio.pause();
+          }
+          setCurrent(audio.currentTime);
+          onTimeChange(audio.currentTime);
+        }}
+        onSeeking={(e) => {
+          const time = e.currentTarget.currentTime;
+          if (
+            clip.current &&
+            (time < clip.current.start - 0.01 || time > clip.current.end)
+          )
+            clip.current = null;
         }}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
@@ -96,7 +129,11 @@ export default function AudioPlayer({
         <span className="audio-label">
           <Headphones size={18} /> LẮNG NGHE VÀ KHÁM PHÁ
         </span>
-        <span className="badge neutral">English · Demo audio</span>
+        <span className="badge neutral">
+          {pronunciation
+            ? "Tiếng Anh · Giọng tổng hợp"
+            : "English · Demo audio"}
+        </span>
       </div>
       <div className="audio-timeline">
         <span>{formatTime(current)}</span>
@@ -176,6 +213,25 @@ export default function AudioPlayer({
           />
         </div>
       </div>
+      {pronunciation && (
+        <details className="pronunciation-panel">
+          <summary>Luyện phát âm tiếng Anh</summary>
+          <div>
+            <p>
+              <strong lang="en-US">{pronunciation.phrase}</strong>{" "}
+              <span>{pronunciation.ipa}</span>
+            </p>
+            <p>{pronunciation.tip} Nghe mẫu rồi nhắc lại thành tiếng.</p>
+            <button
+              className="btn btn-secondary btn-small"
+              onClick={playSample}
+              disabled={!duration || !!error}
+            >
+              <Volume2 size={16} /> Nghe mẫu phát âm
+            </button>
+          </div>
+        </details>
+      )}
       {waiting && (
         <p role="status" className="muted">
           Đang tải audio…

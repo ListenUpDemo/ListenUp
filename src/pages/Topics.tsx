@@ -8,9 +8,9 @@ export default function Topics() {
       <div className="page-heading">
         <span className="eyebrow">HỌC TỪ NHỮNG ĐIỀU GẦN GŨI</span>
         <h1>
-          Chủ đề bạn yêu thích<span className="heading-dot">.</span>
+          Chủ đề đời thường<span className="heading-dot">.</span>
         </h1>
-        <p>Từ tách cà phê buổi sáng đến hành trình khám phá thế giới.</p>
+        <p>Tìm hiểu văn hóa và luyện phát âm qua các tình huống đời thường.</p>
       </div>
       <div className="topics-large-grid">
         {topics.map((t) => (

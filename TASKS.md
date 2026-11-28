@@ -1,8 +1,33 @@
 # Công việc và tiến độ ListenUp
 
-Cập nhật 28/11/2026. Phạm vi bàn giao gồm frontend RPG phiêu lưu chạy cục bộ. Đặc tả đầy đủ nằm trong PROJECT_SPEC.md. Quy tắc phát triển nằm trong AGENTS.md.
+Cập nhật 28/11/2026. Phạm vi hiện tại là frontend luyện tiếng Anh chạy cục bộ. Đặc tả đầy đủ nằm trong PROJECT_SPEC.md. Quy tắc phát triển nằm trong AGENTS.md.
 
-## Giao diện và tiến trình RPG
+## Hành trình
+
+### Đã triển khai
+
+- Lưu theme phiêu lưu vào nhánh cục bộ `backup/adventure-theme` tại `0531a5b`.
+- Chuyển danh mục chính sang 4 chủ đề văn hóa đời thường, 6 bài, 18 câu hỏi. Mỗi bài có hội thoại en-US, transcript và mẫu nghe riêng với IPA, hướng dẫn nhắc lại.
+- Bạn học dùng hình toàn thân ở trang chủ. Khung phản hồi ghép bốn biểu cảm vào hai tư thế thân từ bộ vector cho trạng thái bình thường, trả lời sai, trả lời đúng và hoàn thành. Thiết bị nhỏ có khung phản hồi sát nút đi tiếp.
+- Bỏ tên riêng trong giao diện, câu hỏi, hội thoại và transcript. Tạo lại audio demo và mốc phát âm để khớp hội thoại.
+- Dùng nhãn chủ đề và hành trình không gắn với một quốc gia. Audio và nội dung luyện phát âm tiếp tục dùng bộ mẫu hiện có.
+- Đổi sinh mệnh thành năng lượng, dùng đồ ăn để hồi. Từ điển dùng lượt khi sai. Sổ tay cộng vàng theo hệ số cũ và lưu cụm phát âm. Giữ dữ liệu cục bộ đã có.
+
+### Đã kiểm chứng
+
+- `npm test` đạt 23/23, gồm WAV/transcript và mốc phát âm mới, chấm điểm, hồi năng lượng, lượt từ điển, thưởng và lưu cụm từ không trùng.
+- `npm run build` thành công.
+- Chrome kiểm tra thư viện → bài luyện → kết quả, dấu trang và phản hồi qua tải lại, phát/tạm dừng, tua transcript, phát riêng đoạn mẫu, hoàn thành chủ đề, ăn để hồi năng lượng, dùng lượt từ điển khi sai và ghi sổ tay. Kiểm tra trang chủ và bài luyện không tràn ngang tại 360, 768 và 1280px.
+- Sau khi thay minh họa, Chrome xác nhận tư thế toàn thân trên trang chủ, tư thế luyện và tư thế phản hồi. Đã chạy lại các kiểm tra trên.
+- Chrome xác nhận bốn biểu cảm hiển thị đúng trạng thái, kể cả câu sai có dùng từ điển. Đã kiểm tra transcript dùng danh xưng chung và audio phát được sau khi tạo lại.
+- Sau khi ghép thân, Chrome xác nhận cả bốn ảnh phản hồi tương ứng với trạng thái. Đã xem bố cục trả lời đúng và hoàn thành ở 360px, đồng thời chạy lại kiểm thử và build.
+
+### Còn lại
+
+- Giọng mẫu là giọng tổng hợp. Bài tập phát âm theo hình thức nghe rồi nhắc lại. Điểm phản ánh câu trả lời trắc nghiệm.
+- Chưa kiểm tra Firefox, Safari, thiết bị thật hoặc thẩm định nội dung với người dạy phát âm. Ảnh tại `docs/screenshots` là ảnh lịch sử.
+
+## Lịch sử giao diện và tiến trình RPG
 
 ### Đã triển khai
 

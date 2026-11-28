@@ -1,4 +1,4 @@
-import { lessons, levelLabels, topics } from "./lessons";
+import { allLessons, allTopics, lessons, levelLabels, topics } from "./lessons";
 import type { Lesson } from "../../types";
 import type { Expedition, QuestionStage } from "../../types/adventure";
 
@@ -12,9 +12,9 @@ const stagesFor = (selection: Lesson[]): QuestionStage[] =>
   );
 
 const levels = Object.keys(levelLabels) as (keyof typeof levelLabels)[];
-export const campaigns: Expedition[] = topics.flatMap((topic) =>
+export const campaigns: Expedition[] = allTopics.flatMap((topic) =>
   levels.flatMap((level) => {
-    const selection = lessons.filter(
+    const selection = allLessons.filter(
       (lesson) => lesson.topic === topic.slug && lesson.level === level,
     );
     return selection.length
@@ -40,7 +40,7 @@ export const campaignTopics = Object.fromEntries(
   ]),
 );
 
-export const lessonExpeditions: Expedition[] = lessons.map((lesson) => ({
+export const lessonExpeditions: Expedition[] = allLessons.map((lesson) => ({
   id: lesson.id,
   kind: "lesson",
   title: lesson.title,
@@ -63,9 +63,9 @@ export function dailyExpedition(now: number): Expedition {
     String(day).padStart(2, "0"),
   ].join("-");
   return {
-    id: `daily-${stamp}`,
+    id: `us-daily-${stamp}`,
     kind: "daily",
-    title: "Ải hằng ngày",
+    title: "Luyện tập hằng ngày",
     stages: stagesFor(selection),
   };
 }

@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { lessons } from "../data/mock/lessons";
 import {
   Check,
   Coins,
-  Heart,
+  Sandwich,
   LockKeyhole,
   ShoppingBag,
-  Wrench,
+  RotateCcw,
 } from "lucide-react";
 import { useApp } from "../app/providers/AppProvider";
 import { items, slots, slotLabels } from "../data/mock/adventureItems";
@@ -22,13 +24,13 @@ import { MAX_HEALTH, settleHealth } from "../features/adventure/engine";
 function describe(item: AdventureItem) {
   switch (item.slot) {
     case "potion":
-      return `Hồi ${item.effect} sinh mệnh, tối đa ${MAX_HEALTH}.`;
+      return `Hồi ${item.effect} năng lượng, tối đa ${MAX_HEALTH}.`;
     case "shield":
-      return `Đỡ đòn khi trả lời sai. Ở chặng thường, bỏ qua chặng và xem đáp án đúng. Ở chặng cuối, chỉ giữ sinh mệnh. Độ bền ${item.durability}.`;
+      return `${item.durability} lượt tra. Khi trả lời sai, tự dùng một lượt để giữ năng lượng. Câu thường được xem đáp án và đi tiếp. Câu cuối cần thử lại.`;
     case "sword":
-      return `Thêm ${item.effect}% vàng mỗi chặng. Độ bền ${item.durability}.`;
+      return `${item.durability} lượt ghi. Thêm ${item.effect}% vàng mỗi câu được tính thưởng và lưu cụm phát âm của bài vào sổ tay.`;
     case "pet":
-      return "Đi cùng nhà thám hiểm trên bản đồ ải.";
+      return "Đồng hành cùng bạn trong các buổi luyện.";
   }
 }
 
@@ -36,6 +38,9 @@ export default function Shop() {
   const { adventure, act, masteredTopics, notify } = useApp();
   const [slot, setSlot] = useState<Slot>("potion");
   const unlocked = masteredTopics.length;
+  const notebook = lessons.filter((lesson) =>
+    adventure.notebookLessonIds?.includes(lesson.id),
+  );
   const { health } = settleHealth(adventure, useAdventureClock());
 
   return (
@@ -47,10 +52,9 @@ export default function Shop() {
         <AdventureHud />
       </div>
       <div className="page-heading">
-        <h1>Cửa hàng phiêu lưu</h1>
+        <h1>Cửa hàng</h1>
         <p>
-          Dùng vàng để mua vật phẩm, bảo dưỡng trang bị và chọn bạn đồng hành
-          cho lần vào ải tiếp theo.
+          Dùng vàng mua đồ ăn, nạp lượt cho dụng cụ học và chọn bạn đồng hành.
         </p>
       </div>
       <div className="shop-tabs" aria-label="Loại vật phẩm">
@@ -71,8 +75,8 @@ export default function Shop() {
       </div>
       {slot === "potion" && (
         <p>
-          Dùng thuốc tại đây để hồi sinh mệnh, hoặc trang bị cho lượt sau. Trong
-          ải, thuốc đã trang bị tự dùng một lần khi sinh mệnh về 0.
+          Dùng đồ ăn tại đây để hồi năng lượng hoặc mang theo cho lượt sau. Đồ
+          ăn mang theo tự dùng một lần khi năng lượng về 0.
         </p>
       )}
       <div className="shop-grid">
@@ -91,7 +95,7 @@ export default function Shop() {
                 type === "buy"
                   ? `Đã mua ${item.name}.`
                   : type === "repair"
-                    ? `Đã bảo dưỡng ${item.name}.`
+                    ? `Đã nạp lượt dùng cho ${item.name}.`
                     : equipped
                       ? `Đã bỏ trang bị ${item.name}.`
                       : `Đã trang bị ${item.name}.`,
@@ -115,7 +119,7 @@ export default function Shop() {
                       {slot === "potion"
                         ? `Trong túi: ${value}`
                         : item.durability
-                          ? `Độ bền: ${value}/${item.durability}`
+                          ? `${value}/${item.durability} lượt còn lại`
                           : "Đã sở hữu"}
                     </small>
                   )}
@@ -135,7 +139,7 @@ export default function Shop() {
                         notify(`Đã dùng ${item.name}.`);
                       }}
                     >
-                      <Heart size={16} /> Dùng ngay
+                      <Sandwich size={16} /> Ăn ngay
                     </Button>
                   )}
                   {(!owned || slot === "potion") && (
@@ -171,7 +175,7 @@ export default function Shop() {
                         disabled={adventure.coins < item.repair}
                         onClick={() => transact("repair")}
                       >
-                        <Wrench size={16} /> Bảo dưỡng · {item.repair} vàng
+                        <RotateCcw size={16} /> Nạp lượt · {item.repair} vàng
                       </Button>
                     )}
                 </div>
@@ -179,6 +183,25 @@ export default function Shop() {
             );
           })}
       </div>
+      {slot === "sword" && (
+        <section className="card notebook-panel">
+          <h2>Cụm từ đã lưu</h2>
+          {notebook.length ? (
+            <ul>
+              {notebook.map(({ id, slug, pronunciation }) => (
+                <li key={id}>
+                  <Link className="text-link" to={`/lessons/${slug}`}>
+                    <span lang="en-US">{pronunciation?.phrase}</span>{" "}
+                    {pronunciation?.ipa}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Mang theo sổ tay khi luyện để lưu cụm phát âm của bài.</p>
+          )}
+        </section>
+      )}
     </div>
   );
 }

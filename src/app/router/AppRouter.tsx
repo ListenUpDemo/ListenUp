@@ -26,9 +26,9 @@ export default function AppRouter() {
     if (section) section.scrollIntoView();
     else window.scrollTo(0, 0);
     const names: Record<string, string> = {
-      "/": "Bản đồ phiêu lưu",
-      "/shop": "Cửa hàng phiêu lưu",
-      "/adventure/daily": "Ải hằng ngày",
+      "/": "Hành trình",
+      "/shop": "Cửa hàng",
+      "/adventure/daily": "Luyện tập hằng ngày",
       "/lessons": "Thư viện bài nghe",
       "/topics": "Khám phá chủ đề",
       "/dashboard": "Góc học tập",
@@ -40,7 +40,7 @@ export default function AppRouter() {
       "/settings": "Cài đặt",
     };
     const fallback = location.pathname.startsWith("/adventure/")
-      ? "Ải chiến dịch"
+      ? "Chủ đề đời thường"
       : location.pathname.startsWith("/practice/")
         ? "Luyện nghe"
         : "Bài học";
