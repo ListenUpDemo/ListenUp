@@ -8,6 +8,7 @@ import {
   FileText,
   Bookmark,
   Check,
+  LockKeyhole,
 } from "lucide-react";
 import { allLessons, allTopics, lessons } from "../data/mock/lessons";
 import {
@@ -21,7 +22,7 @@ import { useApp } from "../app/providers/AppProvider";
 export default function LessonDetail() {
   const { slug } = useParams();
   const lesson = allLessons.find((l) => l.slug === slug);
-  const { bookmarks, toggleBookmark, attempts } = useApp();
+  const { bookmarks, toggleBookmark, attempts, journey } = useApp();
   if (!lesson)
     return (
       <EmptyState
@@ -35,6 +36,7 @@ export default function LessonDetail() {
       />
     );
   const completed = attempts.some((a) => a.lessonId === lesson.id);
+  const locked = journey.lockedLessons.has(lesson.id);
   return (
     <div className="container page-content">
       <Link className="back-link" to="/lessons">
@@ -70,10 +72,16 @@ export default function LessonDetail() {
             {allTopics.find((t) => t.slug === lesson.topic)?.name}
           </p>
           <div className="detail-actions">
-            <Link className="btn btn-primary" to={`/practice/${lesson.id}`}>
-              <Headphones size={18} /> Bắt đầu luyện nghe{" "}
-              <ArrowRight size={18} />
-            </Link>
+            {locked ? (
+              <Link className="btn btn-secondary" to="/topics">
+                <LockKeyhole size={18} /> Chưa mở khóa · Xem lộ trình
+              </Link>
+            ) : (
+              <Link className="btn btn-primary" to={`/practice/${lesson.id}`}>
+                <Headphones size={18} /> Bắt đầu luyện nghe{" "}
+                <ArrowRight size={18} />
+              </Link>
+            )}
             <Button
               variant="secondary"
               onClick={() => toggleBookmark(lesson.id)}

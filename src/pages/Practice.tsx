@@ -28,10 +28,12 @@ import type { Expedition, ExpeditionRun, Loadout } from "../types/adventure";
 import {
   AdventureHud,
   slotIcons,
+  Sprite,
   StageMap,
   useAdventureClock,
 } from "../features/adventure/AdventureVisuals";
 import { CharacterReaction } from "../features/adventure/Character";
+import TopicJourney from "../features/adventure/TopicJourney";
 import {
   STAGE_COINS,
   resolvedStage,
@@ -45,13 +47,30 @@ export default function Practice({
   kind?: Expedition["kind"];
 }) {
   const { lessonId, campaignId } = useParams();
+  const { adventure, journey } = useApp();
   const now = useAdventureClock();
   const expedition =
     kind === "daily"
-      ? dailyExpedition(now)
+      ? dailyExpedition(now, journey.lockedLessons, adventure.runs)
       : kind === "campaign"
         ? campaigns.find(({ id }) => id === campaignId)
         : lessonExpeditions.find(({ id }) => id === lessonId);
+  if (
+    (campaignId && journey.lockedCampaigns.has(campaignId)) ||
+    (lessonId && journey.lockedLessons.has(lessonId))
+  ) {
+    return (
+      <EmptyState
+        title="Bài này chưa mở khóa"
+        description="Hoàn thành bài đang mở trên lộ trình để học tiếp."
+        action={
+          <Link className="btn btn-primary" to="/topics">
+            Xem lộ trình
+          </Link>
+        }
+      />
+    );
+  }
   return expedition ? (
     <ExpeditionPage
       key={runKey(expedition)}
@@ -105,12 +124,17 @@ function ExpeditionPage({
   expedition: Expedition;
   now: number;
 }) {
-  const { adventure, act, masteredTopics } = useApp();
+  const { adventure, act, journey, masteredTopics } = useApp();
   const key = runKey(expedition);
   const run = adventure.runs[key];
   const finished = Boolean(run?.finished);
   const wasFinished = useRef(finished);
   const completionHeading = useRef<HTMLHeadingElement>(null);
+  const unlockFrom = useRef<string | undefined>(undefined);
+  const next = journey.next;
+  const justUnlocked = Boolean(
+    unlockFrom.current && next && next.id !== unlockFrom.current,
+  );
   useEffect(() => {
     if (finished && !wasFinished.current) completionHeading.current?.focus();
     wasFinished.current = finished;
@@ -147,11 +171,7 @@ function ExpeditionPage({
         </p>
         <h1>{expedition.title}</h1>
       </header>
-      <StageMap
-        run={run}
-        count={expedition.stages.length}
-        pet={(run?.loadout ?? adventure.loadout).pet}
-      />
+      <StageMap run={run} count={expedition.stages.length} />
       {!run ? (
         <section className="card expedition-panel">
           <h2>Chuẩn bị luyện tập</h2>
@@ -201,6 +221,15 @@ function ExpeditionPage({
             <Trophy size={25} />{" "}
             {topicComplete ? "Chủ đề đã hoàn thành" : "Hoàn thành bài luyện"}
           </h2>
+          {justUnlocked && unlockFrom.current && next && (
+            <div className="expedition-unlock">
+              <h3>Đã mở khóa bài tiếp theo</h3>
+              <TopicJourney
+                key={`${unlockFrom.current}:${next.id}`}
+                unlock={{ from: unlockFrom.current, to: next.id }}
+              />
+            </div>
+          )}
           <CharacterReaction mood="complete">
             {topicComplete
               ? "Mình đã luyện xong mọi bài trong chủ đề này. Cùng thử dùng những cụm vừa học nhé!"
@@ -243,6 +272,9 @@ function ExpeditionPage({
           expedition={expedition}
           run={run}
           health={health}
+          onBeforeFinish={() => {
+            unlockFrom.current = next?.id;
+          }}
         />
       )}
     </div>
@@ -253,10 +285,12 @@ function ExpeditionStage({
   expedition,
   run,
   health,
+  onBeforeFinish,
 }: {
   expedition: Expedition;
   run: ExpeditionRun;
   health: number;
+  onBeforeFinish: () => void;
 }) {
   const { act, masteredTopics } = useApp();
   const [playback, setPlayback] = useState({ lessonId: "", time: 0 });
@@ -271,6 +305,7 @@ function ExpeditionStage({
   const loot = findItem(chest?.itemId);
   const selected = run.selected;
   const potion = findItem(run.loadout.potion);
+  const pet = run.loadout.pet;
   const feedback = run.feedback ?? (run.finalMisses ? "damage" : undefined);
   const previousReaction = useRef({ outcome, feedback });
   const runAction = {
@@ -320,6 +355,9 @@ function ExpeditionStage({
       <AudioPlayer
         src={lesson.audioUrl}
         pronunciation={lesson.pronunciation}
+        renderProgressMarker={
+          pet ? (playing) => <Sprite id={pet} walking={playing} /> : undefined
+        }
         audioRef={audioRef}
         onTimeChange={(value) =>
           setPlayback({ lessonId: lesson.id, time: value })
@@ -430,7 +468,10 @@ function ExpeditionStage({
               ))}
             <Button
               disabled={Boolean(chest && !chest.opened)}
-              onClick={() => act({ ...runAction, type: "advance" })}
+              onClick={() => {
+                if (finalStage) onBeforeFinish();
+                act({ ...runAction, type: "advance" });
+              }}
             >
               {run.index + 1 === expedition.stages.length
                 ? "Hoàn thành bài luyện"

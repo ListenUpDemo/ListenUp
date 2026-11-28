@@ -39,6 +39,7 @@ export interface ExpeditionRun {
   finished: boolean;
   failed?: boolean;
   attempts: Attempt[];
+  dailyLessonIds?: string[];
 }
 
 export interface AdventureState {

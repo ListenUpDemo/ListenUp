@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type { RefObject } from "react";
+import type { CSSProperties, ReactNode, RefObject } from "react";
 import {
   Play,
   Pause,
@@ -18,11 +18,13 @@ export default function AudioPlayer({
   audioRef,
   onTimeChange,
   pronunciation,
+  renderProgressMarker,
 }: {
   src: string;
   audioRef: RefObject<HTMLAudioElement | null>;
   onTimeChange: (time: number) => void;
   pronunciation?: Lesson["pronunciation"];
+  renderProgressMarker?: (playing: boolean) => ReactNode;
 }) {
   const { preferences, setPreferences } = useApp();
   const [playing, setPlaying] = useState(false);
@@ -30,6 +32,7 @@ export default function AudioPlayer({
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState("");
   const [waiting, setWaiting] = useState(false);
+  const progress = duration > 0 ? Math.min(100, (current / duration) * 100) : 0;
   const playRequest = useRef(0);
   const clip = useRef<{ start: number; end: number } | null>(null);
   useEffect(() => {
@@ -106,6 +109,7 @@ export default function AudioPlayer({
         }}
         onSeeking={(e) => {
           const time = e.currentTarget.currentTime;
+          setCurrent(time);
           if (
             clip.current &&
             (time < clip.current.start - 0.01 || time > clip.current.end)
@@ -137,16 +141,28 @@ export default function AudioPlayer({
       </div>
       <div className="audio-timeline">
         <span>{formatTime(current)}</span>
-        <input
-          type="range"
-          aria-label="Vị trí phát audio"
-          min="0"
-          max={duration || 1}
-          step="0.1"
-          value={current}
-          disabled={!duration || !!error}
-          onChange={(e) => seek(Number(e.target.value))}
-        />
+        <div
+          className="audio-seek"
+          style={{ "--audio-progress": `${progress}%` } as CSSProperties}
+        >
+          <div className="audio-seek-guide" aria-hidden="true" />
+          <input
+            type="range"
+            aria-label="Vị trí phát audio"
+            aria-valuetext={`${formatTime(current)} trên ${formatTime(duration)}`}
+            min="0"
+            max={duration || 1}
+            step="any"
+            value={current}
+            disabled={!duration || !!error}
+            onChange={(e) => seek(Number(e.target.value))}
+          />
+          {renderProgressMarker && (
+            <div className="audio-progress-marker" aria-hidden="true">
+              {renderProgressMarker(playing && !waiting && !error)}
+            </div>
+          )}
+        </div>
         <span>{formatTime(duration)}</span>
       </div>
       <div className="audio-controls">

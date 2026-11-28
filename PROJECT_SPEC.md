@@ -39,7 +39,7 @@ Chưa triển khai: xác thực thật, backend, đồng bộ tiến độ máy 
 | `/adventure/campaign/:campaignId`          | Bài luyện theo chủ đề và trình độ                   | LearningLayout  |
 | `/adventure/daily`                         | Bài luyện tập theo ngày                             | LearningLayout  |
 | `/shop`                                    | Mua đồ ăn, nạp lượt dụng cụ, chọn bạn đồng hành     | PublicLayout    |
-| `/topics`                                  | Danh sách chủ đề                                    | PublicLayout    |
+| `/topics`                                  | Lộ trình dọc để chọn chủ đề và trình độ             | PublicLayout    |
 | `/topics/:slug`                            | Thư viện theo chủ đề                                | PublicLayout    |
 | `/dashboard`                               | Tổng quan, gợi ý bài học, thống kê và lịch sử       | DashboardLayout |
 | `/progress`                                | Biểu đồ 7 ngày và lịch sử luyện tập                 | DashboardLayout |
@@ -109,6 +109,8 @@ Transcript line-height 1.7–1.8. Các card hoặc màn hình nhỏ có thể đ
 
 Trang chủ hiển thị năng lượng, vàng, cửa hàng, bài luyện hằng ngày và các chủ đề văn hóa đời thường. Thẻ bài trong thư viện có minh họa, tên, trình độ, chủ đề, thời lượng, dấu trang và nút bắt đầu nghe.
 
+Trang chủ và `/topics` dùng chung lộ trình dọc có đường cong, mỗi điểm dừng là một bài luyện theo trình độ. Bấm bất kỳ đâu trên thẻ đã mở để vào bài. Nếu nhân vật cần di chuyển, trang bài luyện mở khi chuyển động kết thúc. Bài đầu mở sẵn. Hoàn thành bài đang mở trên lộ trình hoặc qua thư viện hay bài luyện hằng ngày mở bài chưa hoàn thành kế tiếp. Tại màn hình hoàn thành, bạn học và pet đã trang bị di chuyển từ bài vừa làm đến bài vừa mở. Khi quay lại lộ trình, nhân vật đứng ở bài đang học. Bạn học dùng tư thế đứng tĩnh và pet dùng sprite đi bộ. Chế độ giảm chuyển động đưa nhân vật tới điểm mới ngay.
+
 Tìm kiếm theo tên và mô tả, không phân biệt hoa/thường hoặc dấu tiếng Việt. Kết hợp được trình độ A1/A2/B1/B2 và chủ đề. Hiển thị số bài phù hợp, empty state và thao tác xóa bộ lọc. Chi tiết bài học hiển thị mục tiêu, số câu, transcript, lưu bài và bắt đầu luyện nghe.
 
 ### Luyện nghe
@@ -119,10 +121,11 @@ Tìm kiếm theo tên và mô tả, không phân biệt hoa/thường hoặc d�
 - Câu hỏi trắc nghiệm kiểm tra nội dung và nhận diện âm. Câu sai trừ 1 năng lượng khi hết lượt tra từ điển và yêu cầu trả lời lại. Lượt tra giữ năng lượng. Ở câu thường, người học xem đáp án và chuyển tiếp. Ở câu cuối, người học phải trả lời đúng và xem lời giải trên trang kết quả.
 - Tiến độ và lựa chọn được lưu sau thao tác. Sau khi nhận quà cuối và hoàn thành, ứng dụng lưu lượt làm của từng bài với điểm, đáp án, thời gian và thời điểm hoàn thành. Bài trong thư viện có thể luyện lại.
 - Transcript mặc định đóng, có speaker, timestamp, highlight câu đang phát, nhấn vào câu để tua và tùy chọn chữ lớn. Audio và transcript là hai tài nguyên độc lập.
+- Bạn đồng hành đã trang bị hiển thị ở lớp riêng phía trên thanh thời gian của audio, với sprite phóng gấp đôi. Vị trí theo thời gian phát thực, cập nhật khi tua và giữ nguyên khi tạm dừng. Cảnh đi bộ chỉ chạy lúc audio đang phát và tôn trọng chế độ giảm chuyển động.
 
 ### Chủ đề, năng lượng và dụng cụ
 
-- Một bài luyện theo trình độ tương ứng với một nhóm bài nghe trong chủ đề. Hoàn thành mọi trình độ của chủ đề sẽ hoàn thành chủ đề và mở khóa hàng. Bài luyện hằng ngày xoay vòng ba bài theo ngày trên thiết bị và có thể hoàn thành một lần mỗi ngày. Bài mở từ thư viện có tiến độ riêng.
+- Hoàn thành mọi trình độ của chủ đề sẽ hoàn thành chủ đề và mở khóa hàng. Bài đã hoàn thành có thể luyện lại. Lộ trình, thư viện và đường dẫn trực tiếp áp dụng cùng điều kiện mở khóa. Bài luyện hằng ngày chọn tối đa ba bài đã mở, giữ nguyên bộ câu hỏi sau khi bắt đầu và có thể hoàn thành một lần mỗi ngày. Lượt làm đã lưu từ trước vẫn được tính.
 - Năng lượng tối đa 5, tự hồi 1 điểm sau mỗi 10 phút. Đồ ăn có thể dùng ngay trong cửa hàng hoặc tự dùng tối đa một lần mỗi lượt khi năng lượng về 0. Khi không thể hồi và năng lượng về 0, lượt luyện kết thúc.
 - Mỗi câu được tính thưởng cho 15 vàng. Sổ tay còn lượt ghi cộng thêm 20%, 40% hoặc 60% tùy loại, dùng một lượt và lưu cụm phát âm theo bài. Mỗi cụm chỉ xuất hiện một lần trong mục Sổ tay cụm từ. Từ điển và sổ tay có thể nạp lượt với giá thấp hơn giá mua.
 - Vật phẩm mang theo được chốt khi bắt đầu lượt. Quà giữa bài cho đồ ăn, quà cuối bài cho từ điển hoặc sổ tay đã mở khóa. Nếu đã sở hữu dụng cụ nhận được, lượt dùng được nạp đầy. Mỗi quà chỉ nhận một lần.

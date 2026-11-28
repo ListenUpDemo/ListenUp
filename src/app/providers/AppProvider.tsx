@@ -2,7 +2,10 @@ import { createContext, useContext, useState } from "react";
 import type { ReactNode } from "react";
 import type { Attempt, Profile } from "../../types";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
-import { campaignTopics } from "../../data/mock/expeditions";
+import {
+  campaignTopics,
+  getJourneyProgress,
+} from "../../data/mock/expeditions";
 import {
   applyAdventureAction,
   initialAdventure,
@@ -19,16 +22,27 @@ function useAppState() {
     "listenup.adventure.v1",
     initialAdventure,
   );
+  const journey = getJourneyProgress(adventure, legacyAttempts);
   const masteredTopics = Object.entries(campaignTopics)
     .filter(
-      ([, ids]) =>
-        ids.length &&
-        ids.every((id) => adventure.clearedCampaigns.includes(id)),
+      ([, ids]) => ids.length && ids.every((id) => journey.completed.has(id)),
     )
     .map(([topic]) => topic);
   const act = (action: AdventureAction) => {
     const now = Date.now();
-    setAdventure((previous) => applyAdventureAction(previous, action, now));
+    setAdventure((previous) => {
+      if (action.type === "start") {
+        const progress = getJourneyProgress(previous, legacyAttempts);
+        if (
+          progress.lockedCampaigns.has(action.expedition.id) ||
+          (action.expedition.kind === "lesson" &&
+            progress.lockedLessons.has(action.expedition.id))
+        ) {
+          return previous;
+        }
+      }
+      return applyAdventureAction(previous, action, now);
+    });
   };
   const [profile, setProfile] = useLocalStorage<Profile>("listenup.profile", {
     name: "Bạn",
@@ -50,6 +64,7 @@ function useAppState() {
     toggleBookmark,
     attempts: [...legacyAttempts, ...adventure.attempts],
     adventure,
+    journey,
     masteredTopics,
     act,
     profile,

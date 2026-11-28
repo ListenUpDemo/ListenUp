@@ -8,7 +8,12 @@ Cập nhật 28/11/2026. Phạm vi hiện tại là frontend luyện tiếng Anh
 
 - Lưu theme phiêu lưu vào nhánh cục bộ `backup/adventure-theme` tại `0531a5b`.
 - Chuyển danh mục chính sang 4 chủ đề văn hóa đời thường, 6 bài, 18 câu hỏi. Mỗi bài có hội thoại en-US, transcript và mẫu nghe riêng với IPA, hướng dẫn nhắc lại.
+- Dùng lộ trình dọc có đường cong để chọn chủ đề ở trang chủ và `/topics`. Bạn học và pet đã trang bị di chuyển tới điểm được chọn. Pet có sprite đi bộ và bạn học giữ tư thế đứng.
+- Mỗi điểm dừng là một bài. Mở lần lượt theo lượt làm đã hoàn thành, áp dụng chung cho lộ trình và thư viện. Khi có bài mới, màn hình hoàn thành đưa nhân vật và pet tới điểm vừa mở.
+- Toàn bộ thẻ đã mở trên lộ trình là liên kết vào bài. Khi chọn điểm dừng khác, màn hình giữ lộ trình đến khi nhân vật tới nơi rồi mới chuyển trang.
 - Bạn học dùng hình toàn thân ở trang chủ. Khung phản hồi ghép bốn biểu cảm vào hai tư thế thân từ bộ vector cho trạng thái bình thường, trả lời sai, trả lời đúng và hoàn thành. Thiết bị nhỏ có khung phản hồi sát nút đi tiếp.
+- Pet đã trang bị theo vị trí phát trên thanh audio, đi khi phát và đứng lại khi tạm dừng. Thanh hiển thị phần audio đã nghe và cập nhật khi tua.
+- Phóng sprite pet trên thanh audio gấp đôi và đặt ở lớp riêng phía trên thanh tua.
 - Bỏ tên riêng trong giao diện, câu hỏi, hội thoại và transcript. Tạo lại audio demo và mốc phát âm để khớp hội thoại.
 - Dùng nhãn chủ đề và hành trình không gắn với một quốc gia. Audio và nội dung luyện phát âm tiếp tục dùng bộ mẫu hiện có.
 - Đổi sinh mệnh thành năng lượng, dùng đồ ăn để hồi. Từ điển dùng lượt khi sai. Sổ tay cộng vàng theo hệ số cũ và lưu cụm phát âm. Giữ dữ liệu cục bộ đã có.
@@ -21,6 +26,11 @@ Cập nhật 28/11/2026. Phạm vi hiện tại là frontend luyện tiếng Anh
 - Sau khi thay minh họa, Chrome xác nhận tư thế toàn thân trên trang chủ, tư thế luyện và tư thế phản hồi. Đã chạy lại các kiểm tra trên.
 - Chrome xác nhận bốn biểu cảm hiển thị đúng trạng thái, kể cả câu sai có dùng từ điển. Đã kiểm tra transcript dùng danh xưng chung và audio phát được sau khi tạo lại.
 - Sau khi ghép thân, Chrome xác nhận cả bốn ảnh phản hồi tương ứng với trạng thái. Đã xem bố cục trả lời đúng và hoàn thành ở 360px, đồng thời chạy lại kiểm thử và build.
+- Chrome xác nhận pet theo vị trí audio khi phát, tạm dừng, tua bằng bàn phím, nút ±10 giây và transcript. Kiểm tra ở 360px gồm hai đầu thanh tua và chế độ giảm chuyển động.
+- Sau khi phóng to, Chrome xác nhận toàn bộ sprite nằm trên lớp thanh tua, trong khung audio ở hai đầu thanh và vẫn cho tua bằng bàn phím. Kiểm tra ở 360 và 1280px.
+- Chrome xác nhận lộ trình cong ở trang chủ và trang chủ đề, nhân vật và pet tới đúng điểm dừng, có thể chọn bằng bàn phím, và chế độ giảm chuyển động hoạt động. Kiểm tra ở 360, 768 và 1280px, gồm đường vào bài luyện và thư viện theo chủ đề.
+- Chrome xác nhận chỉ bài đầu mở khi chưa có tiến độ, đường dẫn trực tiếp tới bài khóa bị chặn, hai lượt trên lộ trình và một lượt từ thư viện mở đúng bài kế tiếp. Kiểm tra chuyển động khi mở khóa, giữ bộ bài hằng ngày qua thay đổi tiến độ, và hiển thị ở 360, 768, 1280px.
+- Chrome xác nhận bấm góc trống của thẻ hoặc nhấn Enter đều vào bài sau khi nhân vật đến nơi. Thẻ khóa không điều hướng và chế độ giảm chuyển động vào bài ngay.
 
 ### Còn lại
 

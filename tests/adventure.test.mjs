@@ -239,6 +239,7 @@ test("ải hằng ngày không thể bắt đầu lại sau khi đã hoàn thàn
   const daily = { ...expedition, id: "daily-2026-11-28", kind: "daily" };
   const id = "daily:daily-2026-11-28";
   let state = prepare(initialAdventure, daily, id);
+  assert.deepEqual(state.runs[id].dailyLessonIds, [lesson.id]);
   for (let index = 0; index < 3; index++) {
     const props = { expedition: daily, key: id };
     state = answer(state, index, 0, props);

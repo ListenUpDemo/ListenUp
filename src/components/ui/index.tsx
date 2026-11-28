@@ -10,6 +10,7 @@ import {
   Headphones,
   SearchX,
   AlertCircle,
+  LockKeyhole,
 } from "lucide-react";
 import type {
   ButtonHTMLAttributes,
@@ -111,7 +112,7 @@ export function LessonArt({
   );
 }
 export function LessonCard({ lesson }: { lesson: Lesson }) {
-  const { bookmarks, toggleBookmark } = useApp();
+  const { bookmarks, toggleBookmark, journey } = useApp();
   const saved = bookmarks.includes(lesson.id);
   return (
     <article className="lesson-card card">
@@ -142,9 +143,15 @@ export function LessonCard({ lesson }: { lesson: Lesson }) {
           <span>·</span>
           <span>{Math.ceil(lesson.duration / 60)} phút</span>
         </div>
-        <Link className="lesson-start" to={`/practice/${lesson.id}`}>
-          Bắt đầu nghe <ArrowRight size={16} />
-        </Link>
+        {journey.lockedLessons.has(lesson.id) ? (
+          <Link className="lesson-start" to="/topics">
+            Chưa mở khóa <LockKeyhole size={16} />
+          </Link>
+        ) : (
+          <Link className="lesson-start" to={`/practice/${lesson.id}`}>
+            Bắt đầu nghe <ArrowRight size={16} />
+          </Link>
+        )}
       </div>
     </article>
   );

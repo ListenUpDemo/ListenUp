@@ -23,7 +23,7 @@ Build được xuất ra dist. Khi đưa lên static hosting, cấu hình SPA fa
 
 ## Trải nghiệm mẫu
 
-Trên trang Hành trình, chọn chủ đề hoặc bài luyện hằng ngày. Bạn cũng có thể vào Bài học → Coffee to Go → Bắt đầu luyện nghe. Mở Ghi chú văn hóa để xem bối cảnh, rồi mở Luyện phát âm tiếng Anh để nghe đoạn mẫu và nhắc lại. Transcript hỗ trợ tua theo từng câu. Bạn học có bốn biểu cảm cho trạng thái bình thường, trả lời sai, trả lời đúng và hoàn thành bài.
+Trên trang Hành trình, bắt đầu với Picking Up My Suitcase. Hoàn thành bài đang mở để tới bài tiếp theo. Màn hình kết quả của lượt luyện hiển thị bạn học và pet đi đến điểm vừa mở. Bạn cũng có thể luyện trong thư viện hoặc ôn qua bài luyện hằng ngày với các bài đã mở. Mở Ghi chú văn hóa để xem bối cảnh, rồi mở Luyện phát âm tiếng Anh để nghe đoạn mẫu và nhắc lại. Transcript hỗ trợ tua theo từng câu.
 
 Năng lượng tối đa 5 và tự hồi 1 điểm sau mỗi 10 phút. Dùng đồ ăn ở cửa hàng để hồi ngay hoặc mang theo để tự dùng một lần khi năng lượng về 0. Từ điển dùng một lượt để giữ năng lượng khi chọn sai. Ở câu thường, bạn được xem đáp án và đi tiếp. Ở câu cuối, hãy thử lại.
 

@@ -194,6 +194,11 @@ export function applyAdventureAction(
       outcomes: [],
       finished: false,
       attempts: [],
+      ...(expedition.kind === "daily" && {
+        dailyLessonIds: [
+          ...new Set(expedition.stages.map(({ lesson }) => lesson.id)),
+        ],
+      }),
     });
   }
   if (

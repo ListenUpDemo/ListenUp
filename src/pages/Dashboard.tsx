@@ -12,15 +12,13 @@ import { allLessons, lessons } from "../data/mock/lessons";
 import { LessonCard, StatCard } from "../components/ui";
 import ProgressChart from "../features/progress/ProgressChart";
 export default function Dashboard() {
-  const { attempts, profile } = useApp();
+  const { attempts, profile, journey } = useApp();
   const isProgress = useLocation().pathname === "/progress";
   const unique = new Set(attempts.map((a) => a.lessonId)).size;
   const total = attempts.reduce((n, a) => n + a.total, 0);
   const score = attempts.reduce((n, a) => n + a.score, 0);
   const minutes = Math.floor(attempts.reduce((n, a) => n + a.seconds, 0) / 60);
-  const next =
-    lessons.find((l) => !attempts.some((a) => a.lessonId === l.id)) ||
-    lessons[0];
+  const next = journey.next?.stages[0].lesson ?? lessons[0];
   return (
     <>
       <div className="page-heading dashboard-heading">

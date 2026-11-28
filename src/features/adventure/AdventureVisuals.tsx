@@ -68,12 +68,23 @@ export function AdventureHud() {
   );
 }
 
-export function Sprite({ id }: { id: string }) {
+export function Sprite({
+  id,
+  walking = false,
+}: {
+  id: string;
+  walking?: boolean;
+}) {
   return (
     <span
       aria-hidden="true"
-      className="rpg-sprite rpg-sprite-cat"
-      style={{ backgroundImage: `url("${assetBase}${id}-idle.png")` }}
+      className={`rpg-sprite rpg-sprite-cat${walking ? " rpg-sprite-walk" : ""}`}
+      style={
+        {
+          "--sprite-frames": walking ? 8 : 10,
+          backgroundImage: `url("${assetBase}${id}-${walking ? "walk" : "idle"}.png")`,
+        } as CSSProperties
+      }
     />
   );
 }
@@ -81,11 +92,9 @@ export function Sprite({ id }: { id: string }) {
 export function StageMap({
   run,
   count,
-  pet,
 }: {
   run?: ExpeditionRun;
   count: number;
-  pet?: string;
 }) {
   const index = run?.index ?? 0;
 
@@ -141,7 +150,6 @@ export function StageMap({
           })}
         </ol>
       </div>
-      {pet && <Sprite id={pet} />}
     </div>
   );
 }
